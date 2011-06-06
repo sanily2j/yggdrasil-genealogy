@@ -1,0 +1,225 @@
+<?php
+
+/***************************************************************************
+ *   relation_edit.php                                                     *
+ *   Exodus: Relations Update Form and Action                              *
+ *                                                                         *
+ *   Copyright (C) 2006-2010 by Leif B. Kristensen                         *
+ *   leif@solumslekt.org                                                   *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+/*
+This script is called from family.php with the GET params $person and
+$parent. Depending on whether $parent is defined or not, it will either alter
+an existing parent relation or insert a new parent. This is also where source
+citations for relations are inserted or altered.
+*/
+
+require "../settings/settings.php";
+require_once "../langs/$language.php";
+require "../functions.php";
+require "./forms.php";
+
+if (!isset($_POST['posted'])) { // print form
+    $person = $_GET['person'];
+    $name = get_name($person);
+    $title = "$person $name: Rediger relasjon";
+    $form = 'edit_relation';
+    if (!isset($_GET['parent'])) // focus on parent_id
+        $focus = 'parent';
+    require "./form_header.php";
+    $ptype[1] = $_father;
+    $ptype[2] = $_mother;
+    if (isset($_GET['parent'])) {
+        // prepare for update of existing relation
+        $qtype = 'update';
+        $atype = $_Edit;
+        $parent = $_GET['parent'];
+        $handle = pg_query("
+            SELECT
+                relation_id,
+                get_gender($parent) AS relation_type,
+                surety_fk
+            FROM
+                relations
+            WHERE
+                child_fk = $person
+            AND parent_fk = $parent
+        ");
+        $rec = pg_fetch_assoc($handle);
+        $relation = $rec['relation_id'];
+        $gender = $rec['relation_type'];
+        $surety = $rec['surety_fk'];
+        $pname = get_name($parent);
+    }
+    else {
+        // prepare for insert of new relation
+        $qtype = 'insert';
+        $atype = $_Insert;
+        $parent = 0;
+        $pname = '';
+        $gender = $_GET['gender'];
+        $surety = 3;
+    }
+    $pprompt = ucfirst($ptype[$gender]) . ':';
+    echo "<h2>$atype " . $ptype[$gender] . " for $name</h2>\n";
+    form_begin($form, $_SERVER['PHP_SELF']);
+    hidden_input('posted', 1);
+    hidden_input('person', $person);
+    hidden_input('qtype', $qtype);
+    if ($qtype == 'update') {
+        hidden_input('relation', $relation);
+        hidden_input('oldparent', $parent);
+    }
+    person_id_input($parent, 'parent', $pprompt);
+    checkbox('bsource', $_Use_source_for_birth_event);
+    select_surety($surety);
+    source_input();
+    form_submit();
+    form_end();
+    if ($qtype == 'update') {
+        echo "<h3>$_References</h3>\n";
+        $handle = pg_query("
+            SELECT
+                source_fk,
+                get_source_text(source_fk) AS source_text
+            FROM
+                relation_citations
+            WHERE
+                relation_fk = $relation
+        ");
+        while ($row = pg_fetch_assoc($handle)) {
+            echo para($row['source_fk'] . ' ' . $row['source_text']);
+        }
+    }
+    echo "</body>\n</html>\n";
+}
+else { // do action
+    $person = $_POST['person'];
+    $surety = $_POST['surety'];
+    $_POST['parent'] ? $parent = $_POST['parent'] : $parent = 0;
+    pg_query("BEGIN");
+    if ($_POST['qtype'] == 'update') { // update existing relation
+        $relation = $_POST['relation'];
+        $oldparent = $_POST['oldparent'];
+        $oldsurety = fetch_val("
+            SELECT surety_fk
+            FROM relations
+            WHERE relation_id = $relation
+        ");
+        // change parent or surety
+        if ($parent != $oldparent || $surety != $oldsurety) {
+            pg_query("
+                UPDATE
+                    relations
+                SET
+                    parent_fk = $parent,
+                    surety_fk = $surety
+                WHERE
+                    relation_id = $relation
+            ");
+        }
+    }
+    else { // insert new relation
+        $relation = get_next('relation');
+        pg_query("
+            INSERT INTO
+                relations (relation_id, child_fk, parent_fk, surety_fk)
+            VALUES
+                ($relation, $person, $parent, $surety)
+        ");
+    }
+    if ($_POST['bsource']) { // use source(s) for birth event
+        // birth_sources is a view, cf ddl/views.sql
+        $handle = pg_query("
+            SELECT
+                source_fk
+            FROM
+                birth_sources
+            WHERE
+                person = $person
+        ");
+        while ($row = pg_fetch_row($handle)) {
+            $source_id = $row[0];
+            // check for duplicates
+            if (fetch_val("
+                SELECT
+                    COUNT(*)
+                FROM
+                    relation_citations
+                WHERE
+                    relation_fk = $relation
+                AND
+                    source_fk = $source_id
+            ") == 0)
+                pg_query("
+                    INSERT INTO relation_citations
+                    VALUES ($relation, $source_id)
+                ");
+        }
+    }
+    else if ($_POST['source_id']) { // if not bsource
+        // this code is mostly a duplication of the global add_source() function
+        // but as this is the only place where relation citations may be entered
+        // directly, I see no need to generalise it
+        $source_id = $_POST['source_id'];
+        if ($_POST['source_text']) { // add new source
+            $parent_id = $source_id;
+            $source_id = get_next('source');
+            $text = note_to_db($_POST['source_text']);
+            $sort = get_sort($parent_id, $text, 1);
+            pg_query("
+                INSERT INTO sources
+                VALUES ($source_id, $parent_id, '$text', $sort)
+            ");
+            // remove old citation if new source is an expansion,
+            // ie. parent of new source == old source
+            pg_query("
+                DELETE FROM
+                    relation_citations
+                WHERE
+                    relation_fk = $relation
+                AND
+                    source_fk = $parent_id
+            ");
+        }
+        // Entering the same source twice for the same relation will violate the
+        // composite primary key (relation_fk, source_fk) constraint.
+        // Test before trying to insert a relation citation.
+        if ($relation &&
+                fetch_val("
+                    SELECT
+                        COUNT(*)
+                    FROM
+                        relation_citations
+                    WHERE
+                        relation_fk = $relation
+                    AND
+                        source_fk = $source_id
+                ") == 0) {
+            pg_query("
+                INSERT INTO relation_citations
+                VALUES ($relation, $source_id)
+            ");
+        }
+    }
+    pg_query("COMMIT");
+    header("Location: $app_root/family.php?person=$person");
+}
+
+?>
