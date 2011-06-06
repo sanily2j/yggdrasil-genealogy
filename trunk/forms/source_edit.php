@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   source_edit.php                                                       *
- *   Exodus: Source Update Form                                            *
+ *   Yggdrasil: Source Update Form                                         *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -58,9 +58,9 @@ if (!isset($_POST['posted'])) {
     text_input('URL:', 100, 'url');
     text_input('Template:', 100, 'template', $template);
     select_source_type("Type", "part_type", $source_type);
-    select_source_type("Undertype", "ch_part_type", $ch_part_type);
+    select_source_type("$_Subtype", "ch_part_type", $ch_part_type);
     text_input("$_Sort_order:", 20, 'sort', $sort);
-    text_input("Kildedato:", 20, 'source_date', $source_date);
+    text_input("$_Source_date:", 20, 'source_date', $source_date);
     form_submit();
     form_end();
     $row = fetch_row("SELECT ecc($source), rcc($source), ssc($source)");
@@ -108,6 +108,7 @@ else {
             ");
     }
     // this is a freak situation that arises when $psource = 0
+    // and a rather brute hack to remedy it.
     if ($source == $psource)
         $psource = 0;
     pg_prepare("query",

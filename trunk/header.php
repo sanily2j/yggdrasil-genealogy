@@ -5,7 +5,7 @@
 
 /***************************************************************************
  *   header.php                                                            *
- *   Exodus: Common page header and sidebar menu                           *
+ *   Yggdrasil: Common page header and sidebar menu                        *
  *                                                                         *
  *   Copyright (C) 2006-2009 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
@@ -32,7 +32,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="Author" content="Leif Biberg Kristensen" />
 <link rel="stylesheet" type="text/css" href="default.css" />
-<link rel="shortcut icon" href="http://localhost/~leif/exodus/favicon.ico" />
+<link rel="shortcut icon" href="http://localhost/~leif/yggdrasil/favicon.ico" />
 
 <script type="text/javascript" src="scripts.js"></script>
 </head>

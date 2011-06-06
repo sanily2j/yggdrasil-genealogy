@@ -40,7 +40,7 @@
     define("MARR", 4);
 
 // application path
-    $app_path = "/~leif/exodus";
+    $app_path = "/~leif/yggdrasil";
 
 // application root
     $app_root = 'http://' . $_SERVER['SERVER_NAME'] . $app_path;

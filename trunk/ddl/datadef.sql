@@ -1,8 +1,8 @@
 /***************************************************************************
  *   datadef.sql                                                           *
- *   Exodus: Data Definitions                                              *
+ *   Yggdrasil: Data Definitions                                           *
  *                                                                         *
- *   Copyright (C) 2006-2009 Leif B. Kristensen                            *
+ *   Copyright (C) 2006-2011 Leif B. Kristensen                            *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   person_delete.php                                                     *
- *   Exodus: Delete Person Action                                          *
+ *   Yggdrasil: Delete Person Action                                       *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,8 +27,8 @@
 // already has been published on the net; use merge instead.
 
 // The calling code in family.php will not display the link to this routine
-// if any dependencies to the person exist. (See also the VAF conn_count()
-// and the corresponding get_connection_count() in functions.php)
+// if any dependencies to the person exist. (See also the SQL function
+// conn_count() and the corresponding get_connection_count() in functions.php)
 
 require "../settings/settings.php";
 require "../functions.php";

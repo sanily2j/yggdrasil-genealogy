@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   norwegian.php                                                         *
- *   Exodus: Norwegian Language File                                       *
+ *   Yggdrasil: Norwegian Language File                                    *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -164,11 +164,13 @@ $_son = 'sønn';
 $_Sort_date = 'Sorteringsdato';
 $_Sort_order = 'Sortering';
 $_Source = 'Kilde';
+$_Source_date = 'Kildedato';
 $_Source_Manager = 'Kildebehandler';
 $_Sources = 'Kilder';
 $_SP = 'HP2'; // second principal (short form)
 $_Spouse = 'Ektefelle';
 $_spouse = 'ektefelle';
+$_Subsource = 'Underkilde';
 $_subsource = 'underkilde';
 $_subsources = 'underkilder';
 $_Subsources = 'Underkilder';

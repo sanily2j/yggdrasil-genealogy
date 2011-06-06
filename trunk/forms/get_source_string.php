@@ -1,9 +1,9 @@
 <?php
 /***************************************************************************
  *   get_source_string.php                                                 *
- *   Exodus: return source text for dynamic update                         *
+ *   Yggdrasil: return source text for dynamic update                      *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

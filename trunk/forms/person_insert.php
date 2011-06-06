@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   person_insert.php                                                     *
- *   Exodus: Insert Person Form and Action                                 *
+ *   Yggdrasil: Insert Person Form and Action                              *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

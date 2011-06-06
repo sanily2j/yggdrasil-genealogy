@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *   etterkommere.php                                                      *
- *   Exodus: Descendants List                                              *
+ *   Yggdrasil: Descendants List                                           *
  *                                                                         *
  *   Copyright (C) 2006 by Leif B. Kristensen                              *
  *   leif@solumslekt.org                                                   *

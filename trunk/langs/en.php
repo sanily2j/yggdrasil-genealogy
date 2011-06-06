@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   english.php                                                           *
- *   Exodus: English Language File                                         *
+ *   Yggdrasil: English Language File                                      *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -164,12 +164,14 @@ $_son = 'son';
 $_Sort_date = 'Sort date';
 $_Sort_order = 'Sort order';
 $_Source = 'Source';
+$_Source_date = 'Source date';
 $_Source_Manager = 'Kildebehandler';
 $_Sources = 'Sources';
 $_SP = 'SP'; // second principal (short form)
 $_Spouse = 'Spouse';
 $_spouse = 'spouse';
 $_subsource = 'subsource';
+$_Subsource = 'Subsource';
 $_subsources = 'subsources';
 $_Subsources = 'Subsources';
 $_Surname = 'Surname';

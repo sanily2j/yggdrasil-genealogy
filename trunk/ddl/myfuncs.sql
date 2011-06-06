@@ -1,8 +1,8 @@
 /***************************************************************************
  *   myfuncs.sql                                                           *
- *   Exodus: Auxiliary PostgreSQL Functions                                *
+ *   Yggrasil: Auxiliary PostgreSQL Functions                              *
  *                                                                         *
- *   Copyright (C) 2006-2009 by Leif B. Kristensen                         *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
--- 'nice to have' functions not called from exodus
+-- 'nice to have' functions not called from yggdrasil
 
 CREATE OR REPLACE FUNCTION db_size() RETURNS TEXT AS $$
 -- cute little function to determine physical size of db

@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   event_assoc.php                                                       *
- *   Exodus: Event Associate Form                                          *
+ *   Yggdrasil: Event Associate Form                                       *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,7 +30,7 @@ require "../functions.php";
 
 $person = $_GET['person'];
 $name = get_name($person);
-$title = "Exodus: Add Event for person #$person";
+$title = "Associate Event to Person #$person";
 
 require "./header.php";
 

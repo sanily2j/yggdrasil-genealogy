@@ -1,9 +1,9 @@
 /***************************************************************************
  *   misc.sql                                                              *
- *   Exodus: Miscellaneous PostgreSQL Views and Functions,                 *
+ *   Yggdrasil: Miscellaneous PostgreSQL Views and Functions,              *
  *   not essential to the PHP application                                  *
  *                                                                         *
- *   Copyright (C) 2006-2008 by Leif B. Kristensen                         *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,14 +23,10 @@
  ***************************************************************************/
 
 /*
-The functions and views of this file are experimental, obsolete or
-non-essential to the application. They are mostly kept around for
-"educational" purposes.
-
-If you have installed an earlier version of Exodus with the deprecated
-"views_and_functions.sql" script, you may want to clean up your
-database by executing the file un_misc.sql.
-*/
+ * The functions and views of this file are experimental, obsolete or
+ * non-essential to the application. They are mostly kept around for
+ * "educational" purposes.
+ */
 
 CREATE OR REPLACE FUNCTION insp(INTEGER,INTEGER) RETURNS SETOF RECORD AS $$
     UPDATE participants SET is_principal=FALSE WHERE event_fk=$1 AND is_principal IS TRUE;

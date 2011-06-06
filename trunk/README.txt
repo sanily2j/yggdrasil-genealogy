@@ -1,18 +1,20 @@
-Exodus 2009-02-14
-=================
+Yggdrasil 2011-06-06
+====================
 
-This is Exodus. It is a genealogy database application that is using PostgreSQL
-for data storage and internal business logic, and mainly PHP scripts for the
-interface. I have been using this software exclusively for my genealogy work
-since 2005, and personally I'm very satisfied with it. However, I have not
-wasted much time on general user-friendliness. For instance, several routines
-still rely on raw SQL input from the command line, which of course requires
-intimate knowledge about the database structure.
+This is Yggdrasil, formerly known as Exodus.
+
+It is a genealogy database application using PostgreSQL for data storage and
+internal business logic, and mainly PHP scripts for the interface. I have been
+using this software exclusively for my genealogy work since 2005, and personally
+I'm very satisfied with it. However, I have not wasted much time on general
+user-friendliness. For instance, several routines still rely on raw SQL input
+from the command line, which of course requires intimate knowledge about the
+database structure.
 
 The code is published "as is" for people who know their way around a Linux /
-Apache / PostgreSQL / PHP stack. It has not been regression-tested for a long
-time, and may break on installation. If it does, send me a mail with the
-*exact* error messages, in which case I may reply.
+Apache / PostgreSQL / PHP stack. It has not been regularly regression-tested,
+and may break on installation. If it does, send me a mail with the *exact* error
+messages, in which case I may reply.
 
 If you can't get it up and running without specific instructions, then you
 should not even try this software. It is mainly intended to attract fellow
@@ -28,6 +30,10 @@ clueless "end-user" questions.
 The latest version of this software is available as a tarball at the address:
 
   <http://solumslekt.org/forays/exodus.tgz>
+
+UPDATE: As of 2011-06-06, the code base has been moved to:
+
+  <http://code.google.com/p/yggdrasil-genealogy/>
 
 
 WARNING
@@ -51,12 +57,12 @@ The Bad Guys[TM] in about five minutes. You have been warned.
 Requirements
 ============
 
-Before you can use Exodus, you must have the following software installed on
+Before you can use Yggdrasil, you must have the following software installed on
 your system:
 
-*   An operating system. Exodus should work on any operating system that
+*   An operating system. Yggdrasil should work on any operating system that
     PostgreSQL, Apache and PHP will run on. Most of the development and
-    testing of Exodus has been done on Linux, but it should also run under
+    testing of Yggdrasil has been done on Linux, but it should also run under
     Windows, OS X, BSD, etc.
 
 *   A Web server, eg. Apache <http://apache.org>.
@@ -84,38 +90,51 @@ your system:
     won't listen to other computers than your own, and you should be safe from
     the type of exploits mentioned in the warning above.
 
-*   A PHP interpreter <http://www.php.net>. Exodus should work with both PHP
+*   A PHP interpreter <http://www.php.net>. Yggdrasil should work with both PHP
     4.x and PHP 5.x.
 
-*   A PostgreSQL database server <http://postgresql.org>. Exodus works well
-    with PostgreSQL 8.3. It may work with older versions, but that is not
-    recommended.
+*   A PostgreSQL database server <http://postgresql.org>. Yggdrasil works well
+    with PostgreSQL versions 8.0 up to the current 9.0. It may work with older
+    versions, but that is not recommended. As I keep my PostgreSQL installation
+    regularly updated, you can rest reasonably assured that the current official
+    version will be supported.
 
     In its default configuration, PostgreSQL will not allow remote connections.
     Unless you're out to build a full-fledged enterprise setup with physically
     separate D/B and Web servers, this is probably what you want.
 
-*   A Web Browser. Recommended: Mozilla or Firefox <http://mozilla.org/>, but
-    as the generated markup hopefully passes as clean, validating XTHML 1.0
-    Strict, any modern browser should work fine.
+*   A Web Browser. Recommended: Mozilla Firefox <http://mozilla.org/>, but as
+    the generated markup hopefully passes as clean, validating XTHML 1.0 Strict,
+    any modern browser should work fine.
 
 
 Installation
 ============
 
-Extract the contents of the archive exodus.tgz (if you have not already done
-so) in a place accessible from your Web server.
+Deprecated method:
+Extract the contents of the archive exodus.tgz (if you have not already done so)
+in a place accessible from your Web server. This method will be allowed until
+further notice.
 
-If you have not already done so, log in as the postgres user and install
-plpgsql into the template1 database. On a Linux system, do like this:
+New method:
+Go to <http://code.google.com/p/yggdrasil-genealogy/source/checkout> and follow
+the instructions.
+
+If you have not already done so, log in as the postgres user. On a Linux system,
+do like this:
 
 $ su - postgres
+
+For PostgreSQL versions < 9.0, you had to install plpgsql yourself. As of 9.0
+it is part of the default installation, so just ignore this command if you're on
+a rcent version of PostgreSQL:
+
 postgres@yourhost ~ $ createlang plpgsql template1
 
-Then, create a postgresql user:
+Create a postgresql user:
 
 postgres@yourhost ~ $ createuser
-Enter name of role to add: username
+Enter name of role to add: <your username>
 Shall the new role be a superuser? (y/n) n
 Shall the new role be allowed to create databases? (y/n) y
 Shall the new role be allowed to create more new roles? (y/n) n
@@ -126,49 +145,52 @@ CREATE ROLE
 
 Then, from your normal login, create database:
 
-$ createdb --encoding UTF8 exodus
+$ createdb --encoding UTF8 exampledb
 CREATE DATABASE
 
 Now you can log in to your new database by issuing the command
 
-$ psql exodus
+$ psql exampledb
 
 In the subdir /ddl, you'll find some sql command files. To initiate
 the database, you must run them from your psql prompt like this:
 
-exodus=> \i /path/to/sql-files/datadef.sql
-exodus=> \i /path/to/sql-files/dbinit.sql
-exodus=> \i /path/to/sql-files/functions.sql
-exodus=> \i /path/to/sql-files/views.sql
+exampledb=> \i /path/to/sql-files/datadef.sql
+exampledb=> \i /path/to/sql-files/dbinit.sql
+exampledb=> \i /path/to/sql-files/functions.sql
+exampledb=> \i /path/to/sql-files/views.sql
 
-Then open the file exodus/settings/settings.php and read it carefully. Change
+Then open the file settings/settings.php and read it carefully. Change
 the values of $username, $password, $host, and $dbname to whatever you have
 set. (PostgreSQL by default doesn't use passwords. For a private application on
 your localhost, you may find that to suit your needs. Else, by all means, set a
 password.)
 
 You must also change the $app_path variable to reflect the correct location.
-For my own part, I'm running the code from /home/leif/public_html/exodus (see
+For my own part, I'm running the code from /home/leif/public_html/yggdrasil (see
 the aforementioned httpd.conf to find out how to do it. Hint: Look for the
 USERDIR setting) and therefore have an app path that points to the directory
-/~leif/exodus.
+/~leif/yggdrasil.
 
+If you want to use the included favicons, you also must edit the paths to the
+favicons in header.php and forms/form_header.php respectively.
 
 5-Minute Tutorial
 =================
 
 Now you should be ready to use your database. Point your browser to the
-place where you installed the Exodus PHP scripts, eg http://localhost/exodus/.
-Create your first person by clicking the link "Legg til person" (or "Add
-person" depending on the language selected), and fill in your own name and
-birth year. Note that Places are inserted from the Place Manager screen. The
-sources may be entered from both the Person and the Events screens, but as you
-currently have only one source numbered 0, this won't show up in the source
-entry section. Use the Source Manager to enter a few very general sources, such
-as "Personal information", "Church records", etc. Note that if you enclose a
-source text in {curly braces}, the text will not show up anywhere but in the
-Source Manager. This is convenient for use with general source groups such as
-{Enumerations} which I use as a major group for censuses, tax lists, etc.
+place where you installed the Yggdrasil PHP scripts,
+eg. http://localhost/yggdrasil. Create your first person by clicking the link
+"Legg til person" (or "Add person" depending on the language selected), and fill
+in your own name and birth year. Note that place names are inserted from the
+Place Manager screen. The sources may be entered from both the Person and the
+Events screens, but as you currently have only one source numbered 0, this won't
+show up in the source entry section. Use the Source Manager to enter a few very
+general sources, such as "Personal information", "Church records", etc. Note
+that if you enclose a source text in {curly braces}, the text will not show up
+anywhere but in the Source Manager. This is convenient for use with general
+source groups such as {Enumerations} which I use as a major group for censuses,
+tax lists, etc.
 
 To make full use of the unique hierarchic source system, it is very important
 with a little planning on how to organize your sources. Here's a terse example
@@ -262,15 +284,15 @@ Top Priority:
 
     Please contact the author if you encounter obscure Norwegian terms.
 
-*   GEDCOM import / export. This isn't easy, as Exodus breaks with GEDCOM
+*   GEDCOM import / export. This isn't easy, as Yggdrasil breaks with GEDCOM
     on a couple of major issues. I'll also welcome direct imports from other
     programs; I've made an import routine from The Master Genealogist (TMG)
     which will be forwarded on request.
 
 *   Documentation!!!
-    We need a complete, user-friendly documentation for all features of Exodus,
-    as well as some step-by-step tutorials for those of us who aren't born to
-    be hackers.
+    We need a complete, user-friendly documentation for all features of
+    Yggdrasil, as well as some step-by-step tutorials for those of us who aren't
+    born to be hackers.
 
 *   Clean up / Tie up loose ends / Document Existing Code
 
@@ -284,7 +306,7 @@ Top Priority:
 License
 =======
 
-    Copyright (C) 2006-2009  Leif Biberg Kristensen
+    Copyright (C) 2006-2011  Leif Biberg Kristensen
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
