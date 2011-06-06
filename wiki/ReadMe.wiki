@@ -16,7 +16,7 @@ The only real documentation of this project is the source code itself; it is wri
 = WARNING =
 
 You are setting up the required software on your computer at your own risk. The application stack is inherently "Web-aware" to the extent that if you know what you're doing, you may set up the database on one computer, Apache/PHP on another one, and run the application itself from a browser on a third one. However, this application is, at least initially, designed for a single-user environment running behind a firewall. There is a whole lot of difference between writing code for users who will only use the software for its intended purpose, and writing safe, "Internet-ready" code, where you must assume that your visitors are up to no good, and may want to destroy your data, or insert
-offensive / criminal contents. Until further notice, this software will have no security features whatsoever that will protect it against abuse. If you expose it unconfigured to the Internet, your computer will probably be compromised by The Bad Guys[TM] in about five minutes. You have been warned.
+offensive / criminal contents. Until further notice, this software will have no security features whatsoever that will protect it against abuse. If you expose it unconfigured to the Internet, your computer will probably be compromised by "The Bad Guys" in about five minutes. You have been warned.
 
 
 = Requirements =
