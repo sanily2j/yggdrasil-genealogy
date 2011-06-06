@@ -174,6 +174,7 @@ $_Subsource = 'Underkilde';
 $_subsource = 'underkilde';
 $_subsources = 'underkilder';
 $_Subsources = 'Underkilder';
+$_Subtype = 'Undertype';
 $_Surname = 'Etternavn';
 $_Text = 'Tekst';
 $_The_last_50_edited = 'De 50 sist redigerte';
