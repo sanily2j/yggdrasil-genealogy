@@ -1,0 +1,11 @@
+Tips & Tricks
+
+Use regexp_replace to generate shortlinks. Remember to add the reverse expansion
+to the _my_expand routine in functions.sql.
+
+UPDATE SOURCES SET source_text=REGEXP_REPLACE(source_text,
+    E'<a href="//www.arkivverket.no/URN:sk_read/(.+?)/(.+?)">(.+?)</a>',
+    E'\[sk=\\1\|\\2\|\\3\]', 'g');
+
+This kind of mass update will add several MBytes to the database, depending on
+the size of your source table. Run a dump/restore to compact it.

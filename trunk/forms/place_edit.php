@@ -1,0 +1,100 @@
+<?php
+
+/***************************************************************************
+ *   place_edit.php                                                        *
+ *   Exodus: Update Places Form                                            *
+ *                                                                         *
+ *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   leif@solumslekt.org                                                   *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+require "../settings/settings.php";
+require_once "../langs/$language.php";
+require "../functions.php";
+require "./forms.php";
+
+if (!isset($_POST['posted'])) {
+    $title = "Place Edit";
+    require "./form_header.php";
+    $place_id = $_GET['place_id'];
+    if ($place_id == 0) { // new place
+        $level_1 = '';
+        $level_2 = '';
+        $level_3 = '';
+        $level_4 = '';
+        $level_5 = '';
+    }
+    else {
+        $place = fetch_row_assoc("SELECT * FROM places WHERE place_id = $place_id");
+        $level_1 = $place['level_1'];
+        $level_2 = $place['level_2'];
+        $level_3 = $place['level_3'];
+        $level_4 = $place['level_4'];
+        $level_5 = $place['level_5'];
+    }
+    echo "<h2>$_Edit_place_name</h2>\n";
+    form_begin('place_edit', $_SERVER['PHP_SELF']);
+    hidden_input('posted', 1);
+    hidden_input('place_id', $place_id);
+    text_input("$_Level 1:", 80, 'level_1', $level_1);
+    text_input("$_Level 2:", 80, 'level_2', $level_2);
+    text_input("$_Level 3:", 80, 'level_3', $level_3);
+    text_input("$_Level 4:", 80, 'level_4', $level_4);
+    text_input("$_Level 5:", 80, 'level_5', $level_5);
+    form_submit();
+    form_end();
+    echo "</body>\n</html>\n";
+}
+else {
+    $place_id = $_POST['place_id'];
+    $level_1 = note_to_db($_POST['level_1']);
+    $level_2 = $_POST['level_2'];
+    $level_3 = $_POST['level_3'];
+    $level_4 = $_POST['level_4'];
+    $level_5 = $_POST['level_5'];
+    if ($place_id == 0) { // insert new place
+        pg_query("BEGIN WORK");
+        $place_id = get_next('place');
+        pg_query("
+            INSERT INTO places
+            VALUES (
+                $place_id,
+                '$level_1',
+                '$level_2',
+                '$level_3',
+                '$level_4',
+                '$level_5')
+        ");
+        pg_query("COMMIT");
+    }
+    else { // modify existing place
+        pg_query("
+            UPDATE places SET
+                level_1 = '$level_1',
+                level_2 = '$level_2',
+                level_3 = '$level_3',
+                level_4 = '$level_4',
+                level_5 = '$level_5'
+            WHERE place_id = $place_id
+        ");
+    }
+    set_last_selected_place($place_id);
+    header("Location: $app_root/place_manager.php");
+}
+
+?>
