@@ -37,9 +37,11 @@ If you're setting up the Apache server on your personal computer for the first t
     # prevent Apache from glomming onto all bound IP addresses (0.0.0.0)
     #
     #Listen 12.34.56.78:80
+}}}
 
-    Insert this line:
+Insert this line:
 
+{{{
     Listen 127.0.0.1:80
 }}}
 
