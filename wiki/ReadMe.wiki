@@ -157,7 +157,7 @@ Founding Author:
 
 If you would like to contribute to this project, or if you have any questions or suggestions, send an e-mail to <leif at solumslekt dot org> or post a comment on the project blog: <http://solumslekt.org/blog/>.
 
-You're welcome to ask questions about the project provided that they follow the general guidelines in the article "How To Ask Questions The Smart Way" [[http://catb.org/~esr/faqs/smart-questions.html]]. Note however the disclaimer section of that document; they are not in any way involved with my project, nor will they answer questions related to it.
+You're welcome to ask questions about the project provided that they follow the general guidelines in the article "How To Ask Questions The Smart Way" <http://catb.org/~esr/faqs/smart-questions.html>. Note however the disclaimer section of that document; they are not in any way involved with my project, nor will they answer questions related to it.
 
 = License =
 
