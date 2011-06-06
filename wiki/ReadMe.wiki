@@ -3,7 +3,7 @@
 
 = Yggdrasil 2011-06-06 =
 
-This is Yggdrasil, formerly known as Exodus.
+This is Yggdrasil the genealogy project, formerly known as [http://solumslekt.org/forays/exodus.php Exodus].
 
 It is a genealogy database application using PostgreSQL for data storage and internal business logic, and mainly PHP scripts for the interface. I have been using this software exclusively for my genealogy work since 2005, and personally I'm very satisfied with it. However, I have not wasted much time on general user-friendliness. For instance, several routines still rely on raw SQL input from the command line, which of course requires intimate knowledge about the database structure.
 
