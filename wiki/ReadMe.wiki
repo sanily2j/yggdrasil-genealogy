@@ -13,19 +13,19 @@ If you can't get it up and running without specific instructions, then you shoul
 
 The only real documentation of this project is the source code itself; it is written in a style that I personally consider relatively lucid. If you don't understand the PHP and SQL source code, please don't waste my time with clueless "end-user" questions.
 
-= WARNING =
+== WARNING ==
 
 You are setting up the required software on your computer at your own risk. The application stack is inherently "Web-aware" to the extent that if you know what you're doing, you may set up the database on one computer, Apache/PHP on another one, and run the application itself from a browser on a third one. However, this application is, at least initially, designed for a single-user environment running behind a firewall. There is a whole lot of difference between writing code for users who will only use the software for its intended purpose, and writing safe, "Internet-ready" code, where you must assume that your visitors are up to no good, and may want to destroy your data, or insert
 offensive / criminal contents. Until further notice, this software will have no security features whatsoever that will protect it against abuse. If you expose it unconfigured to the Internet, your computer will probably be compromised by "The Bad Guys" in about five minutes. You have been warned.
 
 
-= Requirements =
+== Requirements ==
 
 Before you can use Yggdrasil, you must have the following software installed on your system:
 
-*   An operating system. Yggdrasil should work on any operating system that PostgreSQL, Apache and PHP will run on. Most of the development and testing of Yggdrasil has been done on Linux, but it should also run under Windows, OS X, BSD, etc.
+An operating system. Yggdrasil should work on any operating system that PostgreSQL, Apache and PHP will run on. Most of the development and testing of Yggdrasil has been done on Linux, but it should also run under Windows, OS X, BSD, etc.
 
-*   A Web server, eg. Apache <http://apache.org>.
+A Web server, eg. Apache <http://apache.org>.
 
 By default, Apache will do exactly what it is designed for: Serving HTML
 to the World Wide Web. In our context that behaviour should be considered an unwanted side effect.
@@ -47,15 +47,15 @@ Insert this line:
 
 Save the file, then (stop and) start Apache. This will ensure that Apache won't listen to other computers than your own, and you should be safe from the type of exploits mentioned in the warning above.
 
-*   A PHP interpreter <http://www.php.net>. Yggdrasil should work with both PHP 4.x and PHP 5.x.
+A PHP interpreter <http://www.php.net>. Yggdrasil should work with both PHP 4.x and PHP 5.x.
 
-*   A PostgreSQL database server <http://postgresql.org>. Yggdrasil works well with PostgreSQL versions 8.0 up to the current 9.0. It may work with older versions, but that is not recommended. As I keep my PostgreSQL installation regularly updated, you can rest reasonably assured that the current official version will be supported.
+A PostgreSQL database server <http://postgresql.org>. Yggdrasil works well with PostgreSQL versions 8.0 up to the current 9.0. It may work with older versions, but that is not recommended. As I keep my PostgreSQL installation regularly updated, you can rest reasonably assured that the current official version will be supported.
 
 In its default configuration, PostgreSQL will not allow remote connections. Unless you're out to build a full-fledged enterprise setup with physically separate D/B and Web servers, this is probably what you want.
 
-*   A Web Browser. Recommended: Mozilla Firefox <http://mozilla.org/>, but as the generated markup hopefully passes as clean, validating XTHML 1.0 Strict, any modern browser should work fine.
+A Web Browser. Recommended: Mozilla Firefox <http://mozilla.org/>, but as the generated markup hopefully passes as clean, validating XTHML 1.0 Strict, any modern browser should work fine.
 
-= Installation =
+== Installation ==
 
 Go to <http://code.google.com/p/yggdrasil-genealogy/source/checkout> and follow the instructions.
 
@@ -178,6 +178,4 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the
-Free Software Foundation, Inc.,
-59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
