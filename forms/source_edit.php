@@ -58,7 +58,7 @@ if (!isset($_POST['posted'])) {
     text_input('URL:', 100, 'url');
     text_input('Template:', 100, 'template', $template);
     select_source_type("Type", "part_type", $source_type);
-    select_source_type("$_Subtype", "ch_part_type", $ch_part_type);
+    select_source_type("$_Subtype:", "ch_part_type", $ch_part_type);
     text_input("$_Sort_order:", 20, 'sort', $sort);
     text_input("$_Source_date:", 20, 'source_date', $source_date);
     form_submit();

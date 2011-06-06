@@ -174,6 +174,7 @@ $_subsource = 'subsource';
 $_Subsource = 'Subsource';
 $_subsources = 'subsources';
 $_Subsources = 'Subsources';
+$_Subtype = 'Subtype';
 $_Surname = 'Surname';
 $_Text = 'Text';
 $_The_last_50_edited = 'The 50 most recently edited';
