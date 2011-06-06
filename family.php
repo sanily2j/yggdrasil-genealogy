@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *   family.php                                                            *
- *   Exodus: Interactive Family Group Sheet                                *
+ *   Yggdrasil: Interactive Family Group Sheet                             *
  *                                                                         *
  *   Copyright (C) 2005-2009 by Leif B. Kristensen <leif@solumslekt.org>   *
  *                                                                         *

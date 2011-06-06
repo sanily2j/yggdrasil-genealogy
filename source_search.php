@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *   source_search.php                                                     *
- *   Exodus: Search for sources                                            *
+ *   Yggdrasil: Search for sources                                         *
  *                                                                         *
  *   Copyright (C) 2009-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *

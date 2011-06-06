@@ -1,9 +1,9 @@
 <?php
 /***************************************************************************
  *   get_name_string.php                                                   *
- *   Exodus: return person name for dynamic update                         *
+ *   Yggdrasil: return person name for dynamic update                      *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

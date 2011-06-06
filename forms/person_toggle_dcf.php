@@ -1,10 +1,10 @@
 <?php
 
 /***************************************************************************
- *   person_toggle_pf.php                                                  *
- *   Exodus: Toggle private flag                                           *
+ *   person_toggle_dcf.php                                                 *
+ *   Yggdrasil: Toggle "dead child" flag                                   *
  *                                                                         *
- *   Copyright (C) 2006-2010 by Leif B. Kristensen                         *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

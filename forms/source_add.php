@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   source_add.php                                                        *
- *   Exodus: Source Add Form                                               *
+ *   Yggdrasil: Source Add Form                                            *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -57,10 +57,10 @@ if (!isset($_POST['posted'])) {
     textarea_input("$_Text:", 5, 100, 'text', $template);
     text_input('URL:', 100, 'url');
     text_input('Template:', 100, 'template');
-    select_source_type('Type', 'part_type', $part_type);
-    select_source_type('Undertype', 'ch_part_type', 0);
+    select_source_type('Type:', 'part_type', $part_type);
+    select_source_type("$_Subtype:", 'ch_part_type', 0);
     text_input("$_Sort_order:", 20, 'sort');
-    text_input("Kildedato:", 20, 'source_date');
+    text_input("$_Source_date:", 20, 'source_date');
     form_submit();
     form_end();
     echo "</body>\n</html>\n";

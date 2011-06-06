@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   source_delete.php                                                     *
- *   Exodus: Source Delete                                                 *
+ *   Yggdrasil: Source Delete                                              *
  *                                                                         *
- *   Copyright (C) 2006-2010 by Leif B. Kristensen                         *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

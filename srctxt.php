@@ -1,9 +1,9 @@
 <?php
 /***************************************************************************
  *   get_source_text.php                                                   *
- *   Exodus: return source text                                            *
+ *   Yggdrasil: return source text                                         *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

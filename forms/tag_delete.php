@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   tag_delete.php                                                        *
- *   Exodus: Delete Tag                                                    *
+ *   Yggdrasil: Delete Tag                                                 *
  *                                                                         *
- *   Copyright (C) 2006-2010 by Leif B. Kristensen                         *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,8 +23,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// This script will delete a source. It is callable from source_display.php
-// iff there are no associated citations or subsources.
+// This script will delete a tag. It is callable from tag_manager.php
+// iff there are no associated events.
 
 require "../settings/settings.php";
 require "../functions.php";

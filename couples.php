@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *   couples.php                                                           *
- *   Exodus: Search for couples                                            *
+ *   Yggdrasil: Search for couples                                         *
  *                                                                         *
  *   Copyright (C) 2009 by Leif B. Kristensen                              *
  *   leif@solumslekt.org                                                   *

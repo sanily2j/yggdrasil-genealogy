@@ -1,8 +1,8 @@
-This directory contains sql scripts for your Exodus database. As you may call
-that database anything you want, and some manual configuration is ABSOLUTELY
-REQUIRED to get this software up and running, I have decided not to write a
-general install script. After all, you should know what you're doing when you
-start messing around with this software. Please read the README.txt in the main
+This directory contains sql scripts for your database. As you may call that
+database anything you want, and some manual configuration is ABSOLUTELY REQUIRED
+to get this software up and running, I have decided not to write a general
+install script. After all, you should know what you're doing when you start
+messing around with this software. Please read the README.txt in the main
 directory.
 
 Here is a short description of each file.

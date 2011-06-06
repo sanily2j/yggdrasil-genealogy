@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   tag_manager.php                                                       *
- *   Exodus: Tag Manager                                                   *
+ *   Yggdrasil: Tag Manager                                                *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

@@ -1,8 +1,8 @@
 /***************************************************************************
  *   functions.sql                                                         *
- *   Exodus: Essential PostgreSQL Functions                                *
+ *   Yggdrasil: Essential PostgreSQL Functions                             *
  *                                                                         *
- *   Copyright (C) 2006-2008 by Leif B. Kristensen                         *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

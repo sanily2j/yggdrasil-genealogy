@@ -2,11 +2,11 @@
 
 /***************************************************************************
  *   part_note_edit.php                                                    *
- *   Exodus: add / edit "witness" note to non-primary participants         *
+ *   Yggdrasil: add / edit "witness" note to non-primary participants      *
  *   A very very simple edit form, with one input field                    *
  *   and an "upsert" construct that does inserts, updates or deletes.      *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

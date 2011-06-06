@@ -1,10 +1,11 @@
 <?php
 
 /***************************************************************************
- *   family.php                                                            *
- *   Exodus: Interactive Family Group Sheet                                *
+ *   nolink.php                                                            *
+ *   Yggdrasil: Unidentified people mentioned in sources                   *
+ *   (Part of the experimental source linkage                              *
  *                                                                         *
- *   Copyright (C) 2005-2009 by Leif B. Kristensen <leif@solumslekt.org>   *
+ *   Copyright (C) 2009-2011 by Leif B. Kristensen <leif@solumslekt.org>   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *

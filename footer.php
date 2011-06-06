@@ -3,7 +3,7 @@
 
 /***************************************************************************
  *   footer.php                                                            *
- *   Exodus: Common Page Footer                                            *
+ *   Yggdrasil: Common Page Footer                                         *
  *                                                                         *
  *   Copyright (C) 2006 by Leif B. Kristensen                              *
  *   leif@solumslekt.org                                                   *

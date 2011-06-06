@@ -5,9 +5,9 @@
 
 /***************************************************************************
  *   form_header.php                                                       *
- *   Exodus: Common Form Header                                            *
+ *   Yggdrasil: Common Form Header                                         *
  *                                                                         *
- *   Copyright (C) 2006 by Leif B. Kristensen                              *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,7 +32,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="Author" content="Leif Biberg Kristensen" />
 <link rel="stylesheet" type="text/css" href="form.css" />
-<link rel="shortcut icon" href="http://localhost/~leif/exodus/forms/favicon.ico" />
+<link rel="shortcut icon" href="http://localhost/~leif/yggdrasil/forms/favicon.ico" />
 <script type="text/javascript" src="forms.js"></script>
 </head>
 <?php

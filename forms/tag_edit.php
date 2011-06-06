@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *   tag_edit.php                                                          *
- *   Exodus: Update Tag Script                                             *
+ *   Yggdrasil: Update Tag Script                                          *
  *                                                                         *
  *   Copyright (C) 2006 by Leif B. Kristensen                              *
  *   leif@solumslekt.org                                                   *

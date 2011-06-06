@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   Source_event_edit.php                                                 *
- *   Exodus: Event Update Form and Action accessed from Source Manager     *
+ *   Yggdrasil: Event Update Form and Action accessed from Source Manager  *
  *                                                                         *
- *   Copyright (C) 2006-2010 by Leif B. Kristensen                         *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *   source_toggle_sd.php                                                  *
- *   Exodus: Toggle show delete link for unused sources                    *
+ *   Yggdrasil: Toggle show delete link for unused sources                 *
  *                                                                         *
  *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *

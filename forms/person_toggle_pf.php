@@ -2,9 +2,9 @@
 
 /***************************************************************************
  *   person_toggle_pf.php                                                  *
- *   Exodus: Toggle private flag                                           *
+ *   Yggdrasil: Toggle private flag                                        *
  *                                                                         *
- *   Copyright (C) 2006-2010 by Leif B. Kristensen                         *
+ *   Copyright (C) 2006-2011 by Leif B. Kristensen                         *
  *   leif@solumslekt.org                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
