@@ -32,6 +32,7 @@ to the World Wide Web. In our context that behaviour should be considered an unw
 
 If you're setting up the Apache server on your personal computer for the first time, here is a tip that will provide a very efficient protection against potential abuse. Find the Apache configuration file httpd.conf. On my Linux computer, it's in the /etc/apache2/ directory. Open it in a plain-text editor, and locate the section that reads:
 
+{{{
     # Change this to Listen on specific IP addresses as shown below to
     # prevent Apache from glomming onto all bound IP addresses (0.0.0.0)
     #
@@ -40,8 +41,9 @@ If you're setting up the Apache server on your personal computer for the first t
     Insert this line:
 
     Listen 127.0.0.1:80
+}}}
 
-    Save the file, then (stop and) start Apache. This will ensure that Apache won't listen to other computers than your own, and you should be safe from the type of exploits mentioned in the warning above.
+Save the file, then (stop and) start Apache. This will ensure that Apache won't listen to other computers than your own, and you should be safe from the type of exploits mentioned in the warning above.
 
 *   A PHP interpreter <http://www.php.net>. Yggdrasil should work with both PHP 4.x and PHP 5.x.
 
