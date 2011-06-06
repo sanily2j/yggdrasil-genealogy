@@ -112,8 +112,7 @@ You must also change the $app_path variable to reflect the correct location. For
 
 If you want to use the included favicons, you also must edit the paths to the favicons in header.php and forms/form_header.php respectively.
 
-5-Minute Tutorial
-=================
+== 5-Minute Tutorial ==
 
 Now you should be ready to use your database. Point your browser to the
 place where you installed the Yggdrasil PHP scripts, eg. http://localhost/yggdrasil. Create your first person by clicking the link "Legg til person" (or "Add person" depending on the language selected), and fill in your own name and birth year. Note that place names are inserted from the Place Manager screen. The sources may be entered from both the Person and the Events screens, but as you currently have only one source numbered 0, this won't show up in the source entry section. Use the Source Manager to enter a few very
@@ -151,19 +150,19 @@ Note the "Wiki" style [p=xxx|yyy] links in the text. You can use them both in ev
 See The Manual (to be written) for further help.
 
 
-= Authors =
+== Authors ===
 
 Founding Author:
     Leif Biberg Kristensen <leif at solumslekt dot org>
 
 
-= Contributing =
+== Contributing ==
 
 If you would like to contribute to this project, or if you have any questions or suggestions, send an e-mail to <leif at solumslekt dot org> or post a comment on the project blog: <http://solumslekt.org/blog/>.
 
 You're welcome to ask questions about the project provided that they follow the general guidelines in the article "How To Ask Questions The Smart Way" <http://catb.org/~esr/faqs/smart-questions.html>. Note however the disclaimer section of that document; they are not in any way involved with my project, nor will they answer questions related to it.
 
-= License =
+== License ==
 
 Copyright (C) 2006-2011  Leif Biberg Kristensen
 
