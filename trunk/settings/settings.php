@@ -45,19 +45,30 @@
 // application root
     $app_root = 'http://' . $_SERVER['SERVER_NAME'] . $app_path;
 
-// researcher initials
-    $_initials = 'LBK';
+$handle = pg_query("
+    SELECT
+        initials,
+        user_lang,
+        user_tz
+    FROM
+        user_settings
+    WHERE
+        username=current_user
+");
+$row = pg_fetch_assoc($handle);
 
-// Selected language. The value of this variable must correspond to
-// name stem of the langs/$language.php file you'll be using.
-   $language = 'nb';
-//   $language = 'en';
+
+// user initials
+    $_initials = $row['initials'];
+
+// user language
+    $language = $row['user_lang'];
+
+// set default timezone
+    date_default_timezone_set($row['user_tz']);
 
 // set internal PHP encoding to UTF-8
     mb_internal_encoding("UTF-8");
-
-// set default timezone
-    date_default_timezone_set('Europe/Oslo');
 
 // set up vars for header.php menu buttons
     $person = false;

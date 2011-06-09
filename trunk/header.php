@@ -70,6 +70,7 @@ echo menu_item("./source_search.php", $_Search_for_sources);
 echo menu_item("./source_manager.php", $_Sources);
 echo menu_item("./place_manager.php", $_Places);
 echo menu_item("./tag_manager.php", $_Event_types);
+echo menu_item("./forms/user_settings.php", $_User_settings);
 echo menu_item("./forms/person_insert.php", $_Add_person);
 
 // source manager items

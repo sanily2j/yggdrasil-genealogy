@@ -264,16 +264,7 @@ Top Priority:
     the text strings into language files, one for English, and one for
     Norwegian. To change language, open settings/settings.php and select your
     $language. For now, there's one more change you must do to select English:
-    Open ddl/views_and_functions.sql. Find the view called person_events and
-    change the line
-
-    tags.tag_label AS event_name,
-
-    to
-
-    tags.tag_name AS event_name,
-
-    then copy the view and run it from the psql prompt.
+    [FIXED 2011-06-08 LBK]
 
     If you want another language, you're on your own, but it should be easy
     to use one of the existing language files as a template. If you make a
