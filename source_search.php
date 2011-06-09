@@ -45,7 +45,7 @@ echo "<h2>$title</h2>\n";
 // the database, see blog post http://solumslekt.org/blog/?p=151
 
 function src_expand($s) {
-    // regexp expansion of 'canonical' names to catch variant forms.
+    // regexp expansion of 'canonical' Norwegian names to catch variant forms.
     // NOTE: if eg. 'Tor' precedes 'Torsten', the 'Tor' part will be expanded,
     // and the string 'Torsten' is lost.
     $s = str_replace('Albert',    'Ah?lb[ceghir]+th?', $s);
@@ -139,9 +139,9 @@ function src_expand($s) {
     return $s;
 }
 
-?>
 
-<p>Regulære søkeuttrykk er definert for:<br />
+if ($language == 'nb') echo
+"<p>Regulære søkeuttrykk er definert for:<br />
 Albert, Alet, Anders, Anne, Amund, Arnold, Aslak, Auen, Berte, Bjørn, Boel,
 Brynil, Bærulf, Børge, Carl, Catrine, Claus, Daniel, David, Dorte, Eilert,
 Einar, Elin, Ellef, Engebret, Erik, Even, Fredrik, Gaute, Gjermund, Gjert,
@@ -150,26 +150,59 @@ Isak, Jon, Johan(nes), Kari, Kirsti, Kjøstol, Knut, Lars, Ledvor, Lisbet,
 Lorens, Mads, Malene, Margrete, Mari, Mette, Mikkel, Mons, Nils, Peder, Paul,
 Rolf, Sissel, Siver, Sofie, Steffen, Synnøve, Søren, Tallak, Tollef, Tomas, Tor,
 Torbjørn, Torger, Torkil, Tormod, Torsten, Tov, Trond, Tyge, Vrål, Wilhelm,
-Zacharias, Åge, Åse, Åshild, Åsold, Åvet.</p>
+Zacharias, Åge, Åse, Åshild, Åsold, Åvet.</p>\n";
 
-<?php
+function select_source_type($prompt, $name, $selected=0) {
+    // print table row with an option box for source part types
+    echo "<tr><td>$prompt:  </td><td>\n<select name=\"$name\">";
+    $handle = pg_query("SELECT part_type_id, description, part_type_count(part_type_id) AS tc
+                            FROM source_part_types ORDER BY tc desc");
+    while ($rec = pg_fetch_assoc($handle)) {
+        $option = "<option ";
+        if ($rec['part_type_id'] == $selected)
+            $option .= "selected=\"selected\" ";
+        $option .= "value=\"" . $rec['part_type_id'] . "\">" . $rec['description'] . "</option>\n";
+        echo $option;
+    }
+    echo "</select></td></tr>\n";
+}
+
 
 echo "<form id=\"$form\" action=\"" . $_SERVER['PHP_SELF'] . "\">\n<div>\n"
     . $_Text
-    . ': <input type="text" size="40" name="src" />'
-    . '<select name="scope">'
-    . '<option selected="selected" value="0">Full</option>'
-    . '<option value="1">Døpt</option>'
-    . '<option value="2">Forlovet/gift</option>'
-    . '<option value="3">Begravet</option>'
-    . '<option value="4">Konfirmert</option>'
-    . '</select>'
+    . ': <input type="text" size="40" name="src" />';
+
+echo "<select name=\"scope\">";
+$label = 'label_' . $language;
+$handle = pg_query("
+    SELECT
+        part_type_id,
+        $label,
+        part_type_count(part_type_id) AS tc
+    FROM
+        source_part_types
+    WHERE
+        is_leaf IS TRUE
+    ORDER BY
+        tc DESC,
+        part_type_id ASC
+");
+echo '<option selected="selected" value="0">Full</option>';
+while ($rec = pg_fetch_assoc($handle)) {
+    $option = "<option ";
+    if ($rec['part_type_id'] == $selected)
+        $option .= "selected=\"selected\" ";
+    $option .= "value=\"" . $rec['part_type_id'] . "\">" . $rec[$label] . "</option>\n";
+    echo $option;
+}
+echo "</select></td></tr>\n"
     . "<input type=\"submit\" value=\"$_Search\" />\n"
     . "</div>\n</form>\n\n";
 $src = isset($_GET['src']) ? $_GET['src'] : false;
 $scope = isset($_GET['scope']) ? $_GET['scope'] : 0;
 if ($src) {
-    $src = src_expand($src);
+    if ($language == 'nb') // This is pretty useless for non-Norwegians
+        $src = src_expand($src);
     if ($scope == 0)
         $query = "
             SELECT
