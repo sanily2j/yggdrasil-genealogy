@@ -35,21 +35,21 @@
  **************************************************************************/
 
 function print_birth($p) {
-    if ($row = fetch_row_assoc("SELECT event_name, event_date, event_place
+    if ($row = fetch_row_assoc("SELECT event_type_number, event_date, event_place
                                 FROM person_events
                                 WHERE person = $p
                                 AND event_type_number IN (2,62,1035)"))
-        echo para($row['event_name']
+        echo para(get_tag_name($row['event_type_number'])
             . conc(fuzzydate($row['event_date']))
             . conc($row['event_place']), "bmd");
 }
 
 function print_death($p) {
-    if ($row = fetch_row_assoc("SELECT event_name, event_date, event_place
+    if ($row = fetch_row_assoc("SELECT event_type_number, event_date, event_place
                                 FROM person_events
                                 WHERE person = $p
                                 AND event_type_number = ".DEAT))
-        echo para($row['event_name']
+        echo para(get_tag_name($row['event_type_number'])
             . conc(fuzzydate($row['event_date']))
             . conc($row['event_place']), "bmd");
 }
@@ -126,7 +126,7 @@ function cite($record, $type, $person, $principal=1) {
 function show_parent($person, $gender) {
     // print names and lifespans of parents.
     // valid $gender values are 1=father, 2=mother
-    global $_Add, $_Insert, $_edit, $_delete,
+    global $language, $_Add, $_Insert, $_edit, $_delete,
         $_Father, $_father, $_Mother, $_mother;
     $parent_id = fetch_val("SELECT get_parent($person, $gender)");
     $surety = fetch_val("
@@ -135,7 +135,7 @@ function show_parent($person, $gender) {
             FROM relations
             WHERE parent_fk = $parent_id
             AND child_fk = $person
-        ))
+        ), '$language')
     ");
     if ($gender == 1) {
         $Parent = $_Father;
@@ -282,7 +282,6 @@ $handle = pg_query("
     SELECT
         event_number,
         event_type_number,
-        event_name,
         event_date,
         event_place,
         event_note

@@ -202,6 +202,21 @@ CREATE TABLE langs (
 INSERT INTO langs VALUES ('nb');
 INSERT INTO langs VALUES ('en');
 
+-- Place level descriptions (NEW 2011-06-09)
+CREATE TABLE place_level_desc (
+    place_level_id      INTEGER PRIMARY KEY,
+    place_level_name    TEXT NOT NULL DEFAULT '',
+    desc_en             TEXT NOT NULL DEFAULT '',
+    desc_nb             TEXT NOT NULL DEFAULT ''
+);
+
+-- Initial definitions
+INSERT INTO place_level_desc VALUES (1, 'level_1', 'Detail', 'Detalj');
+INSERT INTO place_level_desc VALUES (2, 'level_2', 'City', 'Sogn');
+INSERT INTO place_level_desc VALUES (3, 'level_3', 'County', 'Herred');
+INSERT INTO place_level_desc VALUES (4, 'level_4', 'State', 'Fylke');
+INSERT INTO place_level_desc VALUES (5, 'level_5', 'Country', 'Land');
+
 CREATE TABLE default_prepositions (
     -- *one* default connective preposition for each language
     lang_code TEXT PRIMARY KEY REFERENCES langs (lang_code) ON DELETE CASCADE,
@@ -281,14 +296,18 @@ CREATE RULE placelimit AS
 
 CREATE TABLE user_settings (
     username                TEXT PRIMARY KEY DEFAULT current_user,
+    user_full_name          TEXT NOT NULL DEFAULT '',
+    user_email              TEXT NOT NULL DEFAULT '',
     last_selected_source    INTEGER NOT NULL DEFAULT 0,
     place_filter_level      TEXT NOT NULL DEFAULT 'level_4',
     place_filter_content    TEXT NOT NULL DEFAULT '%',
     show_delete             BOOLEAN NOT NULL DEFAULT FALSE,
     initials                TEXT NOT NULL DEFAULT ''
+    user_lang               TEXT NOT NULL DEFAULT 'en',
+    user_tz                 TEXT NOT NULL DEFAULT 'Europe/Oslo'
 );
 
-INSERT INTO user_settings VALUES(DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT);
+INSERT INTO user_settings DEFAULT VALUES;
 
 -- some experimental stuff
 CREATE TABLE linkage_roles (
