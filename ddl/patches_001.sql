@@ -73,10 +73,22 @@ INSERT INTO source_part_types VALUES (17, 'Main Category', FALSE, 'Main cat.', '
 
 -- Above queries have all been integrated in datadef.sql
 
--- Rev. 16, 2011-06-11
+-- Rev. 16/17, 2011-06-11
 -- Adding sequence to persons
 -- Cf. changes to ddl/datadef.sql and forms/person_insert.php
-CREATE SEQUENCE persons_person_id_seq START WITH (SELECT MAX(person_id) FROM persons);
+
+-- To patch a live database we need a temporary function as you can't just do:
+-- CREATE SEQUENCE persons_person_id_seq START WITH (SELECT MAX(person_id) FROM persons);
+CREATE FUNCTION one_shot() RETURNS VOID AS $$
+DECLARE
+    x INTEGER;
+BEGIN
+    SELECT MAX(person_id) + 1 FROM persons INTO x;
+    EXECUTE 'CREATE SEQUENCE persons_person_id_seq START WITH ' || x;
+END
+$$ LANGUAGE plpgsql VOLATILE;
+
+DROP FUNCTION one_shot();
 ALTER TABLE persons ALTER COLUMN person_id SET DEFAULT nextval('persons_person_id_seq');
 -- delete 'Enoch Root'
 DELETE FROM persons WHERE person_id = 0;

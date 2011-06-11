@@ -135,9 +135,9 @@ if ($family) {
         echo menu_item("./forms/person_toggle_pf.php?person=$person", "$_Mark_as $_Private");
     // Toggle dead_child
     if (fetch_val("SELECT dead_child($person)") == 'f')
-        echo menu_item("./forms/person_toggle_dcf.php?person=$person", "død ung");
+        echo menu_item("./forms/person_toggle_dcf.php?person=$person", "$_Died_young");
     else
-        echo menu_item("./forms/person_toggle_dcf.php?person=$person", "ikke død ung");
+        echo menu_item("./forms/person_toggle_dcf.php?person=$person", "$_Not_died_young");
 }
 echo "</table>\n";
 echo "<!-- End of Navigation Sidebar -->\n";
