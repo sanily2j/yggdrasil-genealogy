@@ -87,7 +87,7 @@ BEGIN
     EXECUTE 'CREATE SEQUENCE persons_person_id_seq START WITH ' || x;
 END
 $$ LANGUAGE plpgsql VOLATILE;
-
+SELECT one_shot();
 DROP FUNCTION one_shot();
 ALTER TABLE persons ALTER COLUMN person_id SET DEFAULT nextval('persons_person_id_seq');
 -- delete 'Enoch Root'
