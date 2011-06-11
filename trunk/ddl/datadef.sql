@@ -26,7 +26,7 @@
 CREATE TYPE int_text AS (number INTEGER, string TEXT);
 
 CREATE TABLE persons (
-    person_id           INTEGER PRIMARY KEY,
+    person_id           INTEGER SERIAL PRIMARY KEY,
     last_edit           DATE NOT NULL DEFAULT NOW(),
     gender              SMALLINT NOT NULL DEFAULT 0,
     given               TEXT NOT NULL DEFAULT '', -- the TMG 'given' field
