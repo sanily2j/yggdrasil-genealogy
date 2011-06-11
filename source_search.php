@@ -139,7 +139,6 @@ function src_expand($s) {
     return $s;
 }
 
-
 if ($language == 'nb') echo
 "<p>Regulære søkeuttrykk er definert for:<br />
 Albert, Alet, Anders, Anne, Amund, Arnold, Aslak, Auen, Berte, Bjørn, Boel,
@@ -152,26 +151,8 @@ Rolf, Sissel, Siver, Sofie, Steffen, Synnøve, Søren, Tallak, Tollef, Tomas, To
 Torbjørn, Torger, Torkil, Tormod, Torsten, Tov, Trond, Tyge, Vrål, Wilhelm,
 Zacharias, Åge, Åse, Åshild, Åsold, Åvet.</p>\n";
 
-function select_source_type($prompt, $name, $selected=0) {
-    // print table row with an option box for source part types
-    echo "<tr><td>$prompt:  </td><td>\n<select name=\"$name\">";
-    $handle = pg_query("SELECT part_type_id, description, part_type_count(part_type_id) AS tc
-                            FROM source_part_types ORDER BY tc desc");
-    while ($rec = pg_fetch_assoc($handle)) {
-        $option = "<option ";
-        if ($rec['part_type_id'] == $selected)
-            $option .= "selected=\"selected\" ";
-        $option .= "value=\"" . $rec['part_type_id'] . "\">" . $rec['description'] . "</option>\n";
-        echo $option;
-    }
-    echo "</select></td></tr>\n";
-}
-
-
-echo "<form id=\"$form\" action=\"" . $_SERVER['PHP_SELF'] . "\">\n<div>\n"
-    . $_Text
-    . ': <input type="text" size="40" name="src" />';
-
+echo "<form id=\"$form\" action=\"" . $_SERVER['PHP_SELF'] . "\">\n<div>\n";
+echo "$_Text: <input type=\"text\" size=\"40\" name=\"src\" />\n";
 echo "<select name=\"scope\">";
 $label = 'label_' . $language;
 $handle = pg_query("

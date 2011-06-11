@@ -111,10 +111,8 @@ else {
     // start transaction
     pg_query("BEGIN");
     // person record
-    $person = get_next('person');
-    pg_query("
+    $person = fetch_val("
         INSERT INTO persons (
-            person_id,
             last_edit,
             gender,
             given,
@@ -125,7 +123,6 @@ else {
             epithet
         )
         VALUES (
-            $person,
             NOW(),
             $gender,
             '$given',
@@ -135,6 +132,8 @@ else {
             '$occupation',
             '$epithet'
         )
+        RETURNING
+            person_id
     ");
     // add event
     $event = get_next('event');

@@ -1,4 +1,4 @@
--- patches_001 started on 2011-06-09 
+-- patches_001 started on 2011-06-09
 
 -- Rev. 13, 2011-06-09
 
@@ -71,4 +71,14 @@ INSERT INTO source_part_types VALUES (15, 'Book', FALSE, 'Book', 'Bok');
 INSERT INTO source_part_types VALUES (16, 'Jurisdiction', FALSE, 'Area', 'Område');
 INSERT INTO source_part_types VALUES (17, 'Main Category', FALSE, 'Main cat.', 'Hovedgruppe');
 
--- Above queries have all been integrated in datadef.sql and functions.sql
+-- Above queries have all been integrated in datadef.sql
+
+-- Rev. 16, 2011-06-11
+-- Adding sequence to persons
+-- Cf. changes to ddl/datadef.sql and forms/person_insert.php
+CREATE SEQUENCE persons_person_id_seq START WITH (SELECT MAX(person_id) FROM persons);
+ALTER TABLE persons ALTER COLUMN person_id SET DEFAULT nextval('persons_person_id_seq');
+-- delete 'Enoch Root'
+DELETE FROM persons WHERE person_id = 0;
+
+-- Above queries have all been integrated in datadef.sql and dbinit.sql

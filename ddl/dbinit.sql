@@ -25,8 +25,6 @@
 -- must be initialized with at least one row. This script will insert the
 -- bare neccessities.
 
-INSERT INTO persons VALUES (0,NOW(),9,'Enoch','','','Root','','');
-
 -- note that 'blank place' has ID 1, just like in TMG
 INSERT INTO places VALUES (1,'','','','','');
 
