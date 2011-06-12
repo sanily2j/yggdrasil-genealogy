@@ -69,16 +69,22 @@ else {
     $level_5 = $_POST['level_5'];
     if ($place_id == 0) { // insert new place
         pg_query("BEGIN WORK");
-        $place_id = get_next('place');
-        pg_query("
-            INSERT INTO places
+        $place_id = fetch_val("
+            INSERT INTO places (
+                level_1,
+                level_2,
+                level_3,
+                level_4,
+                level_5
+            )
             VALUES (
-                $place_id,
                 '$level_1',
                 '$level_2',
                 '$level_3',
                 '$level_4',
-                '$level_5')
+                '$level_5'
+            )
+            RETURNING place_id;
         ");
         pg_query("COMMIT");
     }

@@ -79,9 +79,28 @@ INSERT INTO source_part_types VALUES (17, 'Main Category', FALSE, 'Main cat.', '
 -- Cf. blog post http://solumslekt.org/blog/?p=321
 CREATE SEQUENCE persons_person_id_seq;
 SELECT SETVAL('persons_person_id_seq', MAX(person_id)) FROM persons;
-ALTER TABLE persons ALTER COLUMN person_id SET DEFAULT nextval('persons_person_id_seq');
+ALTER TABLE persons ALTER COLUMN person_id SET DEFAULT NEXTVAL('persons_person_id_seq');
 ALTER SEQUENCE persons_person_id_seq OWNED BY persons.person_id;
 -- delete 'Enoch Root'
 DELETE FROM persons WHERE person_id = 0;
 
 -- Above queries have all been integrated in datadef.sql and dbinit.sql
+
+-- Rev. 20, 2011-06-12
+-- Renamed cols in tag_groups to facilitate i18n
+-- Affected files:
+--      ddl/datadef.sql
+--      forms/forms.php
+--      tag_manager.php
+ALTER TABLE tag_groups RENAME COLUMN tag_group_name TO tag_group_name_en;
+ALTER TABLE tag_groups RENAME COLUMN tag_group_label TO tag_group_name_nb;
+
+-- Added sequence to places
+-- Affected files:
+--      ddl/datadef.sql
+--      forms/place_edit.php
+CREATE SEQUENCE places_place_id_seq;
+SELECT SETVAL('places_place_id_seq', MAX(place_id)) FROM places;
+ALTER TABLE places ALTER COLUMN place_id SET DEFAULT NEXTVAL('places_place_id_seq');
+ALTER SEQUENCE places_place_id_seq OWNED BY places.place_id;
+
