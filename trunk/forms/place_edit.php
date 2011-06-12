@@ -28,8 +28,18 @@ require_once "../langs/$language.php";
 require "../functions.php";
 require "./forms.php";
 
+function get_place_desc($n) {
+    global $language;
+    $label = 'desc_' . $language;
+    $str = fetch_val("
+        SELECT $label FROM place_level_desc WHERE place_level_id = $n
+    ");
+    $str .= ':';
+    return $str;
+}
+
 if (!isset($_POST['posted'])) {
-    $title = "Place Edit";
+    $title = $_Edit_place_name;
     require "./form_header.php";
     $place_id = $_GET['place_id'];
     if ($place_id == 0) { // new place
@@ -47,15 +57,15 @@ if (!isset($_POST['posted'])) {
         $level_4 = $place['level_4'];
         $level_5 = $place['level_5'];
     }
-    echo "<h2>$_Edit_place_name</h2>\n";
+    echo "<h2>$title</h2>\n";
     form_begin('place_edit', $_SERVER['PHP_SELF']);
     hidden_input('posted', 1);
     hidden_input('place_id', $place_id);
-    text_input("$_Level 1:", 80, 'level_1', $level_1);
-    text_input("$_Level 2:", 80, 'level_2', $level_2);
-    text_input("$_Level 3:", 80, 'level_3', $level_3);
-    text_input("$_Level 4:", 80, 'level_4', $level_4);
-    text_input("$_Level 5:", 80, 'level_5', $level_5);
+    text_input(get_place_desc(1), 80, 'level_1', $level_1);
+    text_input(get_place_desc(2), 80, 'level_2', $level_2);
+    text_input(get_place_desc(3), 80, 'level_3', $level_3);
+    text_input(get_place_desc(4), 80, 'level_4', $level_4);
+    text_input(get_place_desc(5), 80, 'level_5', $level_5);
     form_submit();
     form_end();
     echo "</body>\n</html>\n";
@@ -84,7 +94,7 @@ else {
                 '$level_4',
                 '$level_5'
             )
-            RETURNING place_id;
+            RETURNING place_id
         ");
         pg_query("COMMIT");
     }
