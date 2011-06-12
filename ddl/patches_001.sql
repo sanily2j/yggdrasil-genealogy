@@ -104,3 +104,4 @@ SELECT SETVAL('places_place_id_seq', MAX(place_id)) FROM places;
 ALTER TABLE places ALTER COLUMN place_id SET DEFAULT NEXTVAL('places_place_id_seq');
 ALTER SEQUENCE places_place_id_seq OWNED BY places.place_id;
 
+-- Above queries have all been integrated in datadef.sql
