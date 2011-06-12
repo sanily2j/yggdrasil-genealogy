@@ -61,9 +61,6 @@ if (!isset($_POST['posted'])) {
         $title .= ' person';
     require "./form_header.php";
     echo "<h2>$title</h2>\n";
-    // setting defaults
-    $living = 'N';
-    $is_public = 't';
     form_begin('person_insert', $_SERVER['PHP_SELF']);
     hidden_input('posted', 1);
     if ($child)
@@ -92,7 +89,6 @@ if (!isset($_POST['posted'])) {
 }
 else {
     $gender = $_POST['gender'];
-    // $is_public = $_POST['is_public'];
     $given = $_POST['given'];
     $patronym = $_POST['patronym'];
     $toponym = $_POST['toponym'];
