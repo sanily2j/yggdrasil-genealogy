@@ -39,7 +39,7 @@ CREATE TABLE persons (
 );
 
 CREATE TABLE places (
-    place_id            INTEGER PRIMARY KEY,
+    place_id            INTEGER SERIAL PRIMARY KEY,
     level_1             TEXT NOT NULL DEFAULT '', -- 'detail'; house, farm etc.
     level_2             TEXT NOT NULL DEFAULT '', --
     level_3             TEXT NOT NULL DEFAULT '', --
@@ -48,11 +48,37 @@ CREATE TABLE places (
     CONSTRAINT unique_place UNIQUE (level_1,level_2,level_3,level_4,level_5)
 );
 
+-- note that 'blank place' has id 1
+INSERT INTO places (level_1, level_2, level_3, level_4, level_5)
+    VALUES ('','','','','');
+
+-- Place level descriptions (NEW 2011-06-09)
+CREATE TABLE place_level_desc (
+    place_level_id      INTEGER PRIMARY KEY,
+    place_level_name    TEXT NOT NULL DEFAULT '',
+    desc_en             TEXT NOT NULL DEFAULT '',
+    desc_nb             TEXT NOT NULL DEFAULT ''
+);
+
+-- Initial definitions, change to fit your scope
+INSERT INTO place_level_desc VALUES (1, 'level_1', 'Detail', 'Detalj');
+INSERT INTO place_level_desc VALUES (2, 'level_2', 'City', 'Sogn');
+INSERT INTO place_level_desc VALUES (3, 'level_3', 'County', 'Herred');
+INSERT INTO place_level_desc VALUES (4, 'level_4', 'State', 'Fylke');
+INSERT INTO place_level_desc VALUES (5, 'level_5', 'Country', 'Land');
+
 CREATE TABLE tag_groups (
     tag_group_id        INTEGER PRIMARY KEY,
-    tag_group_name      VARCHAR(20) NOT NULL DEFAULT '',
-    tag_group_label     VARCHAR(20) NOT NULL DEFAULT ''
+    tag_group_name_en   VARCHAR(20) NOT NULL DEFAULT '',
+    tag_group_name_nb   VARCHAR(20) NOT NULL DEFAULT ''
 );
+
+INSERT INTO tag_groups VALUES (3,'Birth','Fødsel');
+INSERT INTO tag_groups VALUES (4,'Marriage','Ekteskap');
+INSERT INTO tag_groups VALUES (5,'Divorce','Skilsmisse');
+INSERT INTO tag_groups VALUES (6,'Death','Død');
+INSERT INTO tag_groups VALUES (7,'Burial','Begravelse');
+INSERT INTO tag_groups VALUES (8,'Other','Annet');
 
 CREATE TABLE tag_types (
     tag_type_id         INTEGER PRIMARY KEY, description VARCHAR(20)
@@ -70,6 +96,39 @@ CREATE TABLE tags (
     gedcom_tag          CHAR(5) NOT NULL DEFAULT '',
     tag_label           VARCHAR(20) NOT NULL DEFAULT '' -- Norwegian
 );
+
+-- This is a list of the tags I'm using. The id numbers are legacy data from
+-- The Master Genealogist [TM], but the tags themselves are mostly derived from
+-- GEDCOM which is Public Domain, cf. https://devnet.familysearch.org/docs/gedcom.
+-- You may use these tags, add to or change them as you like.
+-- For the sake of compatibility, you should always put a GEDCOM label in
+-- the second text column indicating the general contents of your tag.
+INSERT INTO tags VALUES (1,8,1,'Adopted','ADOP ','Adoptert');
+INSERT INTO tags VALUES (2,3,1,'Born','BIRT ','Født');
+INSERT INTO tags VALUES (3,6,1,'Died','DEAT ','Død');
+INSERT INTO tags VALUES (4,4,2,'Married','MARR ','Gift');
+INSERT INTO tags VALUES (5,5,2,'Divorced','DIV  ','Skilt');
+INSERT INTO tags VALUES (6,7,1,'Buried','BURI ','Gravlagt');
+INSERT INTO tags VALUES (10,8,3,'Residence','RESI ','Bosted');
+INSERT INTO tags VALUES (12,3,1,'Baptized','BAPM ','Døpt');
+INSERT INTO tags VALUES (19,8,3,'Census','CENS ','Folketelling');
+INSERT INTO tags VALUES (23,4,2,'Engaged','ENGA ','Forlovet');
+INSERT INTO tags VALUES (31,7,3,'Probate','PROB ','Skifte');
+INSERT INTO tags VALUES (46,8,1,'Confirmed','CONF ','Konfirmert');
+INSERT INTO tags VALUES (49,8,3,'Emigrated','EMIG ','Utvandret');
+INSERT INTO tags VALUES (62,3,1,'Stillborn','STIL ','Dødfødt');
+INSERT INTO tags VALUES (66,8,3,'Occupation','OCCU ','Yrke');
+INSERT INTO tags VALUES (72,8,3,'Anecdote','NOTE ','Anekdote');
+INSERT INTO tags VALUES (78,8,3,'Note','NOTE ','Merknad');
+INSERT INTO tags VALUES (1000,4,2,'Common-law marriage','MARR ','Samboende');
+INSERT INTO tags VALUES (1003,8,3,'Tenant','NOTE ','Feste');
+INSERT INTO tags VALUES (1005,8,3,'Moved','RESI ','Flyttet');
+INSERT INTO tags VALUES (1006,8,2,'Probably identical','NOTE ','Kan være identisk');
+INSERT INTO tags VALUES (1033,4,2,'Affair','EVEN ','Forhold');
+INSERT INTO tags VALUES (1035,3,1,'Probably born','BIRT ','Trolig født');
+INSERT INTO tags VALUES (1039,8,2,'Confused','NOTE ','Forvekslet');
+INSERT INTO tags VALUES (1040,8,1,'Identical','NOTE ','Identisk');
+INSERT INTO tags VALUES (1041,8,3,'Matricle','NOTE ','Matrikkel');
 
 CREATE TABLE events (
     event_id            INTEGER PRIMARY KEY,
@@ -168,6 +227,8 @@ CREATE TABLE sources (
     ch_part_type        INTEGER REFERENCES source_part_types (part_type_id) DEFAULT 0
 );
 
+INSERT INTO sources VALUES (0,0,'{Sources}');
+
 CREATE TABLE my_links (
 -- stores short links and their expansion values
 -- see shortlinks.sql for example usage
@@ -232,21 +293,6 @@ CREATE TABLE langs (
 INSERT INTO langs VALUES ('nb');
 INSERT INTO langs VALUES ('en');
 
--- Place level descriptions (NEW 2011-06-09)
-CREATE TABLE place_level_desc (
-    place_level_id      INTEGER PRIMARY KEY,
-    place_level_name    TEXT NOT NULL DEFAULT '',
-    desc_en             TEXT NOT NULL DEFAULT '',
-    desc_nb             TEXT NOT NULL DEFAULT ''
-);
-
--- Initial definitions
-INSERT INTO place_level_desc VALUES (1, 'level_1', 'Detail', 'Detalj');
-INSERT INTO place_level_desc VALUES (2, 'level_2', 'City', 'Sogn');
-INSERT INTO place_level_desc VALUES (3, 'level_3', 'County', 'Herred');
-INSERT INTO place_level_desc VALUES (4, 'level_4', 'State', 'Fylke');
-INSERT INTO place_level_desc VALUES (5, 'level_5', 'Country', 'Land');
-
 CREATE TABLE default_prepositions (
     -- *one* default connective preposition for each language
     lang_code TEXT PRIMARY KEY REFERENCES langs (lang_code) ON DELETE CASCADE,
@@ -265,6 +311,10 @@ CREATE TABLE tag_prepositions (
     preposition TEXT,
     PRIMARY KEY (tag_fk, lang_code)
 );
+
+INSERT INTO tag_prepositions (tag_fk, lang_code, preposition) VALUES (4, 'en', 'to');
+INSERT INTO tag_prepositions (tag_fk, lang_code, preposition) VALUES (5, 'en', 'from');
+INSERT INTO tag_prepositions (tag_fk, lang_code, preposition) VALUES (5, 'nb', 'fra');
 
 -- III: Miscellaneous peripheral tables
 

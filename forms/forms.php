@@ -41,15 +41,17 @@ function select_tag_type($selected=0) {
 
 function select_tag_group($selected=0) {
     // print table row with an option box for tag groups
+    global $language;
+    $tag_group_name = 'tag_group_name_' . $language;
     echo "<tr><td>Type:  </td><td>\n<select name = \"tag_group\">\n";
-    $handle = pg_query("SELECT tag_group_id, tag_group_label
+    $handle = pg_query("SELECT tag_group_id, $tag_group_name
                             FROM tag_groups ORDER BY tag_group_id");
     while ($rec = pg_fetch_assoc($handle)) {
         $option = "<option ";
         if ($rec['tag_group_id'] == $selected)
             $option .= "selected=\"selected\" ";
         $option .= "value=\"" . $rec['tag_group_id'] . "\">";
-        $option .= $rec['tag_group_label'] . "</option>\n";
+        $option .= $rec[$tag_group_name] . "</option>\n";
         echo $option;
     }
     echo "</select></td></tr>\n";

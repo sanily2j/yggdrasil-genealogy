@@ -156,7 +156,6 @@ In the subdir /ddl, you'll find some sql command files. To initiate
 the database, you must run them from your psql prompt like this:
 
 exampledb=> \i /path/to/sql-files/datadef.sql
-exampledb=> \i /path/to/sql-files/dbinit.sql
 exampledb=> \i /path/to/sql-files/functions.sql
 exampledb=> \i /path/to/sql-files/views.sql
 

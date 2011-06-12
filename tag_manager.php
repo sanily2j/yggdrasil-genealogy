@@ -32,7 +32,8 @@ echo "<div class=\"normal\">\n";
 echo "<h2>$title</h2>\n";
 echo "<p>( <a href=\"./forms/tag_edit.php?tag=0\">sett inn</a> )</p>\n";
 echo "<table>\n";
-$handle = pg_query("SELECT tag_id, tag_type_fk, tag_group_label, tag_name,
+$tag_group_name = 'tag_group_name_' . $language;
+$handle = pg_query("SELECT tag_id, tag_type_fk, $tag_group_name, tag_name,
                         gedcom_tag, tag_label, tag_count(tag_id) AS tc
                     FROM tags, tag_groups
                     WHERE tag_group_fk = tag_group_id
@@ -49,7 +50,7 @@ while ($row = pg_fetch_assoc($handle)) {
     echo "<td><a href=\"./forms/tag_edit.php?tag=".$row['tag_id']."\">".$row['tag_name']."</a></td>";
     echo "<td>".$row['tag_type_fk']."</td>";
     echo "<td>".$row['tag_label']."</td>";
-    echo "<td>".$row['tag_group_label']."</td>";
+    echo "<td>".$row[$tag_group_name]."</td>";
     echo "</tr>\n";
 }
 echo "</table>\n";
