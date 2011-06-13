@@ -316,15 +316,17 @@ while ($row = pg_fetch_assoc($handle)) {
         // display each "event" as
         // Event_id EVENT-TYPE[ DATE][ PLACE][ with Name Of Coprincipal][: NOTE]
         // note that every item except for EVENT-TYPE is optional.
+        $event_string .= "[$event] ";
         // preliminary hack to display non-participant of probate event
+        // note that tag type id is hard coded, which is prbly not a good idea.
         if ($row['event_type_number'] == 31 && !(is_principal($person, $event))) {
-            $row['event_name'] = 'Nevnt i skifte etter ' . get_principals($event);
+            $event_string .= $_Mentioned_in_probate_after . ' ' . get_principals($event);
             if(!$row['event_note'] = get_participant_note($person, $event))
                 $fade = 1;
             $principal = 0;
         }
-        $event_string .= "[$event] ";
-        $event_string .= get_tag_name($tag);
+        else
+            $event_string .= get_tag_name($tag);
         // fuzzydate() returns empty string if date is undetermined
         $event_string .= conc(fuzzydate($row['event_date']));
         $event_string .= conc($row['event_place']);
@@ -402,11 +404,12 @@ if (pg_num_rows($handle)) {
 
 if (fetch_val("SELECT COUNT(*) FROM source_linkage WHERE person_fk=$person")) {
     echo "<h3>Nevnt i kilder:</h3>\n";
+    $label = 'label_' . $language;
     $handle = pg_query("
         SELECT
             s.source_id AS source,
             l.per_id AS per_id,
-            part_desc(s.part_type) AS s_type,
+            spt.$label AS s_type,
             get_lsurety(l.surety_fk) AS surety,
             get_lrole(l.role_fk) AS rolle,
             l.s_name AS name,
@@ -414,11 +417,14 @@ if (fetch_val("SELECT COUNT(*) FROM source_linkage WHERE person_fk=$person")) {
             link_expand(l.sl_note) AS note
         FROM
             sources s,
-            source_linkage l
+            source_linkage l,
+            source_part_types spt
         WHERE
             l.source_fk = s.source_id
         AND
             l.person_fk = $person
+        AND
+            spt.part_type_id = s.part_type
         ORDER BY
             s.source_date
     ");

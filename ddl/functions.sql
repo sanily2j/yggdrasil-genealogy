@@ -354,10 +354,6 @@ CREATE OR REPLACE FUNCTION get_part_type(INTEGER) RETURNS INTEGER AS $$
 SELECT part_type FROM sources WHERE source_id = $1
 $$ LANGUAGE sql STABLE;
 
-CREATE OR REPLACE FUNCTION part_desc(INTEGER) RETURNS TEXT AS $$
-SELECT initcap(description) FROM source_part_types WHERE part_type_id = $1
-$$ LANGUAGE sql STABLE;
-
 CREATE OR REPLACE FUNCTION part_ldesc(INTEGER) RETURNS TEXT AS $$
 SELECT description FROM source_part_types WHERE part_type_id = $1
 $$ LANGUAGE sql STABLE;
@@ -706,10 +702,6 @@ BEGIN
 END
 $$ LANGUAGE plpgsql VOLATILE;
 
-CREATE OR REPLACE FUNCTION get_part_type_string(INTEGER) RETURNS TEXT AS $$
-    SELECT description FROM source_part_types WHERE part_type_id = $1
-$$ LANGUAGE SQL STABLE;
-
 CREATE OR REPLACE FUNCTION get_source_type(TEXT) RETURNS int_text AS $$
 -- parse source text to get source type, modifies text.
 -- source type input as §n first or immediately after sort directive
@@ -836,7 +828,7 @@ DECLARE
 
 BEGIN
     SELECT
-        place_filter_level AS _mkey, 
+        place_filter_level AS _mkey,
         place_filter_content AS _mval
     FROM
         user_settings

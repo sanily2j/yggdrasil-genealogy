@@ -61,8 +61,10 @@ $self = isset($_GET['node']) ? $_GET['node'] : 0;
 // set $self as active source
 set_last_selected_source($self);
 
-// get all attributes of $self in one query
+// localized source part type label
 $label = 'label_' . $language;
+
+// get all attributes of $self in one query
 $props = fetch_row_assoc("
     SELECT
         ecc($self) AS number_of_events,
