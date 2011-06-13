@@ -113,3 +113,84 @@ ALTER SEQUENCE places_place_id_seq OWNED BY places.place_id;
 --      ddl/functions.sql
 DROP FUNCTION part_desc(INTEGER);
 DROP FUNCTION get_part_type_string(INTEGER);
+
+-- Above queries have all been integrated in functions.sql
+
+-- Rev. 25, 2011-06-13
+-- Added sequence to sources
+-- Affected files:
+--      ddl/datadef.sql
+--      ddl/functions.sql
+CREATE SEQUENCE sources_source_id_seq;
+SELECT SETVAL('sources_source_id_seq', MAX(source_id)) FROM sources;
+ALTER TABLE sources ALTER COLUMN source_id SET DEFAULT NEXTVAL('sources_source_id_seq');
+ALTER SEQUENCE sources_source_id_seq OWNED BY sources.source_id;
+
+CREATE OR REPLACE FUNCTION add_source(INTEGER,INTEGER,INTEGER,INTEGER,TEXT,INTEGER) RETURNS INTEGER AS $$
+-- Inserts sources and citations, returns current source_id
+-- 2009-03-26: this func has finally been moved from PHP to the db.
+-- 2011-06-13: Modified after changing source_id to type SERIAL
+-- Should be called via the functions.php add_source() which is left as a gatekeeper.
+DECLARE
+    person  INTEGER := $1;
+    tag     INTEGER := $2;
+    event   INTEGER := $3;
+    src_id  INTEGER := $4;
+    txt     TEXT    := $5;
+    srt     INTEGER := $6;
+    par_id  INTEGER;
+    rel_id  INTEGER;
+    x       INTEGER;
+    pt      INTEGER;
+BEGIN
+    IF LENGTH(txt) <> 0 THEN -- source text has been entered, add new node
+        par_id := src_id;
+        -- parse text to infer sort order
+        SELECT number, string FROM get_sort(par_id, srt, txt) INTO srt, txt;
+        -- get source type from parent source
+        SELECT ch_part_type FROM sources WHERE source_id = par_id INTO pt;
+        -- there's a unique constraint on (parent_id, source_text) in the sources table, don't violate it.
+        -- get part type from text if part type is undefined
+        IF pt = 0 THEN
+            SELECT number, string FROM get_source_type(txt) INTO pt, txt;
+        END IF;
+        SELECT source_id FROM sources WHERE parent_id = par_id AND source_text = txt INTO x;
+        IF NOT FOUND THEN
+            INSERT INTO sources (parent_id, source_text, sort_order, source_date, part_type)
+                VALUES (par_id, txt, srt, true_date_extract(txt), pt) RETURNING source_id INTO src_id;
+        ELSE
+            RAISE NOTICE 'Source % has the same parent id and text as you tried to enter.', x;
+            RETURN -x; -- abort the transaction and return the offended source id as a negative number.
+        END IF;
+        -- the rest of the code will only be executed if the source is already associated with a person-event,
+        -- ie. the source has been entered from the add/edit event forms.
+        IF event <> 0 THEN
+            -- if new cit. is expansion of an old one, we may remove the "parent node" citation
+            DELETE FROM event_citations WHERE event_fk = event AND source_fk = par_id;
+            -- Details about a birth event will (almost) always include parental evidence. Therefore, we'll
+            -- update relation_citations if birth event (and new source is an expansion of existing source)
+            IF tag = 2 THEN
+                FOR rel_id IN SELECT relation_id FROM relations WHERE child_fk = person LOOP
+                    INSERT INTO relation_citations (relation_fk, source_fk) VALUES (rel_id, src_id);
+                    -- again, remove references to "parent node"
+                    DELETE FROM relation_citations WHERE relation_fk = rel_id AND source_fk = par_id;
+                END LOOP;
+            END IF;
+        END IF;
+    END IF;
+    -- associate source node with event
+    IF event <> 0 THEN
+        -- don't violate unique constraint on (source_fk, event_fk) in the event_citations table.
+        -- if this source-event association already exists, it's rather pointless to repeat it.
+        PERFORM * FROM event_citations WHERE event_fk = event AND source_fk = src_id;
+        IF NOT FOUND THEN
+                INSERT INTO event_citations (event_fk, source_fk) VALUES (event, src_id);
+            ELSE
+                RAISE NOTICE 'citation exists';
+            END IF;
+    END IF;
+    RETURN src_id;
+END
+$$ LANGUAGE PLPGSQL VOLATILE;
+
+-- Above queries have all been integrated in datadef.sql and functions.sql

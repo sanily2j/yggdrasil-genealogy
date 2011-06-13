@@ -724,6 +724,7 @@ $$ LANGUAGE plpgsql VOLATILE;
 CREATE OR REPLACE FUNCTION add_source(INTEGER,INTEGER,INTEGER,INTEGER,TEXT,INTEGER) RETURNS INTEGER AS $$
 -- Inserts sources and citations, returns current source_id
 -- 2009-03-26: this func has finally been moved from PHP to the db.
+-- 2011-06-13: Modified after changing source_id to type SERIAL
 -- Should be called via the functions.php add_source() which is left as a gatekeeper.
 DECLARE
     person  INTEGER := $1;
@@ -739,7 +740,6 @@ DECLARE
 BEGIN
     IF LENGTH(txt) <> 0 THEN -- source text has been entered, add new node
         par_id := src_id;
-        SELECT MAX(source_id) + 1 FROM sources INTO src_id;
         -- parse text to infer sort order
         SELECT number, string FROM get_sort(par_id, srt, txt) INTO srt, txt;
         -- get source type from parent source
@@ -751,8 +751,8 @@ BEGIN
         END IF;
         SELECT source_id FROM sources WHERE parent_id = par_id AND source_text = txt INTO x;
         IF NOT FOUND THEN
-            INSERT INTO sources (source_id, parent_id, source_text, sort_order, source_date, part_type)
-                VALUES (src_id, par_id, txt, srt, true_date_extract(txt), pt);
+            INSERT INTO sources (parent_id, source_text, sort_order, source_date, part_type)
+                VALUES (par_id, txt, srt, true_date_extract(txt), pt) RETURNING source_id INTO src_id;
         ELSE
             RAISE NOTICE 'Source % has the same parent id and text as you tried to enter.', x;
             RETURN -x; -- abort the transaction and return the offended source id as a negative number.
