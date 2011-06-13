@@ -62,6 +62,7 @@ $self = isset($_GET['node']) ? $_GET['node'] : 0;
 set_last_selected_source($self);
 
 // get all attributes of $self in one query
+$label = 'label_' . $language;
 $props = fetch_row_assoc("
     SELECT
         ecc($self) AS number_of_events,
@@ -76,10 +77,12 @@ $props = fetch_row_assoc("
         sort_order,
         source_date,
         part_type,
-        part_desc(part_type) AS part_desc
+        spt.$label
     FROM
-        sources
+        sources, source_part_types spt
     WHERE
+        spt.part_type_id = sources.part_type
+    AND
         source_id = $self
 ");
 
@@ -109,7 +112,7 @@ echo "<h2>Node $self"
         $props['number_of_subsources'],
         $props['number_of_unused_subsources']
     )
-    . conc($props['part_desc'], ': ');
+    . conc($props[$label], ': ');
 if ($principal = get_source_principal($self))
     echo conc($props['source_date'])
         . conc(get_name_and_lifespan($principal), ' av ');
@@ -309,10 +312,12 @@ if ($props['number_of_subsources']) {
             rcc(source_id) AS r,
             ssc(source_id) AS s,
             usc(source_id) AS u,
-            get_part_type_string(part_type) AS pt
+            spt.$label AS $label
         FROM
-            sources
+            sources, source_part_types spt
         WHERE
+            spt.part_type_id = sources.part_type
+        AND
             parent_id = $self
         AND
             source_id <> 0
@@ -331,7 +336,7 @@ if ($props['number_of_subsources']) {
                 array(
                     'person'    => 0,
                     'source'    => $id
-                ), $row['pt'], $_edit)));
+                ), $row[$label], $_edit)));
         if ($row['e'] || $row['r'] || $row['s']) {
             echo td(square_brace(italic($row['source_date']))
                 . ' ' . $row['txt']
