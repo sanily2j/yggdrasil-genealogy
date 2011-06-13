@@ -105,3 +105,11 @@ ALTER TABLE places ALTER COLUMN place_id SET DEFAULT NEXTVAL('places_place_id_se
 ALTER SEQUENCE places_place_id_seq OWNED BY places.place_id;
 
 -- Above queries have all been integrated in datadef.sql
+
+-- Rev. 24, 2011-06-13
+-- Cleanup, drop some obsolete funcs to access source part type labels,
+-- replaced by joins
+-- Affected files:
+--      ddl/functions.sql
+DROP FUNCTION part_desc(INTEGER);
+DROP FUNCTION get_part_type_string(INTEGER);

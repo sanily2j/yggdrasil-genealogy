@@ -120,6 +120,7 @@ $_Living = 'Lever';
 $_Male = 'Mann';
 $_Mark_as = 'Merk som';
 $_Married = 'Gift';
+$_Mentioned_in_probate_after = 'Nevnt i skifte etter';
 $_Merge = 'Slå sammen';
 $_Merge_persons = 'Slå sammen personer';
 $_Merge_persons_failed = 'Sammenslåing forkastet';

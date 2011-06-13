@@ -79,14 +79,16 @@ function select_tag($selected=0, $person=0, $event=0) {
 
 function select_source_type($prompt, $name, $selected=0) {
     // print table row with an option box for source part types
-    echo "<tr><td>$prompt:  </td><td>\n<select name=\"$name\">";
-    $handle = pg_query("SELECT part_type_id, description, part_type_count(part_type_id) AS tc
+   global $language;
+   $label = 'label_' . $language;
+   echo "<tr><td>$prompt:  </td><td>\n<select name=\"$name\">";
+    $handle = pg_query("SELECT part_type_id, $label, part_type_count(part_type_id) AS tc
                             FROM source_part_types ORDER BY tc desc");
     while ($rec = pg_fetch_assoc($handle)) {
         $option = "<option ";
         if ($rec['part_type_id'] == $selected)
             $option .= "selected=\"selected\" ";
-        $option .= "value=\"" . $rec['part_type_id'] . "\">" . $rec['description'] . "</option>\n";
+        $option .= "value=\"" . $rec['part_type_id'] . "\">" . $rec[$label] . "</option>\n";
         echo $option;
     }
     echo "</select></td></tr>\n";

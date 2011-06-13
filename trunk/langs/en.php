@@ -120,6 +120,7 @@ $_Living = 'Living';
 $_Male = 'Male';
 $_Mark_as = 'Mark as';
 $_Married = 'Married';
+$_Mentioned_in_probate_after = 'Mentioned in probate after';
 $_Merge = 'Merge';
 $_Merge_persons = 'Merge persons';
 $_Merge_persons_failed = 'Merge persons failed';
