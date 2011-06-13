@@ -217,8 +217,8 @@ INSERT INTO source_part_types VALUES (16, 'Jurisdiction', FALSE, 'Area', 'Områd
 INSERT INTO source_part_types VALUES (17, 'Main Category', FALSE, 'Main cat.', 'Hovedgruppe');
 
 CREATE TABLE sources (
--- my Tree of Knowledge
-    source_id           INTEGER PRIMARY KEY,
+-- Tree of Knowledge
+    source_id           INTEGER SERIAL PRIMARY KEY,
     parent_id           INTEGER REFERENCES sources (source_id),
     source_text         TEXT NOT NULL DEFAULT '',
     sort_order          INTEGER NOT NULL DEFAULT 1,
@@ -227,6 +227,7 @@ CREATE TABLE sources (
     ch_part_type        INTEGER REFERENCES source_part_types (part_type_id) DEFAULT 0
 );
 
+-- Mother of All Sources
 INSERT INTO sources VALUES (0,0,'{Sources}');
 
 CREATE TABLE my_links (
