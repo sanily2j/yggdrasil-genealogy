@@ -230,12 +230,24 @@ else {
         // insert "event" for source person with a link to target person
         // this event note should be customized by the user
         $event_note = "med [p=$target|ID-nr. $target]";
-        $e = get_next('event');
-        pg_query("
-            INSERT INTO events
-            VALUES ($e,1040,1,'000000003000000001','00010101','$event_note')
+        $event = fetch_val("
+            INSERT INTO events (
+                tag_fk,
+                place_fk,
+                event_date,
+                sort_date,
+                event_note
+            )
+            VALUES (
+                1040,
+                1,
+                '000000003000000001',
+                '00010101',
+                '$event_note'
+            )
+            RETURNING event_id
         ");
-        add_participant($source,$e);
+        add_participant($source,$event);
         pg_query("
             INSERT INTO merged (old_person_fk,new_person_fk)
             VALUES ($source, $target)

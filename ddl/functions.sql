@@ -806,11 +806,9 @@ DECLARE
     event       INTEGER;         -- id of inserted birth event
 BEGIN
     birth_year := SUBSTR(mydate, 1, 4)::INTEGER - age;
-    SELECT MAX(event_id) + 1 FROM events INTO event;
-    INSERT INTO events (event_id, tag_fk, place_fk, event_date, sort_date)
-        VALUES (event, 2, 1,
-                birth_year::TEXT || '00002000000001',
-                (birth_year::TEXT || '-01-01')::DATE);
+    INSERT INTO events (tag_fk, place_fk, event_date, sort_date)
+        VALUES (2, 1, birth_year::TEXT || '00002000000001',
+            (birth_year::TEXT || '-01-01')::DATE) RETURNING event_id INTO event;
     INSERT INTO participants (person_fk, event_fk) VALUES (person, event);
     IF src_id <> 0 THEN
         INSERT INTO event_citations VALUES (event, src_id);

@@ -132,17 +132,16 @@ else {
             person_id
     ");
     // add event
-    $event = get_next('event');
     $tag = $_POST['tag_fk'];
     $place = $_POST['place_fk'];
     if ($place == 0) $place = 1;
-    $event_date = pad_date($_POST['date_1']) . $_POST['date_type'] . pad_date($_POST['date_2']) . '1';
+    $event_date = pad_date($_POST['date_1'])
+        . $_POST['date_type'] . pad_date($_POST['date_2']) . '1';
     $sort_date = parse_sort_date($_POST['sort_date'],$event_date);
     // minimal cleanup of event note
     $event_note = note_to_db($_POST['event_note']);
-    pg_query("
+    $event = fetch_val("
         INSERT INTO events (
-            event_id,
             tag_fk,
             place_fk,
             event_date,
@@ -150,13 +149,13 @@ else {
             event_note
         )
         VALUES (
-            $event,
             $tag,
             $place,
             '$event_date',
             '$sort_date',
             '$event_note'
         )
+        RETURNING event_id
     ");
     set_last_selected_place($place);
     // participant data

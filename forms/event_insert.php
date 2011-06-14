@@ -61,9 +61,23 @@ else {
     if ($place == 0) $place = 1;
     $tag = $_POST['tag_fk'];
     pg_query("BEGIN");
-    $event = get_next('event');
-    pg_query("INSERT INTO events
-                VALUES ($event, $tag, $place, '$event_date', '$sort_date', '$event_note')");
+    $event = fetch_val("
+        INSERT INTO events (
+            tag_fk,
+            place_fk,
+            event_date,
+            sort_date,
+            event_note
+        )
+        VALUES (
+            $tag,
+            $place,
+            '$event_date',
+            '$sort_date',
+            '$event_note'
+        )
+        RETURNING event_id
+    ");
     set_last_selected_place($place);
     add_participant($person, $event);
     if ($_POST['coprincipal'] && has_coprincipal($tag)) {

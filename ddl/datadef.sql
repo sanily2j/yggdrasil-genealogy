@@ -127,11 +127,11 @@ INSERT INTO tags VALUES (1006,8,2,'Probably identical','NOTE ','Kan være identi
 INSERT INTO tags VALUES (1033,4,2,'Affair','EVEN ','Forhold');
 INSERT INTO tags VALUES (1035,3,1,'Probably born','BIRT ','Trolig født');
 INSERT INTO tags VALUES (1039,8,2,'Confused','NOTE ','Forvekslet');
-INSERT INTO tags VALUES (1040,8,1,'Identical','NOTE ','Identisk');
+INSERT INTO tags VALUES (1040,8,1,'Identical to','NOTE ','Identisk med');
 INSERT INTO tags VALUES (1041,8,3,'Matricle','NOTE ','Matrikkel');
 
 CREATE TABLE events (
-    event_id            INTEGER PRIMARY KEY,
+    event_id            INTEGER SERIAL PRIMARY KEY,
     tag_fk              INTEGER REFERENCES tags (tag_id),
     place_fk            INTEGER REFERENCES places (place_id),
     event_date          CHAR(18) NOT NULL DEFAULT '000000003000000001',
@@ -228,7 +228,8 @@ CREATE TABLE sources (
 );
 
 -- Mother of All Sources
-INSERT INTO sources VALUES (0,0,'{Sources}');
+INSERT INTO sources (source_id, parent_id, source_text, part_type, ch_part_type)
+    VALUES (0, 0, '{Sources}', 17, 17);
 
 CREATE TABLE my_links (
 -- stores short links and their expansion values
