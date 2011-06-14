@@ -81,7 +81,7 @@ function select_source_type($prompt, $name, $selected=0) {
     // print table row with an option box for source part types
    global $language;
    $label = 'label_' . $language;
-   echo "<tr><td>$prompt:  </td><td>\n<select name=\"$name\">";
+   echo "<tr><td>$prompt</td><td>\n<select name=\"$name\">";
     $handle = pg_query("SELECT part_type_id, $label, part_type_count(part_type_id) AS tc
                             FROM source_part_types ORDER BY tc desc");
     while ($rec = pg_fetch_assoc($handle)) {

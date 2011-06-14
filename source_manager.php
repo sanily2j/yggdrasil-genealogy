@@ -91,8 +91,7 @@ $props = fetch_row_assoc("
 $title_prev = get_source_plain_text($props['prev_page']);
 $title_next = get_source_plain_text($props['next_page']);
 
-// $title = "&#x16A2; K:$self " . get_source_plain_text($self);
-$title = "K:$self " . get_source_plain_text($self);
+$title = "S:$self " . get_source_plain_text($self);
 // limit title tag to a sensible length
 if (mb_strlen($title) > 80)
     $title = mb_substr($title, 0, 80) . '...';
