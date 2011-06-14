@@ -194,3 +194,40 @@ END
 $$ LANGUAGE PLPGSQL VOLATILE;
 
 -- Above queries have all been integrated in datadef.sql and functions.sql
+
+-- Rev. 25, 2011-06-13
+-- Added sequence to events
+-- Affected files:
+--      ddl/datadef.sql
+--      ddl/functions.sql
+--      forms/event_insert.php
+--      forms/person_insert.php
+--      forms/person_merge.php
+CREATE SEQUENCE events_event_id_seq;
+SELECT SETVAL('events_event_id_seq', MAX(event_id)) FROM events;
+ALTER TABLE events ALTER COLUMN event_id SET DEFAULT NEXTVAL('events_event_id_seq');
+ALTER SEQUENCE events_event_id_seq OWNED BY events.event_id;
+
+CREATE OR REPLACE FUNCTION add_birth(INTEGER, TEXT, INTEGER, INTEGER) RETURNS INTEGER AS $$
+-- synthesize birth event based on age info
+DECLARE
+    person      INTEGER := $1;   -- person id
+    mydate      TEXT    := $2;   -- fuzzy date of event
+    age         INTEGER := $3;   -- age of person at event
+    src_id      INTEGER := $4;   -- source id
+    birth_year  INTEGER;         -- inferred year of birth
+    event       INTEGER;         -- id of inserted birth event
+BEGIN
+    birth_year := SUBSTR(mydate, 1, 4)::INTEGER - age;
+    INSERT INTO events (tag_fk, place_fk, event_date, sort_date)
+        VALUES (2, 1, birth_year::TEXT || '00002000000001',
+            (birth_year::TEXT || '-01-01')::DATE) RETURNING event_id INTO event;
+    INSERT INTO participants (person_fk, event_fk) VALUES (person, event);
+    IF src_id <> 0 THEN
+        INSERT INTO event_citations VALUES (event, src_id);
+    END IF;
+    RETURN event;
+END
+$$ LANGUAGE PLPGSQL VOLATILE;
+
+-- Above queries have all been integrated in datadef.sql and functions.sql
