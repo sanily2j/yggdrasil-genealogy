@@ -143,3 +143,21 @@ CREATE OR REPLACE FUNCTION dn(INTEGER) RETURNS SETOF TEXT AS $$
     WHERE parent_id=$1
     ORDER BY sort_order
 $$ LANGUAGE SQL STABLE;
+
+-- defined here because of dependency with ss_link_expand(TEXT)
+CREATE OR REPLACE VIEW public_tmg_events AS
+SELECT
+    event_id,
+    tag_fk,
+    person1_fk,
+    person2_fk,
+    place_fk,
+    event_date,
+    sort_date,
+    ss_link_expand(event_note) AS event_note,
+    tag_type
+FROM tmg_events
+WHERE is_public(person1_fk)
+    AND (is_public(person2_fk) OR person2_fk=0)
+    AND tag_fk <> 1040;
+

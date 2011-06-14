@@ -26,7 +26,7 @@
 CREATE TYPE int_text AS (number INTEGER, string TEXT);
 
 CREATE TABLE persons (
-    person_id           INTEGER SERIAL PRIMARY KEY,
+    person_id           SERIAL PRIMARY KEY,
     last_edit           DATE NOT NULL DEFAULT NOW(),
     gender              SMALLINT NOT NULL DEFAULT 0,
     given               TEXT NOT NULL DEFAULT '', -- the TMG 'given' field
@@ -39,7 +39,7 @@ CREATE TABLE persons (
 );
 
 CREATE TABLE places (
-    place_id            INTEGER SERIAL PRIMARY KEY,
+    place_id            SERIAL PRIMARY KEY,
     level_1             TEXT NOT NULL DEFAULT '', -- 'detail'; house, farm etc.
     level_2             TEXT NOT NULL DEFAULT '', --
     level_3             TEXT NOT NULL DEFAULT '', --
@@ -134,7 +134,7 @@ INSERT INTO tags VALUES (1040,8,1,'Identical to','NOTE ','Identisk med');
 INSERT INTO tags VALUES (1041,8,3,'Matricle','NOTE ','Matrikkel');
 
 CREATE TABLE events (
-    event_id            INTEGER SERIAL PRIMARY KEY,
+    event_id            SERIAL PRIMARY KEY,
     tag_fk              INTEGER REFERENCES tags (tag_id),
     place_fk            INTEGER REFERENCES places (place_id),
     event_date          CHAR(18) NOT NULL DEFAULT '000000003000000001',
@@ -172,7 +172,7 @@ INSERT INTO sureties (surety_id, surety_en, surety_no) VALUES (0, 'unknown', 'uk
 INSERT INTO sureties (surety_id, surety_en, surety_no) VALUES (-1, 'wrong', 'feil');
 
 CREATE TABLE relations (
-    relation_id         INTEGER SERIAL PRIMARY KEY,
+    relation_id         SERIAL PRIMARY KEY,
     child_fk            INTEGER NOT NULL REFERENCES persons (person_id),
     parent_fk           INTEGER NOT NULL REFERENCES persons (person_id),
     surety_fk           INTEGER NOT NULL REFERENCES sureties (surety_id) DEFAULT 3,
@@ -221,7 +221,7 @@ INSERT INTO source_part_types VALUES (17, 'Main Category', FALSE, 'Main cat.', '
 
 CREATE TABLE sources (
 -- Tree of Knowledge
-    source_id           INTEGER SERIAL PRIMARY KEY,
+    source_id           SERIAL PRIMARY KEY,
     parent_id           INTEGER REFERENCES sources (source_id),
     source_text         TEXT NOT NULL DEFAULT '',
     sort_order          INTEGER NOT NULL DEFAULT 1,
@@ -387,7 +387,7 @@ CREATE TABLE user_settings (
     place_filter_level      TEXT NOT NULL DEFAULT 'level_4',
     place_filter_content    TEXT NOT NULL DEFAULT '%',
     show_delete             BOOLEAN NOT NULL DEFAULT FALSE,
-    initials                TEXT NOT NULL DEFAULT ''
+    initials                TEXT NOT NULL DEFAULT '',
     user_lang               TEXT NOT NULL DEFAULT 'en',
     user_tz                 TEXT NOT NULL DEFAULT 'Europe/Oslo'
 );
