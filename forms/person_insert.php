@@ -169,18 +169,16 @@ else {
     // add relation if this script was called with an 'addparent' param:
     if ($_POST['child']) {
         $child = $_POST['child'];
-        $relation_id = get_next('relation');
-        pg_query("
+        $relation_id = fetch_val("
             INSERT INTO relations (
-                relation_id,
                 child_fk,
                 parent_fk
             )
             VALUES (
-                $relation_id,
                 $child,
                 $person
             )
+            RETURNING relation_id
         ");
         if ($source_id) { // add relation citation
             pg_query("
@@ -198,14 +196,17 @@ else {
     // add relation if this script was called with a 'father' param:
     if ($_POST['father']) {
         $father = $_POST['father'];
-        $relation_id = get_next('relation');
-        pg_query("
+        $relation_id = fetch_val("
             INSERT INTO relations (
-                relation_id,
                 child_fk,
                 parent_fk
             )
-            VALUES ($relation_id, $person, $father)");
+            VALUES (
+                $person,
+                $father
+            )
+            RETURNING relation_id
+        ");
         if ($source_id) { // add relation citation
             pg_query("
                 INSERT INTO relation_citations (
@@ -222,18 +223,16 @@ else {
     // add relation if this script was called with a 'mother' param:
     if ($_POST['mother']) {
         $mother = $_POST['mother'];
-        $relation_id = get_next('relation');
-        pg_query("
+        $relation_id = fetch_val("
             INSERT INTO relations (
-                relation_id,
                 child_fk,
                 parent_fk
             )
             VALUES (
-                $relation_id,
                 $person,
                 $mother
             )
+            RETURNING relation_id
         ");
         if ($source_id) { // add relation citation
             pg_query("

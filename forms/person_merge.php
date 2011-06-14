@@ -228,8 +228,7 @@ else {
             WHERE person_fk = $source
         ");
         // insert "event" for source person with a link to target person
-        // this event note should be customized by the user
-        $event_note = "med [p=$target|ID-nr. $target]";
+        $event_note = " [p=$target|ID #$target]";
         $event = fetch_val("
             INSERT INTO events (
                 tag_fk,

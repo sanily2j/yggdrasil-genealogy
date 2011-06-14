@@ -80,7 +80,7 @@ else {
     set_last_selected_place($place);
     set_last_edit($person);
     $source_id = add_source($person, $tag, $event, $_POST['source_id'], $_POST['source_text']);
-    if ($tag == 31) // skifte
+    if ($tag == 31) // probate
         pg_query("SELECT generate_probate_witnesses($event)");
     if ($_POST['age']) // generate birth event
         add_birth($person, $event_date, $_POST['age'], $source_id);
