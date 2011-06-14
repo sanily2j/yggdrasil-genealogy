@@ -136,12 +136,18 @@ else { // do action
         }
     }
     else { // insert new relation
-        $relation = get_next('relation');
-        pg_query("
-            INSERT INTO
-                relations (relation_id, child_fk, parent_fk, surety_fk)
-            VALUES
-                ($relation, $person, $parent, $surety)
+        $relation = fetch_val("
+            INSERT INTO relations (
+                child_fk,
+                parent_fk,
+                surety_fk
+            )
+            VALUES (
+                $person,
+                $parent,
+                $surety
+            )
+            RETURNING relation_id
         ");
     }
     if ($_POST['bsource']) { // use source(s) for birth event
@@ -174,18 +180,11 @@ else { // do action
         }
     }
     else if ($_POST['source_id']) { // if not bsource
-        // this code is mostly a duplication of the global add_source() function
-        // but as this is the only place where relation citations may be entered
-        // directly, I see no need to generalise it
-        $source_id = $_POST['source_id'];
         if ($_POST['source_text']) { // add new source
-            $parent_id = $source_id;
-            $source_id = get_next('source');
+            $parent_id = $_POST['source_id'];
             $text = note_to_db($_POST['source_text']);
-            $sort = get_sort($parent_id, $text, 1);
-            pg_query("
-                INSERT INTO sources
-                VALUES ($source_id, $parent_id, '$text', $sort)
+            // use two-param overload of add_source
+            $source_id = fetch_val("SELECT add_source($parent_id, '$text')
             ");
             // remove old citation if new source is an expansion,
             // ie. parent of new source == old source

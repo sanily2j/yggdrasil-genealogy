@@ -195,7 +195,7 @@ $$ LANGUAGE PLPGSQL VOLATILE;
 
 -- Above queries have all been integrated in datadef.sql and functions.sql
 
--- Rev. 25, 2011-06-13
+-- Rev. 26, 2011-06-14
 -- Added sequence to events
 -- Affected files:
 --      ddl/datadef.sql
@@ -231,3 +231,16 @@ END
 $$ LANGUAGE PLPGSQL VOLATILE;
 
 -- Above queries have all been integrated in datadef.sql and functions.sql
+
+-- Rev. 27, 2011-06-14
+-- Added sequence to relations
+-- Affected files:
+--      ddl/datadef.sql
+--      forms/person_insert.php
+--      forms/relation_edit.php
+CREATE SEQUENCE relations_relation_id_seq;
+SELECT SETVAL('relations_relation_id_seq', MAX(relation_id)) FROM relations;
+ALTER TABLE relations ALTER COLUMN relation_id SET DEFAULT NEXTVAL('relations_relation_id_seq');
+ALTER SEQUENCE relations_relation_id_seq OWNED BY relations.relation_id;
+
+-- Above queries have all been integrated in datadef.sql
