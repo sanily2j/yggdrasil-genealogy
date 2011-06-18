@@ -176,6 +176,7 @@ $_Source = 'Kilde';
 $_Source_date = 'Kildedato';
 $_Source_Manager = 'Kildebehandler';
 $_Sources = 'Kilder';
+$_Source_types = 'Kildetyper';
 $_SP = 'HP2'; // second principal (short form)
 $_Spouse = 'Ektefelle';
 $_spouse = 'ektefelle';

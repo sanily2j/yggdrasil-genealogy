@@ -35,20 +35,36 @@
  **************************************************************************/
 
 function print_birth($p) {
-    if ($row = fetch_row_assoc("SELECT event_type_number, event_date, event_place
-                                FROM person_events
-                                WHERE person = $p
-                                AND event_type_number IN (2,62,1035)"))
+    if ($row = fetch_row_assoc("
+        SELECT
+            event_type_number,
+            event_date,
+            event_place
+        FROM
+            person_events
+        WHERE
+            person = $p
+        AND
+            event_type_number IN (2,62,1035)
+        "))
         echo para(get_tag_name($row['event_type_number'])
             . conc(fuzzydate($row['event_date']))
             . conc($row['event_place']), "bmd");
 }
 
 function print_death($p) {
-    if ($row = fetch_row_assoc("SELECT event_type_number, event_date, event_place
-                                FROM person_events
-                                WHERE person = $p
-                                AND event_type_number = ".DEAT))
+    if ($row = fetch_row_assoc("
+        SELECT
+            event_type_number,
+            event_date,
+            event_place
+        FROM
+            person_events
+        WHERE
+            person = $p
+        AND
+            event_type_number = ".DEAT
+        ))
         echo para(get_tag_name($row['event_type_number'])
             . conc(fuzzydate($row['event_date']))
             . conc($row['event_place']), "bmd");
@@ -56,8 +72,16 @@ function print_death($p) {
 
 function print_marriage($p, $p2=0)  {
     global $_with, $_Married, $language;
-    $handle = pg_query("SELECT event_date, place_name, spouse
-                        FROM marriages WHERE person = $p");
+    $handle = pg_query("
+        SELECT
+            event_date,
+            place_name,
+            spouse
+        FROM
+            marriages
+        WHERE
+            person = $p
+    ");
     while ($row = pg_fetch_assoc($handle)) {
         if (!$p2 || $p2 != $row['spouse']) {
             echo para($_Married
@@ -81,12 +105,23 @@ function pop_child($child, $parent, $coparent=0) {
         $sentence .= conc(span_type('+', "alert"));
     $sentence = para($sentence, "name");
     // print relation source(s)
-    $handle = pg_query("SELECT source_text
-                            FROM relation_notes
-                            WHERE note_id = (SELECT relation_id
-                                FROM relations
-                                WHERE child_fk = $child
-                                AND parent_fk = $parent)");
+    $handle = pg_query("
+        SELECT
+            source_text
+        FROM
+            relation_notes
+        WHERE
+            note_id = (
+            SELECT
+                relation_id
+            FROM
+                relations
+            WHERE
+                child_fk = $child
+            AND
+                parent_fk = $parent
+        )
+    ");
     while ($row = pg_fetch_assoc($handle)) {
         $sentence .= para(paren($_Source . ':'
             . conc(ltrim($row['source_text']))), "childsource");
@@ -103,9 +138,15 @@ function cite($record, $type, $person, $principal=1) {
     // $record is event_id or relation_id, depending on $type
     // $type can take the values 'event' or 'relation'
     global $_delete;
-    $handle = pg_query("SELECT source_id
-                        FROM " . $type . "_notes
-                        WHERE note_id = $record");
+    $notes = $type . '_notes';
+    $handle = pg_query("
+        SELECT
+            source_id
+        FROM
+            $notes
+        WHERE
+            note_id = $record
+    ");
     while ($row = pg_fetch_row($handle)) {
         // build string for each citation
         // note side effect of cite_seq() - cf. ddl/functions.sql
@@ -382,9 +423,9 @@ if (pg_num_rows($handle)) {
     echo "<h4>$_Sources</h4>\n";
     echo "<ol class=\"sources\">\n";
     while ($sources = pg_fetch_assoc($handle)) {
-        echo li(($sources['part_type'] == 0 ?
-                span_type($sources['source_text'], 'alert') :
-                $sources['source_text'])
+        echo li(($sources['part_type'] == 0
+                ? span_type($sources['source_text'], 'alert')
+                : $sources['source_text'])
             . conc(span_type(paren(
                 to_url('./forms/source_edit.php',
                             array(

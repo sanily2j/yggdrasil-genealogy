@@ -38,15 +38,42 @@ require "./header.php";
 echo "<div class=\"normal\">\n";
 echo "<h2>$title</h2>\n";
 echo "<p><a href=\"./tag_manager.php\">Alle hendelser</a></p>\n";
-$handle = pg_query("SELECT event_id, event_name, event_date, place_name, p1, p2
-                        FROM tag_events WHERE tag_fk = $tag
-                        ORDER BY event_date, event_id");
+$handle = pg_query("
+    SELECT
+        event_id,
+        event_name,
+        event_date,
+        place_name,
+        p1,
+        p2
+    FROM
+        tag_events
+    WHERE
+        tag_fk = $tag
+    ORDER BY
+        event_date,
+        event_id
+");
 while ($row = pg_fetch_assoc($handle)) {
     echo '<p>[' . $row['event_id'] . '] ';
     echo $row['event_name'];
     echo ' ' . fuzzydate($row['event_date']);
     echo ' ' . $row['place_name'] . ': ';
-    echo list_participants($row['event_id']) . "</p>\n";
+    echo list_participants($row['event_id']);
+    // print source(s)
+    $innerhandle = pg_query("
+    SELECT
+        source_text
+    FROM
+        event_notes
+    WHERE
+        note_id = " . $row['event_id']
+    );
+    while ($row = pg_fetch_assoc($innerhandle)) {
+            echo conc(paren($_Source . ':'
+            . conc(ltrim($row['source_text']))));
+    }
+    echo "</p>\n";
 }
 echo "<p><a href=\"./tag_manager.php\">Alle hendelser</a></p>\n";
 echo "</div>\n";

@@ -244,3 +244,78 @@ ALTER TABLE relations ALTER COLUMN relation_id SET DEFAULT NEXTVAL('relations_re
 ALTER SEQUENCE relations_relation_id_seq OWNED BY relations.relation_id;
 
 -- Above queries have all been integrated in datadef.sql
+
+-- Rev. 29, 2011-06-18
+-- Added function get_lang(); amended function get_sort()
+-- Affected files:
+--      ddl/functions.sql
+CREATE OR REPLACE FUNCTION get_lang() RETURNS TEXT AS $$
+SELECT user_lang FROM user_settings WHERE username = current_user
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION get_sort(INTEGER, INTEGER, TEXT) RETURNS int_text AS $$
+-- parse source text to infer sort order. Note that this function utilizes a
+-- micro-language of "commands" which may be embedded in the input text.
+-- CREATE TYPE int_text AS (number INTEGER, string TEXT)
+DECLARE
+    par_id INTEGER := $1;
+    srt INTEGER := $2;
+    txt TEXT := $3;
+    lang TEXT; -- language code
+    sort_text int_text;
+BEGIN
+    -- default condition: if nothing is modified, return input values
+    sort_text.number := srt;
+    sort_text.string := txt;
+    -- 1) use page number for sort order (low priority, may be overridden)
+    SELECT get_lang() INTO lang;
+    IF srt = 1 THEN -- don't apply this rule unless sort = default
+        IF lang = 'en' THEN
+            IF txt SIMILAR TO E'%page \\d+%' THEN
+                sort_text.number := (REGEXP_MATCHES(txt, E'page (\\d+)'))[1]::INTEGER;
+            END IF;
+        END IF;
+        IF lang = 'nb' THEN
+            IF txt SIMILAR TO E'%side \\d+%' THEN
+                sort_text.number := (REGEXP_MATCHES(txt, E'side (\\d+)'))[1]::INTEGER;
+            END IF;
+        END IF;
+    END IF;
+    -- 2) use ^#(\d+) for sort order
+    IF txt SIMILAR TO E'#\\d+%' THEN
+        sort_text.number := (REGEXP_MATCHES(txt, E'^#(\\d+)'))[1]::INTEGER;
+        sort_text.string := REGEXP_REPLACE(txt, E'^#\\d+ ', ''); -- strip #n from text
+    END IF;
+    -- 3) use ^!(\d+) for sort order, increment sort order for those above
+    -- in the same group, effectively making an insert
+    IF txt SIMILAR TO E'!\\d+%' THEN
+        sort_text.number := (REGEXP_MATCHES(txt, E'^!(\\d+)'))[1]::INTEGER;
+        UPDATE sources SET sort_order = sort_order + 1
+            WHERE get_source_gp(source_id) =
+                (SELECT parent_id FROM sources WHERE source_id = par_id)
+            AND sort_order >= sort_text.number;
+        sort_text.string := REGEXP_REPLACE(txt, E'^!\\d+ ', ''); -- strip !n from text
+    END IF;
+    -- 4) use ^=(\d+) for sort order, increment sort order for those above
+    -- with the same parent node, effectively making an insert
+    IF txt SIMILAR TO E'=\\d+%' THEN
+        sort_text.number := (REGEXP_MATCHES(txt, E'^=(\\d+)'))[1]::INTEGER;
+        UPDATE sources SET sort_order = sort_order + 1
+            WHERE parent_id = par_id
+            AND sort_order >= sort_text.number;
+        sort_text.string := REGEXP_REPLACE(txt, E'^=\\d+ ', ''); -- strip !n from text
+    END IF;
+    -- 5) increment from max(sort_order) of source group
+    IF txt LIKE '++ %' THEN
+        SELECT MAX(sort_order) + 1
+            FROM sources
+            WHERE get_source_gp(source_id) =
+                (SELECT parent_id FROM sources WHERE source_id = par_id)
+        INTO sort_text.number;
+        sort_text.string := REPLACE(txt, '++ ', ''); -- strip symbol from text
+    END IF;
+    RETURN sort_text;
+END
+$$ LANGUAGE plpgsql VOLATILE;
+
+-- Above functions have been integrated in functions.sql

@@ -168,7 +168,7 @@ if ($props['number_of_events']) {
     $handle = pg_query("
         SELECT
             e.event_id,
-            get_tag_name(e.tag_fk) AS event_name,
+            e.tag_fk,
             e.event_date,
             get_place_name(e.place_fk) AS event_place,
             link_expand(e.event_note) AS event_note,
@@ -189,7 +189,7 @@ if ($props['number_of_events']) {
         $event = $row['event_id'];
         echo '<li>';
         echo square_brace($event)
-            . conc(italic($row['event_name']))
+            . conc(italic(get_tag_name($row['tag_fk'])))
             . conc(fuzzydate($row['event_date']))
             . conc($row['event_place']);
         if ($row['event_type'] < 3)
@@ -327,17 +327,32 @@ if ($props['number_of_subsources']) {
             source_date,
             source_text
     ");
+    // change between FALSE and TRUE to select terse / informative mode
+    $friendly = TRUE;
     while ($row = pg_fetch_assoc($handle)) {
         $id = $row['source_id'];
         echo '<tr>';
-        echo td_numeric(square_brace(to_url($_SERVER['PHP_SELF'],
-                                        array('node' => $id), $id, $_goto)));
-        echo td_numeric(square_brace($row['sort_order']));
-        echo td(paren(to_url('./forms/source_edit.php',
-                array(
-                    'person'    => 0,
-                    'source'    => $id
-                ), $row[$label], $_edit)));
+        if ($friendly) {
+            echo td(paren(to_url($_SERVER['PHP_SELF'],
+            array('node' => $id), $_Select)
+            . '&nbsp;/&nbsp;'
+            . to_url('./forms/source_edit.php',
+                    array(
+                        'person'    => 0,
+                        'source'    => $id), $_Edit)));
+            echo td_numeric(square_brace($row['sort_order']));
+            echo td(paren($row[$label]));
+        }
+        else {
+            echo td_numeric(square_brace(to_url($_SERVER['PHP_SELF'],
+                                    array('node' => $id), $id, $_goto)));
+            echo td_numeric(square_brace($row['sort_order']));
+            echo td(paren(to_url('./forms/source_edit.php',
+                    array(
+                        'person'    => 0,
+                        'source'    => $id
+                    ), $row[$label], $_edit)));
+        }
         if ($row['e'] || $row['r'] || $row['s']) {
             echo td(square_brace(italic($row['source_date']))
                 . ' ' . $row['txt']
