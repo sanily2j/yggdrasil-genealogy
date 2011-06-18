@@ -84,6 +84,7 @@ if ($source_manager) {
         $show_delete = true;
         echo menu_item("./forms/source_toggle_sd.php?node=$self", "$_Hide $_deletion_links");
     }
+    echo menu_item("./source_types.php", $_Source_types);
     echo menu_item($_SERVER['PHP_SELF'] . "?node=" . $props['parent_id'], $_Up);
     echo menu_item($_SERVER['PHP_SELF'] . "?node=" . $props['prev_page'], "&lt; $_Previous", $title_prev);
     echo menu_item($_SERVER['PHP_SELF'] . "?node=" . $props['next_page'], "$_Next &gt;", $title_next);

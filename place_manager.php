@@ -40,7 +40,7 @@ $handle = pg_query("SELECT place_id, place_name, place_count FROM pm_view");
 while ($row = pg_fetch_assoc($handle)) {
     echo "<tr>";
     if ($row['place_count'] == 0)
-        echo "<td><strong><a href=\"./forms/place_delete.php?place_id=".$row['place_id']."\">slett</a></strong></td>";
+        echo "<td><strong><a href=\"./forms/place_delete.php?place_id=".$row['place_id']."\">$_delete</a></strong></td>";
     else
         echo "<td><a href=\"./place_view.php?place_id=".$row['place_id']."\">$_report</a></td>";
     echo "<td align=\"right\">".$row['place_count']."</td>";

@@ -21,6 +21,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+CREATE OR REPLACE FUNCTION get_lang() RETURNS TEXT AS $$
+SELECT user_lang FROM user_settings WHERE username = current_user
+$$ LANGUAGE SQL STABLE;
+
 CREATE OR REPLACE FUNCTION get_parent(INTEGER,INTEGER) RETURNS INTEGER AS $$
 SELECT COALESCE(
     (SELECT parent_fk FROM relations r, persons p
@@ -653,16 +657,24 @@ DECLARE
     par_id INTEGER := $1;
     srt INTEGER := $2;
     txt TEXT := $3;
+    lang TEXT; -- language code
     sort_text int_text;
 BEGIN
     -- default condition: if nothing is modified, return input values
     sort_text.number := srt;
     sort_text.string := txt;
     -- 1) use page number for sort order (low priority, may be overridden)
-    -- replace "side" with your equivalent to "page"
+    SELECT get_lang() INTO lang;
     IF srt = 1 THEN -- don't apply this rule unless sort = default
-        IF txt SIMILAR TO E'%side \\d+%' THEN
-            sort_text.number := (REGEXP_MATCHES(txt, E'side (\\d+)'))[1]::INTEGER;
+        IF lang = 'en' THEN
+            IF txt SIMILAR TO E'%page \\d+%' THEN
+                sort_text.number := (REGEXP_MATCHES(txt, E'page (\\d+)'))[1]::INTEGER;
+            END IF;
+        END IF;
+        IF lang = 'nb' THEN
+            IF txt SIMILAR TO E'%side \\d+%' THEN
+                sort_text.number := (REGEXP_MATCHES(txt, E'side (\\d+)'))[1]::INTEGER;
+            END IF;
         END IF;
     END IF;
     -- 2) use ^#(\d+) for sort order
