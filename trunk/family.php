@@ -357,7 +357,7 @@ while ($row = pg_fetch_assoc($handle)) {
         // display each "event" as
         // Event_id EVENT-TYPE[ DATE][ PLACE][ with Name Of Coprincipal][: NOTE]
         // note that every item except for EVENT-TYPE is optional.
-        $event_string .= "[$event] ";
+        $event_string .= span_type("[$event]", 'hotlink') . ' ';
         // preliminary hack to display non-participant of probate event
         // note that tag type id is hard coded, which is prbly not a good idea.
         if ($row['event_type_number'] == 31 && !(is_principal($person, $event))) {

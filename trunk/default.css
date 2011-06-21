@@ -373,3 +373,7 @@ td.vline { /* vertical line */
 ul.plainlist {
     list-style-type : none;
 }
+
+barn {
+    font-weight : bold;
+}
