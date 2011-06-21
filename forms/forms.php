@@ -190,11 +190,11 @@ function textarea_input($prompt, $rows, $cols, $name, $value='', $tab='') {
 }
 
 function name_input() {
-    global $_Given, $_Surname, $_Patronym, $_Occupation, $_Toponym, $_Epithet;
+    global $_Name, $_Given, $_Surname, $_Patronym, $_Occupation, $_Toponym, $_Epithet;
     echo "<tr>\n";
     echo "<td>&nbsp;</td>";
     echo "<td colspan=\"2\">\n";
-    echo "<fieldset><legend>Navn</legend>\n";
+    echo "<fieldset><legend>$_Name</legend>\n";
     echo "<table>\n";
     echo "<tr><td>$_Given:</td>\n";
     echo "<td><input type=\"text\" size=\"35\" name=\"given\" tabindex=\"1\" /></td>\n";

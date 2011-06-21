@@ -1,4 +1,4 @@
 function nanny(url) {
-    if(confirm("Vil du slette denne hendelsen?"))
+    if(confirm("Do you want to delete this event?"))
         location.href = url;
 }

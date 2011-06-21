@@ -126,6 +126,7 @@ $_Merge_persons = 'Merge persons';
 $_Merge_persons_failed = 'Merge persons failed';
 $_Mother = 'Mother';
 $_mother = 'mother';
+$_Name = 'Name';
 $_Next = 'Next';
 $_No = 'No';
 $_Non_Clean = 'Mark as Not Cleaned';

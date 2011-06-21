@@ -126,6 +126,7 @@ $_Merge_persons = 'Slå sammen personer';
 $_Merge_persons_failed = 'Sammenslåing forkastet';
 $_Mother = 'Mor';
 $_mother = 'mor';
+$_Name = 'Navn';
 $_Next = 'Neste';
 $_No = 'Nei';
 $_Not_died_young = 'Ikke død ung';
