@@ -310,6 +310,14 @@ td.vline { /* vertical line */
     color : #808080;
 }
 
+ul.plainlist {
+    list-style-type : none;
+}
+
+child {
+    font-weight : bold;
+}
+
 /* print style */
 
 @media print {
@@ -368,12 +376,4 @@ td.vline { /* vertical line */
             margin-left : 0;
             margin-right : 0;
     }
-}
-
-ul.plainlist {
-    list-style-type : none;
-}
-
-barn {
-    font-weight : bold;
 }
