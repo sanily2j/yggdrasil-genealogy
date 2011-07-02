@@ -184,8 +184,7 @@ else { // do action
             $parent_id = $_POST['source_id'];
             $text = note_to_db($_POST['source_text']);
             // use two-param overload of add_source
-            $source_id = fetch_val("SELECT add_source($parent_id, '$text')
-            ");
+            $source_id = fetch_val("SELECT add_source($parent_id, '$text')");
             // remove old citation if new source is an expansion,
             // ie. parent of new source == old source
             pg_query("
@@ -197,6 +196,8 @@ else { // do action
                     source_fk = $parent_id
             ");
         }
+        else
+            $source_id = $_POST['source_id'];
         // Entering the same source twice for the same relation will violate the
         // composite primary key (relation_fk, source_fk) constraint.
         // Test before trying to insert a relation citation.
