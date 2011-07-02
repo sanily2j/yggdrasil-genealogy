@@ -314,9 +314,11 @@ ul.plainlist {
     list-style-type : none;
 }
 
-child {
+/* testing XML attribute selector */
+name[role|='child'] {
     font-weight : bold;
 }
+
 
 /* print style */
 
