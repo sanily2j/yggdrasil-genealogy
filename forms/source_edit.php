@@ -54,9 +54,8 @@ if (!isset($_POST['posted'])) {
     hidden_input('source', $source);
     hidden_input('ret', $ret);
     source_num_input("$_Parent_node:", 'psource', $psource);
-    textarea_input("$_Text:", 5, 100, 'text', $text);
-    text_input('URL:', 100, 'url');
-    text_input('Template:', 100, 'template', $template);
+    textarea_input("$_Text:", 10, 100, 'text', $text);
+    textarea_input('Template:', 3, 100, 'template', $template);
     select_source_type("Type", "part_type", $source_type);
     select_source_type("$_Subtype:", "ch_part_type", $ch_part_type);
     text_input("$_Sort_order:", 20, 'sort', $sort);
@@ -84,11 +83,6 @@ else {
     $sort = get_sort($psource, $text, $sort);
     $text = note_to_db($text);
     $ret = $_POST['ret'];
-    $url = $_POST['url'];
-    if ($url) { // wrap text in url
-        $url = str_replace('http:', '', $url);
-        $text = "<a href=\"$url\">$text</a>.";
-    }
     $template = $_POST['template'];
     if ($template) {
         if (fetch_val("

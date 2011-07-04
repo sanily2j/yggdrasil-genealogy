@@ -123,7 +123,7 @@ $$ LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION dp(INTEGER) RETURNS SETOF TEXT AS $$
 -- simple html dump of sources
-    SELECT '<p>' || ss_link_expand(source_text) || '</p>'
+    SELECT '<p>' || strip_tags(ss_link_expand(source_text)) || '</p>'
     FROM sources
     WHERE parent_id=$1
     ORDER BY sort_order

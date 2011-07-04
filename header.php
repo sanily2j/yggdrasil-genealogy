@@ -1,8 +1,7 @@
 <?php echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="no" lang="no">
-<?php
-
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:TEI="http://www.tei-c.org/ns/1.0" xml:lang="en" lang="en">
+<!--
 /***************************************************************************
  *   header.php                                                            *
  *   Yggdrasil: Common page header and sidebar menu                        *
@@ -25,8 +24,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-?>
+-->
 <head>
 <?php echo ("<title>$title</title>\n"); ?>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

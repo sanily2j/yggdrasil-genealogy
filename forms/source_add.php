@@ -54,9 +54,8 @@ if (!isset($_POST['posted'])) {
     form_begin($form, $_SERVER['PHP_SELF']);
     hidden_input('posted', 1);
     source_num_input("$_Parent_node:", 'node', $node);
-    textarea_input("$_Text:", 5, 100, 'text', $template);
-    text_input('URL:', 100, 'url');
-    text_input('Template:', 100, 'template');
+    textarea_input("$_Text:", 10, 100, 'text', $template);
+    textarea_input('Template:', 3, 100, 'template');
     select_source_type('Type:', 'part_type', $part_type);
     select_source_type("$_Subtype:", 'ch_part_type', 0);
     text_input("$_Sort_order:", 20, 'sort');
@@ -68,17 +67,10 @@ if (!isset($_POST['posted'])) {
 else {
     $node = $_POST['node'];
     $text = rtrim($_POST['text']);
-    $url = $_POST['url'];
-    if ($url) {
-        $url = str_replace('http:', '', $url);
-        $text = "<a href=\"$url\">$text</a>.";
-    }
     $sort = $_POST['sort'] ?: 1;
     $part_type = $_POST['part_type'];
     $ch_part_type = $_POST['ch_part_type'];
     $source_date = $_POST['source_date'];
-    // add_source() does several interdependent queries,
-    // and _must_ be called from within a transaction
     $template = $_POST['template'];
     pg_query("BEGIN");
     $source_id = add_source(0, 0, 0, $node, $text, $sort);
