@@ -51,6 +51,9 @@ BEGIN
         str := REPLACE(str, tmp, get_person_title(BTRIM(tmp, 'x')::INTEGER));
     END LOOP;
     str := _my_expand(str);
+    -- remove TEI tags
+    str := regexp_replace(str, E'<name.*?>(.+?)</name>', E'\\1', 'g');
+    str := regexp_replace(str, E'<place.*?>(.+?)</place>', E'\\1', 'g');
     RETURN str;
 END
 $$ LANGUAGE plpgsql STABLE;
@@ -123,7 +126,7 @@ $$ LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION dp(INTEGER) RETURNS SETOF TEXT AS $$
 -- simple html dump of sources
-    SELECT '<p>' || strip_tags(ss_link_expand(source_text)) || '</p>'
+    SELECT '<p>' || ss_link_expand(source_text) || '</p>'
     FROM sources
     WHERE parent_id=$1
     ORDER BY sort_order
