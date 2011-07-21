@@ -70,8 +70,9 @@ else {
     if ($tag == 0) { // insert new tag
         pg_query("BEGIN WORK");
         $tag = get_next('tag');
+        // SMS 20 July 2011: $tag_type repositioned in tags table, was last, now third column
         pg_query("INSERT INTO tags VALUES
-                    ($tag, $tag_group, '$tag_name', '$gedcom_tag', '$tag_label', $tag_type)");
+                    ($tag, $tag_group, $tag_type, '$tag_name', '$gedcom_tag', '$tag_label')");
         pg_query("COMMIT");
     }
     else { // modify existing tag

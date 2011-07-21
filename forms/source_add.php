@@ -67,7 +67,8 @@ if (!isset($_POST['posted'])) {
 else {
     $node = $_POST['node'];
     $text = rtrim($_POST['text']);
-    $sort = $_POST['sort'] ?: 1;
+    // SMS 20 July 2011: was [$sort = $_POST['sort'] ?: 1;] generated php syntax error if sort was null
+    $sort = $_POST['sort'] ? $_POST['sort'] : 1;
     $part_type = $_POST['part_type'];
     $ch_part_type = $_POST['ch_part_type'];
     $source_date = $_POST['source_date'];
