@@ -319,3 +319,14 @@ END
 $$ LANGUAGE plpgsql VOLATILE;
 
 -- Above functions have been integrated in functions.sql
+
+-- Rev. 38, 2011-07-30
+-- Removed column user_tz from table user_settings
+-- Affected files:
+--      user_settings.php
+--      settings/settings.php
+--      ddl/datadef.sql
+
+ALTER TABLE user_settings DROP COLUMN user_tz;
+
+-- Above change has been integrated in datadef.sql

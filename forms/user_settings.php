@@ -38,8 +38,7 @@ if (!isset($_POST['posted'])) {
             place_filter_content,
             show_delete,
             initials,
-            user_lang,
-            user_tz
+            user_lang
         FROM
             user_settings
         WHERE
@@ -58,11 +57,11 @@ if (!isset($_POST['posted'])) {
     echo "<option";
     if ($settings['user_lang'] == 'en')
             echo " selected=\"selected\"";
-    echo " value=\"en\">en</option>\n";
+    echo " value=\"en\">English</option>\n";
     echo "<option";
     if ($settings['user_lang'] == 'nb')
             echo " selected=\"selected\"";
-    echo " value=\"nb\">nb</option>\n";
+    echo " value=\"nb\">Norsk (bokmål)</option>\n";
     echo "</select></td></tr><tr><td colspan=\"2\">&nbsp;</td></tr>\n";
 
     // section: User details
@@ -71,7 +70,7 @@ if (!isset($_POST['posted'])) {
     text_input("$_Email_addr:", 40, 'user_email', $settings['user_email']);
     text_input("$_Initials:", 10, 'initials', $settings['initials']);
     echo "<tr><td colspan=\"2\">&nbsp;</td></tr>\n";
-    
+
     // Section: place filter settings
     echo "<tr><td colspan=\"2\"><b>$_Place_filter</b></td></tr>\n";
     echo "<tr><td>$_Level:  </td><td>\n<select name=\"place_filter_level\">\n";
@@ -95,7 +94,6 @@ if (!isset($_POST['posted'])) {
     text_input("$_Contents:", 10, 'place_filter_content', $settings['place_filter_content']);
     echo "<tr><td colspan=\"2\">&nbsp;</td></tr>\n";
 
-    text_input("$_Time_zone:", 20, 'user_tz', $settings['user_tz']);
     form_submit();
     form_end();
     echo "</body>\n</html>\n";
@@ -111,8 +109,7 @@ else {
             place_filter_level = '" . $_POST['place_filter_level'] . "',
             place_filter_content = '" . $_POST['place_filter_content'] . "',
             initials = '" . $_POST['initials'] . "',
-            user_lang = '" . $_POST['user_lang'] . "',
-            user_tz = '" . $_POST['user_tz'] . "'
+            user_lang = '" . $_POST['user_lang'] . "'
         WHERE
             username = current_user
     ");
