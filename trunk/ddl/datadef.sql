@@ -388,8 +388,7 @@ CREATE TABLE user_settings (
     place_filter_content    TEXT NOT NULL DEFAULT '%',
     show_delete             BOOLEAN NOT NULL DEFAULT FALSE,
     initials                TEXT NOT NULL DEFAULT '',
-    user_lang               TEXT NOT NULL DEFAULT 'en',
-    user_tz                 TEXT NOT NULL DEFAULT 'Europe/Oslo'
+    user_lang               TEXT NOT NULL DEFAULT 'en'
 );
 
 INSERT INTO user_settings DEFAULT VALUES;

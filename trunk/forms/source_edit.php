@@ -126,7 +126,8 @@ else {
             $source
         )
     );
-   // this script is called from two different locations. One sets $person, the other doesn't.
+   // this script is called from two different locations.
+   // One sets $person, the other doesn't.
     if ($person) {
         header("Location: $app_root/family.php?person=$person");
     }

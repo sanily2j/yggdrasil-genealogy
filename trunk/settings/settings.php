@@ -48,8 +48,7 @@
 $handle = pg_query("
     SELECT
         initials,
-        user_lang,
-        user_tz
+        user_lang
     FROM
         user_settings
     WHERE
@@ -65,7 +64,10 @@ $row = pg_fetch_assoc($handle);
     $language = $row['user_lang'];
 
 // set default timezone
-    date_default_timezone_set($row['user_tz']);
+// DEPRECATED: Set timezone globally in php.ini instead, eg.
+// date.timezone = 'Europe/Oslo'
+
+// date_default_timezone_set($row['user_tz']);
 
 // set internal PHP encoding to UTF-8
     mb_internal_encoding("UTF-8");
