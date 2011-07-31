@@ -56,8 +56,13 @@ if (!isset($_POST['posted'])) {
     source_num_input("$_Parent_node:", 'psource', $psource);
     textarea_input("$_Text:", 10, 100, 'text', $text);
     textarea_input('Template:', 3, 100, 'template', $template);
-    select_source_type("Type", "part_type", $source_type);
-    select_source_type("$_Subtype:", "ch_part_type", $ch_part_type);
+    select_source_type("Type", 'part_type', $source_type);
+    if (fetch_val("SELECT is_leaf($source)") == 't') {
+        hidden_input('ch_part_type', $ch_part_type);
+    }
+    else {
+        select_source_type("$_Subtype:", 'ch_part_type', $ch_part_type);
+    }
     text_input("$_Sort_order:", 20, 'sort', $sort);
     text_input("$_Source_date:", 20, 'source_date', $source_date);
     form_submit();
@@ -79,7 +84,7 @@ else {
     $psource = $_POST['psource'] ? $_POST['psource'] : 0;
     $sort = $_POST['sort'] ? $_POST['sort'] : 1;
     $part_type = $_POST['part_type'];
-    $ch_part_type = $_POST['ch_part_type'];
+    $ch_part_type = isset($_POST['ch_part_type']) ? $_POST['ch_part_type'] : 0;
     $sort = get_sort($psource, $text, $sort);
     $text = note_to_db($text);
     $ret = $_POST['ret'];

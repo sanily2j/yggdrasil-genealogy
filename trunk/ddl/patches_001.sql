@@ -330,3 +330,18 @@ $$ LANGUAGE plpgsql VOLATILE;
 ALTER TABLE user_settings DROP COLUMN user_tz;
 
 -- Above change has been integrated in datadef.sql
+
+-- Rev. 39, 2011-07-31
+-- Added some business logic wrt to the is_leaf source property
+-- Affected files:
+--      ddl/functions.sql
+--      forms/source_edit.php
+--      source_manager.php
+
+CREATE OR REPLACE FUNCTION is_leaf(INTEGER) RETURNS BOOLEAN AS $$
+SELECT is_leaf FROM source_part_types WHERE part_type_id = (
+    SELECT part_type FROM sources WHERE source_id = $1
+)
+$$ LANGUAGE sql STABLE;
+
+-- Above function has been integrated in functions.sql
