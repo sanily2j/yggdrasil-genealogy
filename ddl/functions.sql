@@ -482,6 +482,12 @@ SELECT
     THEN TRUE ELSE FALSE END
 $$ LANGUAGE sql STABLE;
 
+CREATE OR REPLACE FUNCTION is_leaf(INTEGER) RETURNS BOOLEAN AS $$
+SELECT is_leaf FROM source_part_types WHERE part_type_id = (
+    SELECT part_type FROM sources WHERE source_id = $1
+)
+$$ LANGUAGE sql STABLE;
+
 CREATE OR REPLACE FUNCTION set_last_selected_place(INTEGER) RETURNS VOID AS $$
 -- updates recent_places
     DELETE FROM recent_places WHERE place_fk = $1;

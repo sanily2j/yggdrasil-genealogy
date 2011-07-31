@@ -79,7 +79,8 @@ $props = fetch_row_assoc("
         sort_order,
         source_date,
         part_type,
-        spt.$label
+        spt.$label,
+        spt.is_leaf
     FROM
         sources, source_part_types spt
     WHERE
@@ -377,9 +378,9 @@ if ($props['number_of_subsources']) {
     echo "</table>\n";
 }
 
-// extra add source link to avoid scrolling
-echo para(to_url('./forms/source_add.php',
-    array('node' => $self), $_Add_source));
+if ($props['is_leaf'] == "f")
+    echo para(to_url('./forms/source_add.php',
+        array('node' => $self), $_Add_source));
 
 echo "</div>\n";
 
