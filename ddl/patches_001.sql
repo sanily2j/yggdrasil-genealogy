@@ -345,3 +345,75 @@ SELECT is_leaf FROM source_part_types WHERE part_type_id = (
 $$ LANGUAGE sql STABLE;
 
 -- Above function has been integrated in functions.sql
+
+-- Rev. 40, 2011-08-03
+-- renumbered tag_groups, added view person_event_groups, updated family.php
+-- Affected files:
+--      ddl/datadef.sql
+--      ddl/views.sql
+--      family.php
+
+INSERT INTO tag_groups VALUES (1,'Birth','Fødsel');
+UPDATE tags SET tag_group_fk = 1 WHERE tag_group_fk = 3;
+DELETE FROM tag_groups WHERE tag_group_id = 3;
+INSERT INTO tag_groups VALUES (2,'Marriage','Ekteskap');
+UPDATE tags SET tag_group_fk = 2 WHERE tag_group_fk = 4;
+DELETE FROM tag_groups WHERE tag_group_id = 4;
+INSERT INTO tag_groups VALUES (3,'Death','Død');
+UPDATE tags SET tag_group_fk = 3 WHERE tag_group_fk = 6;
+DELETE FROM tag_groups WHERE tag_group_id = 6;
+INSERT INTO tag_groups VALUES (4,'Burial','Begravelse');
+UPDATE tags SET tag_group_fk = 4 WHERE tag_group_fk = 7;
+DELETE FROM tag_groups WHERE tag_group_id = 7;
+
+CREATE OR REPLACE VIEW person_event_groups AS
+SELECT
+    p.person_fk AS person,
+    e.sort_date AS sort_date,
+    e.event_date AS event_date,
+    e.event_id AS event_key,
+    e.place_fk AS place_key,
+    e.tag_fk AS tag_key,
+    t.tag_group_fk AS group_key
+FROM
+    participants p, tags t, events e
+WHERE
+    t.tag_id = e.tag_fk
+AND
+    e.event_id = p.event_fk
+ORDER BY
+    e.sort_date;
+
+CREATE OR REPLACE VIEW marriages AS
+SELECT
+    p.person_fk AS person,
+    e.event_id AS event,
+    e.event_date,
+    e.sort_date,
+    get_place_name(e.place_fk) AS place_name,
+    get_principal(e.event_id, p.person_fk) AS spouse,
+    get_person_name(get_principal(e.event_id, p.person_fk)) AS spouse_name
+FROM
+    events e,
+    participants p,
+    tags t
+WHERE
+    p.event_fk = e.event_id
+AND
+    e.tag_fk = t.tag_id
+AND
+    t.tag_group_fk = 2
+ORDER BY
+    sort_date;
+
+CREATE OR REPLACE VIEW birth_sources AS
+SELECT
+    person, event, tag_type, source_fk, event_fk
+FROM
+    principals, event_citations
+WHERE
+    event=event_fk
+AND
+    tag_type=2;
+
+-- Above changes have been integrated in datadef.sql and views.sql

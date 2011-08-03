@@ -73,11 +73,11 @@ CREATE TABLE tag_groups (
     tag_group_name_nb   VARCHAR(20) NOT NULL DEFAULT ''
 );
 
-INSERT INTO tag_groups VALUES (3,'Birth','Fødsel');
-INSERT INTO tag_groups VALUES (4,'Marriage','Ekteskap');
+INSERT INTO tag_groups VALUES (1,'Birth','Fødsel');
+INSERT INTO tag_groups VALUES (2,'Marriage','Ekteskap');
+INSERT INTO tag_groups VALUES (3,'Death','Død');
+INSERT INTO tag_groups VALUES (4,'Burial','Begravelse');
 INSERT INTO tag_groups VALUES (5,'Divorce','Skilsmisse');
-INSERT INTO tag_groups VALUES (6,'Death','Død');
-INSERT INTO tag_groups VALUES (7,'Burial','Begravelse');
 INSERT INTO tag_groups VALUES (8,'Other','Annet');
 
 CREATE TABLE tag_types (
@@ -104,30 +104,30 @@ CREATE TABLE tags (
 -- For the sake of compatibility, you should always put a GEDCOM label in
 -- the second text column indicating the general contents of your tag.
 INSERT INTO tags VALUES (1,8,1,'Adopted','ADOP ','Adoptert');
-INSERT INTO tags VALUES (2,3,1,'Born','BIRT ','Født');
-INSERT INTO tags VALUES (3,6,1,'Died','DEAT ','Død');
-INSERT INTO tags VALUES (4,4,2,'Married','MARR ','Gift');
+INSERT INTO tags VALUES (2,1,1,'Born','BIRT ','Født');
+INSERT INTO tags VALUES (3,3,1,'Died','DEAT ','Død');
+INSERT INTO tags VALUES (4,2,2,'Married','MARR ','Gift');
 INSERT INTO tags VALUES (5,5,2,'Divorced','DIV  ','Skilt');
-INSERT INTO tags VALUES (6,7,1,'Buried','BURI ','Gravlagt');
+INSERT INTO tags VALUES (6,4,1,'Buried','BURI ','Gravlagt');
 INSERT INTO tags VALUES (10,8,3,'Residence','RESI ','Bosted');
-INSERT INTO tags VALUES (12,3,1,'Baptized','BAPM ','Døpt');
+INSERT INTO tags VALUES (12,1,1,'Baptized','BAPM ','Døpt');
 INSERT INTO tags VALUES (19,8,3,'Census','CENS ','Folketelling');
-INSERT INTO tags VALUES (23,4,2,'Engaged','ENGA ','Forlovet');
+INSERT INTO tags VALUES (23,2,2,'Engaged','ENGA ','Forlovet');
 -- note hard-coded reference to 31 in event_insert.php and event_update.php
-INSERT INTO tags VALUES (31,7,3,'Probate','PROB ','Skifte');
+INSERT INTO tags VALUES (31,4,3,'Probate','PROB ','Skifte');
 INSERT INTO tags VALUES (46,8,1,'Confirmed','CONF ','Konfirmert');
 INSERT INTO tags VALUES (49,8,3,'Emigrated','EMIG ','Utvandret');
-INSERT INTO tags VALUES (62,3,1,'Stillborn','STIL ','Dødfødt');
+INSERT INTO tags VALUES (62,1,1,'Stillborn','STIL ','Dødfødt');
 INSERT INTO tags VALUES (66,8,3,'Occupation','OCCU ','Yrke');
 INSERT INTO tags VALUES (72,8,3,'Anecdote','NOTE ','Anekdote');
 INSERT INTO tags VALUES (78,8,3,'Note','NOTE ','Merknad');
 -- custom tags
-INSERT INTO tags VALUES (1000,4,2,'Common-law marriage','MARR ','Samboende');
+INSERT INTO tags VALUES (1000,2,2,'Common-law marriage','MARR ','Samboende');
 INSERT INTO tags VALUES (1003,8,3,'Tenant','NOTE ','Feste');
 INSERT INTO tags VALUES (1005,8,3,'Moved','RESI ','Flyttet');
 INSERT INTO tags VALUES (1006,8,2,'Probably identical','NOTE ','Kan være identisk');
-INSERT INTO tags VALUES (1033,4,2,'Affair','EVEN ','Forhold');
-INSERT INTO tags VALUES (1035,3,1,'Probably born','BIRT ','Trolig født');
+INSERT INTO tags VALUES (1033,2,2,'Affair','EVEN ','Forhold');
+INSERT INTO tags VALUES (1035,1,1,'Probably born','BIRT ','Trolig født');
 INSERT INTO tags VALUES (1039,8,2,'Confused','NOTE ','Forvekslet');
 -- note hard-coded reference to 1040 in person_merge.php
 INSERT INTO tags VALUES (1040,8,1,'Identical to','NOTE ','Identisk med');
