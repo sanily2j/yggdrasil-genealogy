@@ -53,7 +53,7 @@ function print_bd($p,$g) {
 }
 
 function print_marriage($p, $p2=0)  {
-    global $_with, $_Married, $language;
+    global $_Married, $language;
     $handle = pg_query("
         SELECT
             event_date,
@@ -69,7 +69,7 @@ function print_marriage($p, $p2=0)  {
             echo para($_Married
                 . conc(fuzzydate($row['event_date']))
                 . conc($row['place_name'])
-                . conc(fetch_val("select prepose(2, '$language')"))
+                . conc(fetch_val("SELECT prepose(4, '$language')"))
                 . conc(linked_name($row['spouse']))
                 . conc(child_of($row['spouse'])), "bmd");
         }
@@ -77,7 +77,7 @@ function print_marriage($p, $p2=0)  {
 }
 
 function pop_child($child, $parent, $coparent=0) {
-    global $_Child, $_Source, $_with;
+    global $_Child, $_Source;
     $name = get_name($child);
     $sentence = bold($_Child . ':')
         . conc(linked_name($child));
