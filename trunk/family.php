@@ -34,40 +34,22 @@
  ***             Functions used only in this script                     ***
  **************************************************************************/
 
-function print_birth($p) {
+function print_bd($p,$g) {
     if ($row = fetch_row_assoc("
         SELECT
-            event_type_number,
+            tag_key,
             event_date,
-            event_place
+            get_place_name(place_key) place_name
         FROM
-            person_events
+            person_event_groups
         WHERE
             person = $p
         AND
-            event_type_number IN (2,62,1035)
+            group_key = $g
         "))
-        echo para(get_tag_name($row['event_type_number'])
+        echo para(get_tag_name($row['tag_key'])
             . conc(fuzzydate($row['event_date']))
-            . conc($row['event_place']), "bmd");
-}
-
-function print_death($p) {
-    if ($row = fetch_row_assoc("
-        SELECT
-            event_type_number,
-            event_date,
-            event_place
-        FROM
-            person_events
-        WHERE
-            person = $p
-        AND
-            event_type_number = ".DEAT
-        ))
-        echo para(get_tag_name($row['event_type_number'])
-            . conc(fuzzydate($row['event_date']))
-            . conc($row['event_place']), "bmd");
+            . conc($row['place_name']), "bmd");
 }
 
 function print_marriage($p, $p2=0)  {
@@ -127,9 +109,9 @@ function pop_child($child, $parent, $coparent=0) {
             . conc(ltrim($row['source_text']))), "childsource");
     }
     echo $sentence;
-    print_birth($child);
+    print_bd($child,1);
     print_marriage($child);
-    print_death($child);
+    print_bd($child,3);
     pg_query("DELETE FROM tmp_children WHERE child = $child");
 }
 
@@ -535,9 +517,9 @@ if (has_spouses($person) || has_descendants($person)) {
     while ($spouses = pg_fetch_row($handle)) {
         echo para(bold($_Spouse . ':')
             . conc(linked_name($spouses[0])), "name");
-        print_birth($spouses[0]);
+        print_bd($spouses[0],1);
         print_marriage($spouses[0], $person);
-        print_death($spouses[0]);
+        print_bd($spouses[0],3);
 
         // for each spouse, get children
         if (has_descendants($person)) {

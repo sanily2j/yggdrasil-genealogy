@@ -89,6 +89,24 @@ AND events.event_id = participants.event_fk
 -- AND participants.is_principal IS TRUE
 ORDER BY sort_date;
 
+CREATE OR REPLACE VIEW person_event_groups AS
+SELECT
+    p.person_fk AS person,
+    e.sort_date AS sort_date,
+    e.event_date AS event_date,
+    e.event_id AS event_key,
+    e.place_fk AS place_key,
+    e.tag_fk AS tag_key,
+    t.tag_group_fk AS group_key
+FROM
+    participants p, tags t, events e
+WHERE
+    t.tag_id = e.tag_fk
+AND
+    e.event_id = p.event_fk
+ORDER BY
+    e.sort_date;
+
 CREATE OR REPLACE VIEW event_notes AS
 SELECT
     event_citations.event_fk AS note_id,
@@ -137,7 +155,7 @@ FROM
 WHERE
     event=event_fk
 AND
-    tag_type IN (2,62,1035);
+    tag_type=2;
 
 CREATE OR REPLACE VIEW name_and_dates AS
 SELECT
@@ -166,7 +184,7 @@ WHERE
 AND
     e.tag_fk = t.tag_id
 AND
-    t.tag_group_fk = 4
+    t.tag_group_fk = 2
 ORDER BY
     sort_date;
 
