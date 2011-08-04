@@ -77,7 +77,7 @@ function print_marriage($p, $p2=0)  {
 }
 
 function pop_child($child, $parent, $coparent=0) {
-    global $_Child, $_Source;
+    global $_Child, $_Source, $_with;
     $name = get_name($child);
     $sentence = bold($_Child . ':')
         . conc(linked_name($child));

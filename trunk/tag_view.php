@@ -23,21 +23,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// This script is basically a "report" listing events and persons associated
-// with a tag. It is accessed from the Tag Manager through the 'browse'
-// (se på) link.
+// This script is basically a report listing events and persons associated
+// with a tag. It is accessed from the Tag Manager via the 'report' link.
 
 require "./settings/settings.php";
 require "./functions.php";
+require_once "./langs/$language.php";
 
 $tag = $_GET['tag'];
 $tag_name = fetch_val("SELECT get_tag_name($tag)");
-$title = "Alle hendelser av type $tag_name";
+$title = "$_All $_events $_of type $tag_name";
 require "./header.php";
 
 echo "<div class=\"normal\">\n";
 echo "<h2>$title</h2>\n";
-echo "<p><a href=\"./tag_manager.php\">Alle hendelser</a></p>\n";
 $handle = pg_query("
     SELECT
         event_id,
@@ -75,7 +74,6 @@ while ($row = pg_fetch_assoc($handle)) {
     }
     echo "</p>\n";
 }
-echo "<p><a href=\"./tag_manager.php\">Alle hendelser</a></p>\n";
 echo "</div>\n";
 include "./footer.php";
 ?>

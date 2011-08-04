@@ -83,6 +83,7 @@ $_Edit_source = 'Rediger kilde';
 $_Email_addr = 'E-postadresse';
 $_Epithet = 'Kallenavn';
 $_exact = ' eksakt';
+$_event_type = 'hendelsestype';
 $_Event_types = 'Hendelsestyper';
 $_event = 'hendelse';
 $_events = 'hendelser';
