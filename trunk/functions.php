@@ -621,6 +621,16 @@ function get_participant_note($p, $e) {
                         WHERE person_fk=$p AND event_fk=$e), '')");
 }
 
+function node_details($e, $r, $s, $u) {
+    // shorthand summary for number of events, relations, subnodes / unused
+    // subnodes connected to this node
+    $str = " ($e-$r-$s";
+    if ($u)
+        $str .= "/$u";
+    $str .= ")";
+    return $str;
+}
+
 function list_mentioned($node, $hotlink=0) {
     global $app_path, $_edit, $_delete;
     echo "<ol>\n";
