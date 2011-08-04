@@ -96,18 +96,8 @@ while ($row = pg_fetch_assoc($handle)) {
             . node_details($row['e'], $row['r'], $row['s'], $row['u']));
     }
     else { // source is unused, print with gray text
-        if ($show_delete) { // show link for source deletion
-            echo td(span_type(square_brace(italic($row['source_date']))
-                . conc($row['txt']),"faded")
-                . conc(paren(to_url('./forms/source_delete.php',
-                            array(
-                                'node'  => $self,
-                                'id'    => $id
-                            ), bold($_delete)))));
-        }
-        else
-            echo td(span_type(square_brace(italic($row['source_date']))
-                . conc($row['txt']), "faded"));
+        echo td(span_type(square_brace(italic($row['source_date']))
+            . conc($row['txt']), "faded"));
     }
     echo "</tr>\n";
 }
