@@ -31,20 +31,6 @@ app has anything like it.
 */
 
 // *****************************************************************************
-//                    functions used only in this module
-// *****************************************************************************
-
-function node_details($e, $r, $s, $u) {
-// shorthand summary for number of events, relations, subnodes / unused
-// subnodes connected to this node
-    $str = " ($e-$r-$s";
-    if ($u)
-        $str .= "/$u";
-    $str .= ")";
-    return $str;
-}
-
-// *****************************************************************************
 //                               initialization
 // *****************************************************************************
 

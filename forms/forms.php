@@ -122,6 +122,20 @@ function select_surety($selected=0) {
     echo "</select></td></tr>\n";
 }
 
+function select_bool($prompt, $name, $selected='f') {
+    // print table row with an option box for false/true
+    echo "<tr><td>$prompt: </td><td>\n<select name=\"$name\">";
+    echo "<option ";
+    if ($selected == 'f')
+        echo "selected=\"selected\" ";
+    echo "value=\"f\">False</option>";
+    echo "<option ";
+    if ($selected == 't')
+        echo "selected=\"selected\" ";
+    echo "value=\"t\">True</option>";
+    echo "</select></td></tr>\n";
+}
+
 function select_place($selected=0) {
     // print table row with an option box for places.
     global $_Place;
