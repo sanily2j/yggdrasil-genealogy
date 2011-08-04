@@ -30,9 +30,8 @@ require "./forms.php";
 
 if (!isset($_POST['posted'])) {
     $tag = $_GET['tag'];
-    $title = "Rediger hendelsestype #$tag";
-    require "./form_header.php";
     if ($tag == 0) { // new tag type
+        $title = "$_Insert $_event_type";
         $tag_group    = 8;  // group 'other' by default
         $tag_name     = '';
         $gedcom_tag   = 'NOTE'; // GEDCOM tag = NOTE by default
@@ -40,6 +39,7 @@ if (!isset($_POST['posted'])) {
         $tag_type     = 1; // single-person by default
     }
     else {
+        $title = "$_Edit $_event_type #$tag";
         $tag_row = fetch_row_assoc("SELECT * FROM tags WHERE tag_id = $tag");
         $tag_group  = $tag_row['tag_group_fk'];
         $tag_name   = $tag_row['tag_name'];
@@ -47,6 +47,7 @@ if (!isset($_POST['posted'])) {
         $tag_label  = $tag_row['tag_label'];
         $tag_type   = $tag_row['tag_type_fk'];
     }
+    require "./form_header.php";
     echo "<h2>$title</h2>\n";
     form_begin('tag_edit', $_SERVER['PHP_SELF']);
     hidden_input('posted', 1);
@@ -70,15 +71,36 @@ else {
     if ($tag == 0) { // insert new tag
         pg_query("BEGIN WORK");
         $tag = get_next('tag');
-        // SMS 20 July 2011: $tag_type repositioned in tags table, was last, now third column
-        pg_query("INSERT INTO tags VALUES
-                    ($tag, $tag_group, $tag_type, '$tag_name', '$gedcom_tag', '$tag_label')");
+        pg_query("
+            INSERT INTO tags (
+                tag_id,
+                tag_group_fk,
+                tag_name,
+                gedcom_tag,
+                tag_label,
+                tag_type_fk
+            )
+            VALUES (
+                $tag,
+                $tag_group,
+                $tag_type,
+                '$tag_name',
+                '$gedcom_tag',
+                '$tag_label'
+            )"
+        );
         pg_query("COMMIT");
     }
     else { // modify existing tag
-        pg_query("UPDATE tags SET tag_group_fk = $tag_group, tag_name = '$tag_name',
-                    gedcom_tag = '$gedcom_tag', tag_label = '$tag_label', tag_type_fk = $tag_type
-                        WHERE tag_id = $tag");
+        pg_query("
+            UPDATE tags SET
+                tag_group_fk = $tag_group,
+                tag_name = '$tag_name',
+                gedcom_tag = '$gedcom_tag',
+                tag_label = '$tag_label',
+                tag_type_fk = $tag_type
+            WHERE tag_id = $tag"
+        );
     }
     header("Location: $app_root/tag_manager.php");
 }

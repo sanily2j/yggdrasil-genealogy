@@ -83,6 +83,7 @@ $_Edit_source = 'Edit source';
 $_Email_addr = 'E-mail address';
 $_Epithet = 'Epithet';
 $_exact = ' exact';
+$_event_type = 'event type';
 $_Event_types = 'Event types';
 $_event = 'event';
 $_events = 'events';
