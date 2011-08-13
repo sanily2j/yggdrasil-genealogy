@@ -67,42 +67,61 @@ while ($rec = pg_fetch_assoc($handle)) {
     $option .= "value=\"" . $rec['part_type_id'] . "\">" . $rec[$label] . "</option>\n";
     echo $option;
 }
-echo "</select></td></tr>\n"
-    . "<input type=\"submit\" value=\"$_Search\" />\n"
-    . "</div>\n</form>\n\n";
+echo "</select></td></tr>\n";
+
+echo "$_Year: <input type=\"text\" size=\"8\" name=\"yr\" />\n";
+
+echo "&plusmn;<select name = \"diff\">\n";
+echo "<option selected=\"selected\" value=\"0\"></option>\n";
+echo "<option value=\"2\">2</option>\n";
+echo "<option value=\"5\">5</option>\n";
+echo "<option value=\"10\">10</option>\n";
+echo "<option value=\"20\">20</option>\n";
+echo "</select></td></tr>\n";
+
+echo "<input type=\"submit\" value=\"$_Search\" />\n";
+echo "</div>\n</form>\n\n";
 $src = isset($_GET['src']) ? $_GET['src'] : false;
 $scope = isset($_GET['scope']) ? $_GET['scope'] : 0;
+$yr = isset($_GET['yr']) ? $_GET['yr'] : 0;
+$diff = isset($_GET['diff']) ? $_GET['diff'] : 0;
 if ($src) {
     if ($language == 'nb') // This is pretty useless for non-Norwegians
         $src = src_expand($src);
+    $query = "
+        SELECT
+            source_id,
+            is_unused(source_id) AS unused,
+            get_source_text(source_id) AS src_txt,
+            source_date
+        FROM
+            sources
+        ";
     if ($scope == 0)
-        $query = "
-            SELECT
-                source_id,
-                is_unused(source_id) AS unused,
-                get_source_text(source_id) AS src_txt,
-                source_date
-            FROM
-                sources
+        $query .= "
             WHERE
                 source_text SIMILAR TO '%$src%'
-            ORDER BY
-                source_date
         ";
-      else $query = "
-            SELECT
-                source_id,
-                is_unused(source_id) AS unused,
-                get_source_text(source_id) AS src_txt,
-                source_date
-            FROM
-                sources
+      else $query .= "
             WHERE
                 part_type = $scope
             AND
                 source_text SIMILAR TO '%$src%'
-            ORDER BY
-                source_date
+        ";
+    if ($yr && $diff)
+        $query .= "
+            AND
+                EXTRACT(YEAR FROM source_date)
+                    BETWEEN $yr - $diff AND $yr + $diff
+        ";
+    if ($yr && !$diff)
+        $query .= "
+            AND
+                EXTRACT(YEAR FROM source_date) = $yr
+        ";
+    $query .= "
+        ORDER BY
+            source_date
         ";
     $handle = pg_query($query);
     echo "<table>\n";
