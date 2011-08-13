@@ -216,6 +216,7 @@ $_User_settings = 'Brukervalg';
 $_Wife = 'Kone';
 $_With = 'Med';
 $_with = 'med';
+$_Year = 'År';
 $_Yes = 'Ja';
 
 ?>
