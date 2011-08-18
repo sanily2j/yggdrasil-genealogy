@@ -22,8 +22,9 @@
  ***************************************************************************/
 
 CREATE OR REPLACE FUNCTION get_lang() RETURNS TEXT AS $$
-SELECT user_lang FROM user_settings WHERE username = current_user
+    SELECT user_lang FROM user_settings WHERE username = current_user
 $$ LANGUAGE SQL STABLE;
+
 
 CREATE OR REPLACE FUNCTION get_parent(INTEGER,INTEGER) RETURNS INTEGER AS $$
 SELECT COALESCE(
@@ -173,6 +174,20 @@ SELECT COALESCE(
     END,
     '[undefined]')
 $$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION get_spt_label(INTEGER) RETURNS TEXT AS $$
+-- get localized source part type label
+DECLARE
+    lbl TEXT;
+
+BEGIN
+    EXECUTE
+        'SELECT label_' || get_lang() ||
+        ' FROM source_part_types WHERE part_type_id = ' || $1
+        INTO lbl;
+    RETURN lbl;
+END
+$$ LANGUAGE plpgsql STABLE;
 
 CREATE OR REPLACE FUNCTION _my_expand(TEXT) RETURNS TEXT AS $$
 -- private func, expand external compact links

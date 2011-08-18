@@ -50,14 +50,24 @@ if (!isset($_POST['posted'])) {
         FROM sources
         WHERE source_id = $node
     ");
-    echo "<h2>$_Add_source</h2>\n";
+    $spt_label = fetch_val("SELECT get_spt_label($part_type)");
+    echo "<h2>$_Add_source ($spt_label)</h2>\n";
     form_begin($form, $_SERVER['PHP_SELF']);
     hidden_input('posted', 1);
     source_num_input("$_Parent_node:", 'node', $node);
     textarea_input("$_Text:", 10, 100, 'text', $template);
-    textarea_input('Template:', 3, 100, 'template');
-    select_source_type('Type:', 'part_type', $part_type);
-    select_source_type("$_Subtype:", 'ch_part_type', 0);
+    if (fetch_val("
+        SELECT is_leaf FROM source_part_types WHERE part_type_id = $part_type
+    ") == 't') {
+        hidden_input('template', false);
+        hidden_input('part_type', $part_type);
+        hidden_input('ch_part_type', 0);
+    }
+    else {
+        textarea_input('Template:', 3, 100, 'template');
+        select_source_type('Type:', 'part_type', $part_type);
+        select_source_type("$_Subtype:", 'ch_part_type', 0);
+    }
     text_input("$_Sort_order:", 20, 'sort');
     text_input("$_Source_date:", 20, 'source_date');
     form_submit();
