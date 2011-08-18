@@ -48,7 +48,7 @@ function src_expand($s) {
     $s = str_replace('Bjørn',     'B[ij]+ø[ehr]*n', $s);
     $s = str_replace('Bodil',     'Bod?[ei]+ld?e?', $s);
     $s = str_replace('Brynil',    'Br[ouyø]+n+[eijuy]+l[dvf]*', $s);
-    $s = str_replace('Bærulf',    'B[eæ]+r[ou]+l[dfvw]*', $s);
+    $s = str_replace('Bærulf',    'B[eæ]+h?r+[ou]+[dfhlpvw]+', $s);
     $s = str_replace('Børge',     'B[eijoø]+r+[aegij]+r?', $s);
     $s = str_replace('Daniel',    'Dah?n+ie?l+d?', $s);
     $s = str_replace('David',     'Da[fuvw]+i[dth]+', $s);
@@ -111,6 +111,9 @@ function src_expand($s) {
     $s = str_replace('Peder',     'P[deht]+r', $s);
     $s = str_replace('Pernille',  'P[deht]+rn[ei]+l+[ae]+', $s);
     $s = str_replace('Paul',      'P[aeouvw]+l+', $s);
+    $s = str_replace('Ragnhild',  'Ran?g[ehiln]+d?', $s);
+    $s = str_replace('Realf',     'Real[fhpv]+', $s);
+    $s = str_replace('Reier',     'Re[ijy]+[ae]+r', $s);
     $s = str_replace('Rolf',      'R[oø]+l+[eouø]*[fvw]+', $s);
     $s = str_replace('Simon',     'Sim+[eo]+nd?', $s);
     $s = str_replace('Sissel',    '[CSZ]+[eiæ]+[dt]*[csz]+[ei]+l+[aei]*d?', $s);
@@ -152,9 +155,9 @@ Gjertrud, Gjest, Greger, Gudmund, Gullik, Gunder, Gunhild, Guri, Halvor, Harald,
 Henrik, Hieronymus, Håvald, Ingeborg, Isak, Iver, Jon, Johan(nes), Kari, Karl,
 Katrine, Kirsti, Kittil, Kjell, Kjøstol, Klaus, Knut, Kristen, Kristian,
 Kristoffer, Lars, Levor, Lisbet, Lorens, Mads, Malene, Margrete, Mari, Marte,
-Mette, Mikkel, Mons, Nils, Peder, Pernille, Paul, Rolf, Simon, Sissel, Siver,
-Sofie, Steffen, Synnøve, Søren, Tallak, Tollef, Tomas, Tor, Torbjørn, Torger,
-Torkil, Tormod, Torsten, Tov, Trond, Tyge, Vetle, Vrål, Wilhelm, Zacharias, Åge,
-Åse, Åshild, Åsold, Åvet.</p>\n";
+Mette, Mikkel, Mons, Nils, Peder, Pernille, Paul, Ragnhild, Realf, Reier, Rolf,
+Simon, Sissel, Siver, Sofie, Steffen, Synnøve, Søren, Tallak, Tollef, Tomas,
+Tor, Torbjørn, Torger, Torkil, Tormod, Torsten, Tov, Trond, Tyge, Vetle, Vrål,
+Wilhelm, Zacharias, Åge, Åse, Åshild, Åsold, Åvet.</p>\n";
 
 ?>

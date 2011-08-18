@@ -55,7 +55,8 @@ if (!isset($_POST['posted'])) {
     hidden_input('ret', $ret);
     source_num_input("$_Parent_node:", 'psource', $psource);
     textarea_input("$_Text:", 10, 100, 'text', $text);
-    textarea_input('Template:', 3, 100, 'template', $template);
+    if (fetch_val("SELECT is_leaf($source)") == 'f')
+        textarea_input('Template:', 3, 100, 'template', $template);
     select_source_type("Type", 'part_type', $source_type);
     if (fetch_val("SELECT is_leaf($source)") == 't') {
         hidden_input('ch_part_type', $ch_part_type);
@@ -88,7 +89,7 @@ else {
     $sort = get_sort($psource, $text, $sort);
     $text = note_to_db($text);
     $ret = $_POST['ret'];
-    $template = $_POST['template'];
+    $template = isset($_POST['template']) ? $_POST['template'] : false;
     if ($template) {
         if (fetch_val("
                 SELECT count(*)

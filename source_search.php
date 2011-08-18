@@ -64,7 +64,8 @@ while ($rec = pg_fetch_assoc($handle)) {
     $option = "<option ";
     if ($rec['part_type_id'] == $selected)
         $option .= "selected=\"selected\" ";
-    $option .= "value=\"" . $rec['part_type_id'] . "\">" . $rec[$label] . "</option>\n";
+    $option .= "value=\"" . $rec['part_type_id'] . "\">"
+        . $rec[$label] . "</option>\n";
     echo $option;
 }
 echo "</select></td></tr>\n";
@@ -96,17 +97,13 @@ if ($src) {
             source_date
         FROM
             sources
-        ";
-    if ($scope == 0)
+        WHERE
+            source_text SIMILAR TO '%$src%'
+    ";
+    if ($scope != 0)
         $query .= "
-            WHERE
-                source_text SIMILAR TO '%$src%'
-        ";
-      else $query .= "
-            WHERE
-                part_type = $scope
             AND
-                source_text SIMILAR TO '%$src%'
+                part_type = $scope
         ";
     if ($yr && $diff)
         $query .= "
@@ -122,7 +119,7 @@ if ($src) {
     $query .= "
         ORDER BY
             source_date
-        ";
+    ";
     $handle = pg_query($query);
     echo "<table>\n";
     while ($row = pg_fetch_assoc($handle)) {
