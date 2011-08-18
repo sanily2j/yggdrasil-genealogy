@@ -68,17 +68,17 @@ else {
     $gedcom_tag = $_POST['gedcom_tag'];
     $tag_label = $_POST['tag_label'];
     $tag_type = $_POST['tag_type'];
-    if ($tag == 0) { // insert new tag
-        pg_query("BEGIN WORK");
+    if (!$tag) { // insert new tag
+        pg_query("BEGIN");
         $tag = get_next('tag');
         pg_query("
             INSERT INTO tags (
                 tag_id,
                 tag_group_fk,
+                tag_type_fk,
                 tag_name,
                 gedcom_tag,
-                tag_label,
-                tag_type_fk
+                tag_label
             )
             VALUES (
                 $tag,
@@ -87,8 +87,8 @@ else {
                 '$tag_name',
                 '$gedcom_tag',
                 '$tag_label'
-            )"
-        );
+            )
+        ");
         pg_query("COMMIT");
     }
     else { // modify existing tag
