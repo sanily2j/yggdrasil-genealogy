@@ -37,17 +37,18 @@ if (!isset($_POST['posted'])) {
     $form = 'source_edit';
     $focus = 'text';
     require "./form_header.php";
-    echo "<h2>$_Edit_source $source</h2>\n";
-    echo "<p><a href=\"../source_manager.php?node=$source\">$_To $_Source_Manager</a></p>";
-    echo "<p>" . str_replace('./family.php', '../family.php', get_source_text($source)) . "</p>\n";
     $row = fetch_row_assoc("SELECT * FROM sources WHERE source_id = $source");
     $psource = $row['parent_id'];
     $text = $row['source_text'];
     $ret = $self ? $source : $psource;
     $sort = $row['sort_order'];
     $source_date = $row['source_date'];
-    $source_type = $row['part_type'] ? $row['part_type'] : 0;
+    $part_type = $row['part_type'] ? $row['part_type'] : 0;
     $ch_part_type = $row['ch_part_type'] ? $row['ch_part_type'] : 0;
+    $spt_label = fetch_val("SELECT get_spt_label($part_type)");
+    echo "<h2>$_Edit_source $source ($spt_label)</h2>\n";
+    echo "<p><a href=\"../source_manager.php?node=$source\">$_To $_Source_Manager</a></p>";
+    echo "<p>" . str_replace('./family.php', '../family.php', get_source_text($source)) . "</p>\n";
     form_begin($form, $_SERVER['PHP_SELF']);
     hidden_input('posted', 1);
     hidden_input('person', $person);
@@ -55,14 +56,15 @@ if (!isset($_POST['posted'])) {
     hidden_input('ret', $ret);
     source_num_input("$_Parent_node:", 'psource', $psource);
     textarea_input("$_Text:", 10, 100, 'text', $text);
-    if (fetch_val("SELECT is_leaf($source)") == 'f')
+    if (fetch_val("SELECT is_leaf($source)") == 'f') {
         textarea_input('Template:', 3, 100, 'template', $template);
-    select_source_type("Type", 'part_type', $source_type);
-    if (fetch_val("SELECT is_leaf($source)") == 't') {
-        hidden_input('ch_part_type', $ch_part_type);
+        select_source_type("Type", 'part_type', $part_type);
+        select_source_type("$_Subtype:", 'ch_part_type', $ch_part_type);
     }
     else {
-        select_source_type("$_Subtype:", 'ch_part_type', $ch_part_type);
+        hidden_input('template', false);
+        hidden_input('part_type', $part_type);
+        hidden_input('ch_part_type', 0);
     }
     text_input("$_Sort_order:", 20, 'sort', $sort);
     text_input("$_Source_date:", 20, 'source_date', $source_date);

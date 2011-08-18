@@ -417,3 +417,26 @@ AND
     tag_type=2;
 
 -- Above changes have been integrated in datadef.sql and views.sql
+
+-- Rev. 47, 2011-08-18
+-- added plpgsql func get_spt_label, improved source_add.php, source_edit.php
+-- Affected files:
+--      ddl/functions.sql
+--      source_add.php
+--      source_edit.php
+
+CREATE OR REPLACE FUNCTION get_spt_label(INTEGER) RETURNS TEXT AS $$
+-- get localized source part type label
+DECLARE
+    lbl TEXT;
+
+BEGIN
+    EXECUTE
+        'SELECT label_' || get_lang() ||
+        ' FROM source_part_types WHERE part_type_id = ' || $1
+    INTO lbl;
+    RETURN lbl;
+END
+$$ LANGUAGE plpgsql STABLE;
+
+-- Above change has been integrated in functions.sql
