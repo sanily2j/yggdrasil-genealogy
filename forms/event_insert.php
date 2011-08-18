@@ -52,6 +52,13 @@ if (!isset($_POST['posted'])) {
     echo "</body>\n</html>\n";
 }
 else {
+    $src = $_POST['source_id'];
+    $txt = $_POST['source_text'];
+    if ($txt && fetch_val("SELECT is_leaf($src)") == 't') {
+        echo "Cannot create subsource under source #$src. ";
+        echo "Please go back and check your source reference.";
+        die;
+    }
     // process form
     $person = $_POST['person'];
     $event_note = note_to_db($_POST['event_note']);
@@ -85,13 +92,15 @@ else {
         $coprincipal = $_POST['coprincipal'];
         add_participant($coprincipal, $event);
     }
-    if ($tag == 31) // skifte
+    if ($tag == 31) // hard-coded reference to probate
         pg_query("SELECT generate_probate_witnesses($event)");
-    $source_id = add_source($person, $tag, $event, $_POST['source_id'], note_to_db($_POST['source_text']));
-    if ($_POST['age'] && is_numeric($_POST['age'])) // generate birth event
-        add_birth($person,$event_date,$_POST['age'],$source_id);
-    if ($tag == 3) { // death tag, check if died young
-        if (died_young($person) && fetch_val("SELECT dead_child($person)") == 'f') {
+    $source_id = add_source($person, $tag, $event, $src, note_to_db($txt));
+    $age = $_POST['age'];
+    if ($age && is_numeric($age)) // generate birth event
+        add_birth($person, $event_date, $age, $source_id);
+    if ($tag == 3) { // hard-coded death tag, check if died young
+        if ((died_young($person) || ($age && $age < 16))
+            && fetch_val("SELECT dead_child($person)") == 'f') {
             pg_query("INSERT INTO dead_children (person_fk) VALUES ($person)");
             pg_query("UPDATE persons SET toponym='' WHERE person_id = $person");
         }

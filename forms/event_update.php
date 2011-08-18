@@ -65,6 +65,13 @@ if (!isset($_POST['posted'])) {
 }
 else {
     // do action
+    $src = $_POST['source_id'];
+    $txt = $_POST['source_text'];
+    if ($txt && fetch_val("SELECT is_leaf($src)") == 't') {
+        echo "Cannot create subsource under source #$src. ";
+        echo "Please go back and check your source reference.";
+        die;
+    }
     $event = $_POST['event'];
     $person = $_POST['person'];
     $tag = $_POST['tag_fk'];
@@ -79,8 +86,8 @@ else {
                 sort_date='$sort_date', event_note='$note' WHERE event_id = $event");
     set_last_selected_place($place);
     set_last_edit($person);
-    $source_id = add_source($person, $tag, $event, $_POST['source_id'], $_POST['source_text']);
-    if ($tag == 31) // probate
+    $source_id = add_source($person, $tag, $event, $src, $txt);
+    if ($tag == 31) // hard-coded reference to probate
         pg_query("SELECT generate_probate_witnesses($event)");
     if ($_POST['age']) // generate birth event
         add_birth($person, $event_date, $_POST['age'], $source_id);
