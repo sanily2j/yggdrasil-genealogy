@@ -77,14 +77,15 @@ function print_marriage($p, $p2=0)  {
 }
 
 function pop_child($child, $parent, $coparent=0) {
-    global $_Child, $_Source, $_with;
+    global $_Child, $_Source, $_with, $_toolhelp_has_descendants;
     $name = get_name($child);
     $sentence = bold($_Child . ':')
         . conc(linked_name($child));
     if ($coparent) // illegitimate child, print coparent
         $sentence .= conc($_with) . conc(linked_name($coparent));
     if (has_descendants($child))
-        $sentence .= conc(span_type('+', "alert"));
+        $sentence .= conc(span_type('+',
+            "alert", sprintf($_toolhelp_has_descendants, $child)));
     $sentence = para($sentence, "name");
     // print relation source(s)
     $handle = pg_query("
@@ -119,7 +120,7 @@ function cite($record, $type, $person, $principal=1) {
     // build list of cited sources and return note numbers
     // $record is event_id or relation_id, depending on $type
     // $type can take the values 'event' or 'relation'
-    global $_delete;
+    global $_delete, $_toolhelp_cit_delete;
     $notes = $type . '_notes';
     $handle = pg_query("
         SELECT
@@ -137,7 +138,8 @@ function cite($record, $type, $person, $principal=1) {
             $cit .= conc(span_type(paren(to_url('./forms/citation_delete.php',
                 array(  'person' => $person,
                         'source' => $row[0],
-                        $type => $record), $_delete)), "hotlink"));
+                        $type => $record), $_delete)),
+                        "hotlink", sprintf($_toolhelp_cit_delete, $row[0])));
         $citation_list[] = $cit;
     }
     if (isset($citation_list))
@@ -150,7 +152,9 @@ function show_parent($person, $gender) {
     // print names and lifespans of parents.
     // valid $gender values are 1=father, 2=mother
     global $language, $_Add, $_Insert, $_edit, $_delete,
-        $_Father, $_father, $_Mother, $_mother;
+        $_Father, $_father, $_Mother, $_mother,
+        $_toolhelp_edit_parent, $_toolhelp_add_parent, $_toolhelp_insert_parent,
+        $_toolhelp_delete_parent;
     $parent_id = fetch_val("SELECT get_parent($person, $gender)");
     $surety = fetch_val("
         SELECT get_lsurety((
@@ -180,12 +184,14 @@ function show_parent($person, $gender) {
             . conc(span_type(paren(
             to_url('./forms/relation_edit.php',
                 array(  'person' => $person,
-                        'parent' => $parent_id), $_edit)
+                        'parent' => $parent_id), $_edit,
+                        sprintf($_toolhelp_edit_parent, $parent))
             . ' / '
             . to_url('./forms/relation_delete.php',
                 array(  'person' => $person,
-                        'parent' => $parent_id), $_delete)
-            ), "hotlink"))
+                        'parent' => $parent_id), $_delete,
+                        sprintf($_toolhelp_delete_parent, $parent))
+                        ), "hotlink"))
             . cite(get_relation_id($person, $gender), 'relation', $person);
     }
     else {
@@ -193,12 +199,14 @@ function show_parent($person, $gender) {
             to_url('./forms/person_insert.php',
                 array(  'person' => $person,
                         'addparent' => 'true',
-                        'gender' => $gender), "$_Add $parent")
+                        'gender' => $gender), "$_Add $parent",
+                        sprintf($_toolhelp_add_parent, $parent))
             . ' / '
             . to_url('./forms/relation_edit.php',
                 array(  'person' => $person,
-                        'gender' => $gender), "$_Insert $parent")
-            ), "hotlink"));
+                'gender' => $gender), "$_Insert $parent",
+                sprintf($_toolhelp_insert_parent, $parent))
+                ), "hotlink"));
     }
     echo "$newline\n";
 }
@@ -281,7 +289,7 @@ echo "</h2>\n";
 
 // build edit / delete person string
 $ep = to_url('./forms/person_update.php',
-            array('person' => $person), $_Edit_person);
+            array('person' => $person), $_Edit_person, "$_Edit $_person $person");
 // if this person is unconnected and "has" no events, display delete hotlink
 // see note in person_delete.php
 if (get_connection_count($person) == 0)

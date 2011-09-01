@@ -515,8 +515,13 @@ function paren($str) {
     return '(' . $str . ')';
 }
 
-function span_type($str, $cls) {
-    return "<span class=\"$cls\">" . $str . '</span>';
+function span_type($str, $cls, $help='') {
+    if ($help) {
+        return "<span class=\"$cls\" title=\"$help\">" . $str . '</span>';
+    }
+    else {
+        return "<span class=\"$cls\">" . $str . '</span>';
+    }
 }
 
 function para($str, $type='') {

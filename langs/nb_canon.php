@@ -45,11 +45,12 @@ function src_expand($s) {
     $s = str_replace('Aslak',     'As[ch]*la[cghk]+', $s);
     $s = str_replace('Auen',      '(A|O)u?[dgvw]+[eu]+n?', $s);
     $s = str_replace('Berte',     'B[eiø]+r[gi]*t+h?[ae]*', $s);
-    $s = str_replace('Bjørn',     'B[ij]+ø[ehr]*n', $s);
+    $s = str_replace('Bjørn',     'B[ij]+ø[ehr]*n+', $s);
     $s = str_replace('Bodil',     'Bod?[ei]+ld?e?', $s);
     $s = str_replace('Brynil',    'Br[ouyø]+n+[eijuy]+l[dvf]*', $s);
     $s = str_replace('Bærulf',    'B[eæ]+h?r+[ou]+[dfhlpvw]+', $s);
     $s = str_replace('Børge',     'B[eijoø]+r+[aegij]+r?', $s);
+    $s = str_replace('Bøye',      'B[oø]+[ijy]+e', $s);
     $s = str_replace('Daniel',    'Dah?n+ie?l+d?', $s);
     $s = str_replace('David',     'Da[fuvw]+i[dth]+', $s);
     $s = str_replace('Dorte',     'D(aa|o)ro?[dt]+h?[aeij]+', $s);
@@ -92,6 +93,7 @@ function src_expand($s) {
     $s = str_replace('Kjøstol',   '(Th?|K)[ijouyø]+r?st[aeou]+l+[dfhpvw]*', $s);
     $s = str_replace('Klaus',     '(C|K)la[eu]*s+', $s);
     $s = str_replace('Knut',      '(C|K)nu+[dt]+', $s);
+    $s = str_replace('Kolbjørn',  '(C|K)[ao]+l+b[ij]+ø[ehr]*n+', $s);
     $s = str_replace('Kristen',   '(Ch|K)r[ei]+sth?en', $s);
     $s = str_replace('Kristian',  '(Ch|K)r[ei]+sth?[ij]+an', $s);
     $s = str_replace('Kristoffer','(Ch|K)r[ei]+sto[fhpv]+er', $s);
@@ -115,11 +117,13 @@ function src_expand($s) {
     $s = str_replace('Realf',     'Real[fhpv]+', $s);
     $s = str_replace('Reier',     'Re[ijy]+[ae]+r', $s);
     $s = str_replace('Rolf',      'R[oø]+l+[eouø]*[fvw]+', $s);
+    $s = str_replace('Sibille',   '(S|Z)+[eiy]+b[ei]+l+[ae]+', $s);
     $s = str_replace('Simon',     'Sim+[eo]+nd?', $s);
     $s = str_replace('Sissel',    '[CSZ]+[eiæ]+[dt]*[csz]+[ei]+l+[aei]*d?', $s);
     $s = str_replace('Siver',     'S[iy]+[gjvw]+[aeu]+[lr]+[dht]*', $s);
     $s = str_replace('Sofie',     'So[fhp]+[ij]+[aeæ]*', $s);
     $s = str_replace('Steffen',   'Ste[fhp]+[ae]+n', $s);
+    $s = str_replace('Sveinung',  'S[vw]+ei?n+[ou]+[dgmn]+', $s);
     $s = str_replace('Synnøve',   'S[eiouyø]+n+[aeiouyø]+[fhvw]*[ae]*', $s);
     $s = str_replace('Søren',     'S[eø]+[fvw]*e?r[ei]+n', $s);
     $s = str_replace('Tallak',    'Th?[ao]+l+a[chgk]+', $s);
@@ -134,6 +138,7 @@ function src_expand($s) {
     $s = str_replace('Tov',       'Th?o[fuvw]+', $s);
     $s = str_replace('Trond',     'Th?roe?nd?', $s);
     $s = str_replace('Tyge',      'Th?[yø]+[chgk]+[ei]+r?', $s);
+    $s = str_replace('Valentin',  '[FVW]+al+[en]*th?in[us]*', $s);
     $s = str_replace('Vetle',     '(V|W)[eiæ]+[dht]+l[eouø]+[vf]*', $s);
     $s = str_replace('Vrål',      '(V|W)r(aa|o)[eh]*l+d?', $s);
     $s = str_replace('Wilhelm',   '(V|W)[ei]+l+[ehlou]+m', $s);
@@ -149,15 +154,16 @@ function src_expand($s) {
 echo
 "<p>Regulære søkeuttrykk er definert for:<br />
 Abelone, Albert, Alet, Amborg, Anders, Anne, Amund, Arnold, Aslak, Aslaug, Auen,
-Berte, Bjørn, Bodil, Brynil, Bærulf, Børge, Daniel, David, Dorte, Eilert, Einar,
-Elin, Ellef, Engebret, Erik, Eskil, Even, Fredrik, Gaute, Gjermund, Gjert,
-Gjertrud, Gjest, Greger, Gudmund, Gullik, Gunder, Gunhild, Guri, Halvor, Harald,
-Henrik, Hieronymus, Håvald, Ingeborg, Isak, Iver, Jon, Johan(nes), Kari, Karl,
-Katrine, Kirsti, Kittil, Kjell, Kjøstol, Klaus, Knut, Kristen, Kristian,
-Kristoffer, Lars, Levor, Lisbet, Lorens, Mads, Malene, Margrete, Mari, Marte,
-Mette, Mikkel, Mons, Nils, Peder, Pernille, Paul, Ragnhild, Realf, Reier, Rolf,
-Simon, Sissel, Siver, Sofie, Steffen, Synnøve, Søren, Tallak, Tollef, Tomas,
-Tor, Torbjørn, Torger, Torkil, Tormod, Torsten, Tov, Trond, Tyge, Vetle, Vrål,
-Wilhelm, Zacharias, Åge, Åse, Åshild, Åsold, Åvet.</p>\n";
+Berte, Bjørn, Bodil, Brynil, Bærulf, Børge, Bøye, Daniel, David, Dorte, Eilert,
+Einar, Elin, Ellef, Engebret, Erik, Eskil, Even, Fredrik, Gaute, Gjermund,
+Gjert, Gjertrud, Gjest, Greger, Gudmund, Gullik, Gunder, Gunhild, Guri, Halvor,
+Harald, Henrik, Hieronymus, Håvald, Ingeborg, Isak, Iver, Jon, Johan(nes), Kari,
+Karl, Katrine, Kirsti, Kittil, Kjell, Kjøstol, Klaus, Knut, Kolbjørn, Kristen,
+Kristian, Kristoffer, Lars, Levor, Lisbet, Lorens, Mads, Malene, Margrete, Mari,
+Marte, Mette, Mikkel, Mons, Nils, Peder, Pernille, Paul, Ragnhild, Realf, Reier,
+Rolf, Sibille, Simon, Sissel, Siver, Sofie, Steffen, Sveinung, Synnøve, Søren,
+Tallak, Tollef, Tomas, Tor, Torbjørn, Torger, Torkil, Tormod, Torsten, Tov,
+Trond, Tyge, Valentin, Vetle, Vrål, Wilhelm, Zacharias, Åge, Åse, Åshild, Åsold,
+Åvet.</p>\n";
 
 ?>
