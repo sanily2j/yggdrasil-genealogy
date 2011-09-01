@@ -319,6 +319,18 @@ name[role|='child'] {
     font-weight : bold;
 }
 
+/* sms2011-09-01: class "local_help" is used for slabs of local help */
+.localhelp {
+    margin-left : 150px;
+    margin-right : 10px;
+    background-color: #ccffff;
+}
+
+div.localhelp {
+    margin-top : 30px;
+    background-color: #ccccff;
+    font-size : smaller;
+}
 
 /* print style */
 
