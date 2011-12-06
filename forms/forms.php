@@ -203,6 +203,49 @@ function textarea_input($prompt, $rows, $cols, $name, $value='', $tab='') {
     echo $row;
 }
 
+function editarea_input($prompt, $rows, $cols, $name, $value='', $tab='') {
+    // print table rows with Editarea
+    echo "<tr><td>$prompt</td><td><textarea id=\"editarea_text\""
+        . " class=\"input\" rows=\"$rows\" cols=\"$cols\" name=\"$name\"";
+    if ($tab)
+        echo " tabindex=\"$tab\"";
+    echo ">";
+    if ($value)
+        echo $value;
+    echo "</textarea></td></tr>\n";
+    echo "<tr><td>Markup:</td><td>";
+/*
+    $els = array(   "birth","death","marriage","source","ref","name","date",
+                    "place","age","father","mother","husband","wife","brother",
+                    "sister","child","cause","witness","male","female",
+                    "doctorsVisit"
+                );
+    sort($els);
+    $els = array("p","ol","ul","li","name","place","note");
+    foreach ( $els as $e ) {
+        $row .= " <input type='button'
+        onclick='editAreaLoader.insertTags(\"editarea_text\", \"<$e>\",
+        \"</$e>\");' value='$e' />";
+    }
+*/
+    $btn = "<input type='button' onclick='editAreaLoader.insertTags(\"editarea_text\",";
+    echo $btn . " \"<p>\", \"</p>\");' value='p' />";
+    echo $btn . " \"<ol>\", \"</ol>\");' value='ol' />";
+    echo $btn . " \"<ul>\", \"</ul>\");' value='ul' />";
+    echo $btn . " \"<li>\", \"</li>\");' value='li' />";
+    echo $btn . " \"<a href=>\", \"</a>\");' value='a' />";
+    echo $btn . " \"<note>\", \"</note>\");' value='note' />";
+    echo $btn . " \"<name>\", \"</name>\");' value='name' />";
+    // seems to be no way to insert quotes
+    echo $btn . " \"<name role=child n=>\", \"</name>\");' value='child' />";
+    echo $btn . " \"<name role=father n=>\", \"</name>\");' value='father' />";
+    echo $btn . " \"<name role=mother n=>\", \"</name>\");' value='mother' />";
+    echo $btn . " \"<place>\", \"</place>\");' value='place' />";
+    echo $btn . " \"[p=|\", \"]\");' value='person' />";
+
+    echo "</td></tr>\n";
+}
+
 function name_input() {
     global $_Name, $_Given, $_Surname, $_Patronym, $_Occupation, $_Toponym, $_Epithet;
     echo "<tr>\n";
@@ -242,7 +285,7 @@ function source_input() {
     // print source number and textarea input.
     global $_Source, $_Text;
     source_num_input($_Source, "source_id", 0);
-    textarea_input("$_Text: ", 5, 80, 'source_text');
+    editarea_input("$_Text: ", 10, 100, 'source_text');
 }
 
 function participant_input($coprincipal) { // should be deprecated, see below

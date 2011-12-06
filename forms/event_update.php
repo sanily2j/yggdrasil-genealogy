@@ -41,7 +41,7 @@ if (!isset($_POST['posted'])) {
     $note = note_from_db($rec['event_note']);
     $notelen = strlen($note);
     $notelen < 1000 ? $note_height = 5 : $note_height = 20;
-    $note_width = 80;
+    $note_width = 100;
     form_begin('edit_event', $_SERVER['PHP_SELF']);
         hidden_input('person', $person);
         hidden_input('event', $event);

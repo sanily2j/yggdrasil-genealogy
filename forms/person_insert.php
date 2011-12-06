@@ -80,7 +80,7 @@ if (!isset($_POST['posted'])) {
     select_place(0);
     date_input();
     // text_input("$_Sort_date:", 25, 'sort_date', '');
-    textarea_input("$_Text:", 5, 80, 'event_note', '');
+    textarea_input("$_Text:", 5, 100, 'event_note', '');
     source_input();
     text_input("$_Age:", 10, 'age', '', "($_Adds_birth_event)");
     form_submit();
@@ -88,6 +88,13 @@ if (!isset($_POST['posted'])) {
     echo "</body>\n</html>\n";
 }
 else {
+    $src = $_POST['source_id'];
+    $txt = $_POST['source_text'];
+    if ($txt && fetch_val("SELECT is_leaf($src)") == 't') {
+        echo "Cannot create subsource under source #$src. ";
+        echo "Please go back and check your source reference.";
+        die;
+    }
     $gender = $_POST['gender'];
     $given = $_POST['given'];
     $patronym = $_POST['patronym'];
@@ -160,12 +167,13 @@ else {
     set_last_selected_place($place);
     // participant data
     add_participant($person,$event);
-    // if the script was called with the 'addspouse' param, insert second participant
-    if (isset($_POST['spouse']) && $tag == MARR) {
+    // if the script was called with the 'addspouse' param
+    // and tag is in marriage group, connect spouse to event
+    if (isset($_POST['spouse']) && fetch_val("SELECT get_tag_group($event)") == 2) {
         add_participant($_POST['spouse'],$event);
     }
     // note that add_source() returns 0 for no source, else current source_id
-    $source_id = add_source($person, $tag, $event, $_POST['source_id'], $_POST['source_text']);
+    $source_id = add_source($person, $tag, $event, $src, $txt);
     // add relation if this script was called with an 'addparent' param:
     if ($_POST['child']) {
         $child = $_POST['child'];

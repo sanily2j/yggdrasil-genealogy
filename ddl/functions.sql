@@ -227,6 +227,9 @@ BEGIN
     END LOOP;
     -- expand custom external shortlinks
     str := _my_expand(str);
+    str := REGEXP_REPLACE(str,
+                E'<name role="child" n="(.*?)">(.+?)</name>',
+                E'<span class="child" title="\\1">\\2</span>', 'g');
     RETURN str;
 END
 $$ LANGUAGE plpgsql STABLE;
@@ -304,12 +307,6 @@ SELECT COALESCE(
     (SELECT person_fk FROM participants
         WHERE event_fk = $1 AND person_fk <> $2 LIMIT 1), 0)
 $$ LANGUAGE sql STABLE;
-
-/*
-CREATE OR REPLACE FUNCTION is_public(INTEGER) RETURNS BOOLEAN AS $$
-SELECT is_public FROM persons WHERE person_id = $1;
-$$ LANGUAGE sql STABLE;
-*/
 
 CREATE OR REPLACE FUNCTION is_public(INTEGER) RETURNS BOOLEAN AS $$
 SELECT CASE WHEN $1 IN (SELECT person_fk FROM private_persons)

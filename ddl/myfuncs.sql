@@ -52,8 +52,9 @@ BEGIN
     END LOOP;
     str := _my_expand(str);
     -- remove TEI tags
-    str := regexp_replace(str, E'<name.*?>(.+?)</name>', E'\\1', 'g');
-    str := regexp_replace(str, E'<place.*?>(.+?)</place>', E'\\1', 'g');
+    str := regexp_replace(str, E'<name role="child".*?>(.+?)</name>', E'<b>\\1</b>', 'g');
+    str := regexp_replace(str, E'<name.*?>(.*?)</name>', E'\\1', 'g');
+    str := regexp_replace(str, E'<place.*?>(.*?)</place>', E'\\1', 'g');
     RETURN str;
 END
 $$ LANGUAGE plpgsql STABLE;

@@ -150,6 +150,11 @@ td.nav {
 /*    font-size : smaller; */
 }
 
+.inline_source {
+    /* font-style : italic; */
+    font-size : smaller;
+}
+
 .numeric {
     text-align : right;
 }
@@ -318,6 +323,11 @@ ul.plainlist {
 name[role|='child'] {
     font-weight : bold;
 }
+
+span.child {
+    font-weight : bold;
+}
+
 
 /* sms2011-09-01: class "local_help" is used for slabs of local help */
 .localhelp {
