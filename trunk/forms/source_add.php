@@ -55,7 +55,7 @@ if (!isset($_POST['posted'])) {
     form_begin($form, $_SERVER['PHP_SELF']);
     hidden_input('posted', 1);
     source_num_input("$_Parent_node:", 'node', $node);
-    textarea_input("$_Text:", 10, 100, 'text', $template);
+    editarea_input("$_Text:", 20, 100, 'text', $template);
     if (fetch_val("
         SELECT is_leaf FROM source_part_types WHERE part_type_id = $part_type
     ") == 't') {

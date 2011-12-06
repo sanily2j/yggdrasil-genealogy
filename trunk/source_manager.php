@@ -212,11 +212,22 @@ if ($props['number_of_events']) {
                 ORDER BY
                     sort_order
             ");
-            echo '<ol>';
+            echo '<ul>';
             while ($subrow = pg_fetch_assoc($subhandle)) {
                 $participant = $subrow['person_fk'];
-                $bp = $subrow['is_principal'] == 't' ? 'H ' : 'B ';
-                echo '<li>' . $bp . linked_name($participant, './family.php');
+                $bp = $subrow['is_principal'] == 't' ? ' H ' : ' B ';
+                echo '<li> ';
+                // print link to edit sort order
+                echo to_url('./forms/source_sort_order_edit.php',
+                    array(
+                        'person'    => $participant,
+                        'event'     => $event,
+                        'node'      => $self
+                        ),
+                    square_brace($subrow['sort_order']),
+                    'Edit sort order'
+                );
+                echo $bp . linked_name($participant, './family.php');
                 // a non-principal, eg a person mentioned as heir in a probate,
                 // who may or may not be described in a separate note
                 if ($subrow['is_principal'] == 'f') {
@@ -240,7 +251,7 @@ if ($props['number_of_events']) {
                 }
                 echo "</li>\n";
             }
-            echo "</ol>\n";
+            echo "</ul>\n";
         }
         echo "</li>\n";
     }

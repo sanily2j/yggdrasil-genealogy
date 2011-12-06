@@ -31,7 +31,7 @@ require "./forms.php";
 if (!isset($_POST['posted'])) {
     // display form
     $note_height = 5;
-    $note_width = 80;
+    $note_width = 100;
     $person = $_GET['person'];
     $name = get_name($person);
     $title = "$_Add_event_for ($person) $name";

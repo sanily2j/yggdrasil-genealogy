@@ -34,9 +34,20 @@
  ***             Functions used only in this script                     ***
  **************************************************************************/
 
-function print_bd($p,$g) {
+function print_bd($p, $g) {
+    // This func prints birth and death events for spouses and children,
+    // appended with inline source citations if primary sources exists for
+    // those events.
+    // NOTE that the $g var is used to reference both
+    // tag_groups.tag_group_id where birth = 1 and death = 3,
+    // and sources.part_type where baptism = 1 and burial = 3.
+    // If you have selected other part_type keys for your primary birth and
+    // death sources, this func won't print source references to BD events.
+    // In that case you may want to use the outcommented section of
+    // pop_child() below which will cite sources to parent/child relations.
     if ($row = fetch_row_assoc("
         SELECT
+            event_key,
             tag_key,
             event_date,
             get_place_name(place_key) place_name
@@ -46,10 +57,30 @@ function print_bd($p,$g) {
             person = $p
         AND
             group_key = $g
-        "))
+        ")) {
+        $src = fetch_val("
+            SELECT
+                get_source_text(source_id)
+            FROM
+                event_citations e, sources s
+            WHERE
+                e.event_fk = " . $row['event_key'] . "
+            AND
+                e.source_fk = s.source_id
+            AND
+                s.part_type = $g
+            ORDER BY
+                s.source_date ASC
+            LIMIT 1
+        ");
         echo para(get_tag_name($row['tag_key'])
             . conc(fuzzydate($row['event_date']))
-            . conc($row['place_name']), "bmd");
+            . conc($row['place_name'])
+            . conc($src
+                ? span_type(paren($src), "inline_source")
+                : ''), "bmd");
+    }
+
 }
 
 function print_marriage($p, $p2=0)  {
@@ -87,6 +118,11 @@ function pop_child($child, $parent, $coparent=0) {
         $sentence .= conc(span_type('+',
             "alert", sprintf($_toolhelp_has_descendants, $child)));
     $sentence = para($sentence, "name");
+    /*
+    // This section has become obsolete with the addition of inline source
+    // citations in print_bd() above. Left here because you may prefer to
+    // document parent/child relations rather than BD events of spouses and
+    // children, or maybe both.
     // print relation source(s)
     $handle = pg_query("
         SELECT
@@ -109,6 +145,7 @@ function pop_child($child, $parent, $coparent=0) {
         $sentence .= para(paren($_Source . ':'
             . conc(ltrim($row['source_text']))), "childsource");
     }
+    */
     echo $sentence;
     print_bd($child,1);
     print_marriage($child);

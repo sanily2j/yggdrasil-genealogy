@@ -27,7 +27,7 @@
 -->
 <head>
 <?php echo ("<title>$title</title>\n"); ?>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
 <meta name="Author" content="Leif Biberg Kristensen" />
 <link rel="stylesheet" type="text/css" href="default.css" />
 <link rel="shortcut icon" href="http://localhost/~leif/yggdrasil/favicon.ico" />

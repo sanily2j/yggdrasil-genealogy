@@ -9,3 +9,15 @@ UPDATE SOURCES SET source_text=REGEXP_REPLACE(source_text,
 
 This kind of mass update will add several MBytes to the database, depending on
 the size of your source table. Run a dump/restore to compact it.
+
+
+UPDATE sources SET source_text = regexp_replace(source_text, E'n="(.*?)Brynild(.*?)"', E'n="\\1Brynil\\2"', 'g') where source_text like '%n="%Brynild%">%'
+
+CREATE OR REPLACE FUNCTION update_nametags(TEXT, TEXT) RETURNS VOID AS $$
+UPDATE sources SET source_text = regexp_replace(
+    source_text,
+    CONCAT(E'n="(.*?)', $1, E'(.*?)"'),
+    CONCAT(E'n="\\1', $2, E'\\2"', 'g')
+)
+WHERE source_text LIKE CONCAT('%n="%', $1, '%">%');
+$$ LANGUAGE SQL VOLATILE;

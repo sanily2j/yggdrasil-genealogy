@@ -87,12 +87,12 @@ else {
         FROM
             persons
         WHERE
-            given ILIKE '$given%'
+            given LIKE '%$given%'
             AND (
-                patronym ILIKE '$surname%'
-                OR toponym ILIKE '$literal'
-                OR surname ILIKE '$surname%'
-                OR occupation ILIKE '$surname%'
+                patronym LIKE '%$surname%'
+                OR toponym LIKE '$literal'
+                OR surname LIKE '%$surname%'
+                OR occupation LIKE '%$surname%'
             )
             AND is_merged(person_id) IS FALSE
         ";
